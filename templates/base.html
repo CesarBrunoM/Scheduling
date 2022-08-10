@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} - Scheduling</title>
+    <!-- CSS only -->
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    {% include 'barra_navegacao.html '%}
+    {% block body %}
+    {% endblock %}
+    <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>

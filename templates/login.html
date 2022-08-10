@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/login.css') }}">
+
+    <style>
+        @font-face {
+            font-family: "Coolvetica rg";
+            scr: url("{{ url_for('static',filename='fontes/simplessemserifa/formatowoff/AnyConv.com__coolvetica\ rg.woff') }}");
+        }
+
+        @font-face {
+            font-family: "Caviar Dreams";
+            scr: url("{{ url_for('static',filename='fontes/simplessemserifa/formatowoff/CaviarDreams.woff') }}");
+        }
+    </style>
+</head>
+
+<body>
+<header class="d-flex flex-column align-items-center">
+    <h1>INDOC</h1>
+    <h2 class="h5">Sistema de Atendimento</h2>
+</header>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col col-12 col-sm-12 col-md-8 col-lg-8">
+            <article class="artigo">
+                <section class="secao text-justify">
+                    <h3>Conheça o sistema de gerenciamento de atendimento INDOC</h3>
+
+                    <div class="w-100 py-2 d-flex justify-content-center">
+                        <img class="w-75" src="{{ url_for('static',filename='images/ilustraçãopersonagem.svg') }}"
+                             alt="Mulher ao telefone">
+                    </div>
+
+                    <p>É um fato estabelecido há muito tempo que um leitor se distrairá com o conteúdo legível de uma
+                        página
+                        ao olhar para seu layout. O ponto de usar Lorem Ipsum é que ele tem uma distribuição mais ou
+                        menos
+                        normal de letras, ao contrário de usar 'Conteúdo aqui, conteúdo aqui', fazendo com que pareça
+                        inglês
+                        legível. Muitos pacotes de editoração eletrônica e editores de páginas da web agora usam Lorem
+                        Ipsum
+                        como seu texto de modelo padrão, e uma pesquisa por 'lorem ipsum' descobrirá muitos sites ainda
+                        em
+                        sua infância. Várias versões evoluíram ao longo dos anos, às vezes por acidente, às vezes de
+                        propósito (humor injetado e afins).</p>
+                </section>
+            </article>
+        </div>
+
+        <div class="col col-md-4 col-lg-4">
+
+            <aside class="d-flex justify-content-md-end justify-content-sm-center justify-content-center ">
+
+                <form action="#" class="formulario1 d-flex flex-column align-items-center">
+                    <div class="imagemlogin d-flex justify-content-center"><img
+                            src="{{ url_for('static',filename='images/imagemlogin.svg') }}"
+                            alt="">
+                    </div>
+
+                    <label for="usuario">Usuário</label>
+                    <input type="text" name="usuario" id="usuario" placeholder="Digite o usuário">
+                    <label for="senha">Senha</label>
+                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
+                    <button type="submit">Entrar</button>
+
+
+                    <div class="textologin text-center">
+                        <p>Ainda não é cliente INDOC? <a class="text-warning text-decotion-none"
+                                                         href="#envioinformacoes">Cadastre-se aqui!</a></p>
+                    </div>
+
+                </form>
+
+            </aside>
+        </div>
+    </div>
+
+    <article class="row w-80 p-3">
+
+        <section class="secao text-justify">
+            <h3>As vantagens do sistema INDOC</h3>
+
+            <p>O que é Lorem Ipsum?
+                Lorem Ipsum é simplesmente um texto fictício da indústria tipográfica e de impressão. Lorem Ipsum
+                tem
+                sido o texto fictício padrão da indústria desde os anos 1500, quando um impressor desconhecido pegou
+                uma
+                cozinha de tipos e embaralhou-a para fazer um livro de espécimes de tipos. Ele sobreviveu não apenas
+                cinco séculos, mas também o salto para a composição eletrônica, permanecendo essencialmente
+                inalterado.
+                Foi popularizado na década de 1960 com o lançamento de folhas Letraset contendo passagens de Lorem
+                Ipsum
+                e, mais recentemente, com software de editoração eletrônica como Aldus PageMaker, incluindo versões
+                de
+                Lorem Ipsum.
+
+                Porque usamos isso?
+                É um fato estabelecido há muito tempo que um leitor se distrairá com o conteúdo legível de uma
+                página ao
+                olhar para seu layout. O ponto de usar Lorem Ipsum é que ele tem uma distribuição mais ou menos
+                normal
+                de letras, ao contrário de usar 'Conteúdo aqui, conteúdo aqui', fazendo com que pareça inglês
+                legível.
+                Muitos pacotes de editoração eletrônica e editores de páginas da web agora usam Lorem Ipsum como seu
+                texto de modelo padrão, e uma pesquisa por 'lorem ipsum' descobrirá muitos sites ainda em sua
+                infância.
+                Várias versões evoluíram ao longo dos anos, às vezes por acidente, às vezes de propósito (humor
+                injetado
+                e afins).
+                De onde isso vem?
+
+
+            </p>
+        </section>
+    </article>
+
+    <div class="formulario2" id="envioinformacoes">
+        <form class="d-flex flex-column align-items-center" action="" method="post">
+            <p>Torne-se agora um cliente INDOC! Nos envie seu email e whatsapp e logo entraremos em contato.</p>
+            <label for="email">Email</label>
+            <input class="email" type="email" name="email" id="email">
+            <label for="whats">whatsapp</label>
+            <input type="tel" name="tel" id="whats" placeholder="(63) 99999-9999">
+            <button type="submit">Enviar</button>
+
+        </form>
+    </div>
+
+
+</div>
+<footer class="d-flex justify-content-center">
+    <p class="pt-3">Direitos Reservados a BelimTech</p>
+</footer>
+
+<script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+</body>
+
+</html>
