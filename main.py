@@ -1,9 +1,11 @@
 from flask import Flask, render_template, url_for
+from forms import FormLogin, SolicitacaoCadastro
 
 app = Flask(__name__)
 
 lista_clientes = ['Bruno Cesar', 'Luana Lorrane', 'Haline Melo']
 
+app.config['SECRET_KEY'] = '6025524ac8f6491f7d860090f8e77a47'
 
 @app.route("/")
 def home():
@@ -12,7 +14,9 @@ def home():
 
 @app.route("/login")
 def login():
-    return render_template('login.html')
+    form_login = FormLogin()
+    form_solicitarcadastro = SolicitacaoCadastro()
+    return render_template('login.html', form_login=form_login, form_solicitarcadastro=form_solicitarcadastro)
 
 
 @app.route("/perfil")

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login - Scheduling</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/login.css') }}">
 
@@ -58,17 +58,30 @@
 
             <aside class="d-flex justify-content-md-end justify-content-sm-center justify-content-center ">
 
-                <form action="#" class="formulario1 d-flex flex-column align-items-center">
+                <form method="POST" action="" class="formulario1 d-flex flex-column align-items-center p-3">
+                    {{ form_login.csrf_token }}
                     <div class="imagemlogin d-flex justify-content-center"><img
                             src="{{ url_for('static',filename='images/imagemlogin.svg') }}"
                             alt="">
                     </div>
+                    {{ form_login.email.label (class="form-control.label") }}
+                    {{ form_login.email (class="form-control", placeholder="exemplo@email.com") }}
+                    {{ form_login.senha.label (class="form-control.label") }}
+                    {{ form_login.senha (class="form-control", placeholder="6 a 20 caracteres") }}
 
-                    <label for="usuario">Usuário</label>
+                    <div class="p-2">
+                        {{ form_login.lembra_acesso.label }}
+                        {{ form_login.lembra_acesso (class="form-check-input") }}
+                    </div>
+                    <div class="p-2">
+                    {{ form_login.botao_submit_login (class="btn btn-light") }}
+                    </div>
+
+                    <!--<label for="usuario">Usuário</label>
                     <input type="text" name="usuario" id="usuario" placeholder="Digite o usuário">
                     <label for="senha">Senha</label>
                     <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
-                    <button type="submit">Entrar</button>
+                    <button type="submit">Entrar</button>-->
 
 
                     <div class="textologin text-center">
@@ -122,13 +135,24 @@
     </article>
 
     <div class="formulario2" id="envioinformacoes">
-        <form class="d-flex flex-column align-items-center" action="" method="post">
-            <p>Torne-se agora um cliente INDOC! Nos envie seu email e whatsapp e logo entraremos em contato.</p>
-            <label for="email">Email</label>
+        <form method="POST" action="" class="d-flex flex-column align-items-center p-5">
+            {{ form_solicitarcadastro.csrf_token }}
+            <h4>Torne-se agora um cliente INDOC! </h4>
+            <p>Nos envie seus dados de contato e logo entraremos em contato.</p>
+
+            {{ form_solicitarcadastro.email.label (class="form-control-label")}}
+            {{ form_solicitarcadastro.email (class="form-control", placeholder="exemplo@email.com")}}
+            {{ form_solicitarcadastro.whatsapp.label (class="form-control-label")}}
+            {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" )}}
+            <div class="p-2">
+                {{ form_solicitarcadastro.botao_submit_enviar (class="btn btn-light") }}
+            </div>
+
+            <!--<label for="email">Email</label>
             <input class="email" type="email" name="email" id="email">
             <label for="whats">whatsapp</label>
             <input type="tel" name="tel" id="whats" placeholder="(63) 99999-9999">
-            <button type="submit">Enviar</button>
+            <button type="submit">Enviar</button>-->
 
         </form>
     </div>
