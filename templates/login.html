@@ -22,6 +22,17 @@
 </head>
 
 <body>
+<div class="container">
+    {% with mensagens = get_flashed_messages(with_categories=True) %}
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <div class="alert {{ categoria }}">
+                    {{ mensagem }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
 <header class="d-flex flex-column align-items-center">
     <h1>INDOC</h1>
     <h2 class="h5">Sistema de Atendimento</h2>
@@ -65,9 +76,30 @@
                             alt="">
                     </div>
                     {{ form_login.email.label (class="form-control.label") }}
-                    {{ form_login.email (class="form-control", placeholder="exemplo@email.com") }}
+
+                    {% if form_login.email.errors %}
+                        {{ form_login.email (class="form-control is-invalid", placeholder="exemplo@email.com") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form_login.email.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_login.email (class="form-control", placeholder="exemplo@email.com") }}
+                    {% endif %}
+
                     {{ form_login.senha.label (class="form-control.label") }}
-                    {{ form_login.senha (class="form-control", placeholder="6 a 20 caracteres") }}
+                    {% if form_login.senha.errors %}
+                        {{ form_login.senha (class="form-control is-invalid", placeholder="6 a 20 caracteres") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form_login.senha.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_login.senha (class="form-control", placeholder="6 a 20 caracteres") }}
+                    {% endif %}
+
 
                     <div class="p-2">
                         {{ form_login.lembra_acesso.label }}
@@ -76,14 +108,6 @@
                     <div class="p-2">
                     {{ form_login.botao_submit_login (class="btn btn-light") }}
                     </div>
-
-                    <!--<label for="usuario">Usuário</label>
-                    <input type="text" name="usuario" id="usuario" placeholder="Digite o usuário">
-                    <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
-                    <button type="submit">Entrar</button>-->
-
-
                     <div class="textologin text-center">
                         <p>Ainda não é cliente INDOC? <a class="text-warning text-decotion-none"
                                                          href="#envioinformacoes">Cadastre-se aqui!</a></p>
@@ -141,19 +165,30 @@
             <p>Nos envie seus dados de contato e logo entraremos em contato.</p>
 
             {{ form_solicitarcadastro.email.label (class="form-control-label")}}
-            {{ form_solicitarcadastro.email (class="form-control", placeholder="exemplo@email.com")}}
+            {% if form_solicitarcadastro.email.errors %}
+                {{ form_solicitarcadastro.email (class="form-control is-invalid", placeholder="exemplo@email.com") }}
+                <div class="invalid-feedback">
+                    {% for erro in form_solicitarcadastro.email.errors %}
+                        {{ erro }}
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form_solicitarcadastro.email (class="form-control", placeholder="exemplo@email.com") }}
+            {% endif %}
+
             {{ form_solicitarcadastro.whatsapp.label (class="form-control-label")}}
-            {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" )}}
+            {% if form_solicitarcadastro.whatsapp.errors %}
+                {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" ) }}
+                {% for erro in form_solicitarcadastro.whatsapp.errors %}
+                    {{ erro }}
+                {% endfor %}
+            {% else %}
+                {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" )}}
+            {% endif %}
+
             <div class="p-2">
                 {{ form_solicitarcadastro.botao_submit_enviar (class="btn btn-light") }}
             </div>
-
-            <!--<label for="email">Email</label>
-            <input class="email" type="email" name="email" id="email">
-            <label for="whats">whatsapp</label>
-            <input type="tel" name="tel" id="whats" placeholder="(63) 99999-9999">
-            <button type="submit">Enviar</button>-->
-
         </form>
     </div>
 
