@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Scheduling</title>
+    <title>Login - INDOC</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/login.css') }}">
 
@@ -164,16 +164,16 @@
             <h4>Torne-se agora um cliente INDOC! </h4>
             <p>Nos envie seus dados de contato e logo entraremos em contato.</p>
 
-            {{ form_solicitarcadastro.email.label (class="form-control-label")}}
-            {% if form_solicitarcadastro.email.errors %}
-                {{ form_solicitarcadastro.email (class="form-control is-invalid", placeholder="exemplo@email.com") }}
+            {{ form_solicitarcadastro.emailrequerido.label (class="form-control-label")}}
+            {% if form_solicitarcadastro.emailrequerido.errors %}
+                {{ form_solicitarcadastro.emailrequerido (class="form-control is-invalid", placeholder="exemplo@email.com") }}
                 <div class="invalid-feedback">
-                    {% for erro in form_solicitarcadastro.email.errors %}
+                    {% for erro in form_solicitarcadastro.emailrequerido.errors %}
                         {{ erro }}
                     {% endfor %}
                 </div>
             {% else %}
-                {{ form_solicitarcadastro.email (class="form-control", placeholder="exemplo@email.com") }}
+                {{ form_solicitarcadastro.emailrequerido (class="form-control", placeholder="exemplo@email.com") }}
             {% endif %}
 
             {{ form_solicitarcadastro.whatsapp.label (class="form-control-label")}}
