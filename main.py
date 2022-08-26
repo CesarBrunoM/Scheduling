@@ -1,12 +1,15 @@
 from flask import Flask, render_template, url_for, request, flash, redirect
-from forms import FormLogin, SolicitacaoCadastro
+from forms import FormLogin, SolicitacaoCadastro, FormCriarConta
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
 lista_clientes = ['Bruno Cesar', 'Luana Lorrane', 'Haline Melo']
 
 app.config['SECRET_KEY'] = '6025524ac8f6491f7d860090f8e77a47'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/systembd'
 
+database = SQLAlchemy(app)
 
 @app.route("/")
 def home():
@@ -39,7 +42,8 @@ def atendimento():
 
 @app.route("/usuario")
 def usuario():
-    return render_template('usuarios.html')
+    form_cad_user = FormCriarConta()
+    return render_template('usuarios.html', form_cad_user=form_cad_user)
 
 
 @app.route("/cliente")
