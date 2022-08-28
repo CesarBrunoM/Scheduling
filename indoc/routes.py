@@ -1,6 +1,7 @@
-from indoc import app
+from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta
+from indoc.models import Usuario, database
 
 lista_clientes = ['Bruno Cesar', 'Luana Lorrane', 'Haline Melo']
 
@@ -34,10 +35,21 @@ def atendimento():
     return render_template('atendimentos.html')
 
 
-@app.route("/usuario")
+@app.route("/usuarios", methods=['GET', 'POST'])
 def usuario():
-    form_cad_user = FormCriarConta()
-    return render_template('usuarios.html', form_cad_user=form_cad_user)
+    form_criarconta = FormCriarConta()
+    if form_criarconta.validate_on_submit() and 'botao_submit_criar' in request.form:
+        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
+        usuario = Usuario(username=form_criarconta.username.data,
+                          nome_completo=form_criarconta.nome_completo.data,
+                          email=form_criarconta.email.data,
+                          telefone=form_criarconta.telefone.data,
+                          senha=senha_cript)
+        database.session.add(usuario)
+        database.session.commit()
+        redirect(url_for('home'))
+        flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
+    return render_template('usuarios.html', form_criarconta=form_criarconta)
 
 
 @app.route("/cliente")
