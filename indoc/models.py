@@ -1,9 +1,15 @@
-from indoc import database
+from indoc import database, login_manager
 from datetime import datetime
+from flask_login import UserMixin
 
 
-class Usuario(database.Model):
-    id_user = database.Column(database.Integer, primary_key=True)
+@login_manager.user_loader
+def load_usuario(id_user):
+    return Usuario.query.get(int(id_user))
+
+
+class Usuario(database.Model, UserMixin):
+    id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(25), nullable=False)
     nome_completo = database.Column(database.String(100), nullable=False)
     senha = database.Column(database.String(200), nullable=False)
@@ -20,17 +26,14 @@ class Cliente(database.Model):
     nome = database.Column(database.String(70))
     contato = database.Column(database.String(13))
     id_empresa = database.Column(database.Integer, database.ForeignKey('clienteempresa.id_empresa'))
-    atendimento = database.relationship('Cliente', backref='atendimento', lazy=True)
-    # id_profissao = database.Column(database.Integer, database.ForeignKey('profissao.id_profissao'), nullable=False)
-    # usuario = database.relationship('UsuarioLogin', backref='profissao', lazy=True)
+    atendimento = database.relationship('Atendimento', backref='cliente', lazy=True)
 
 
 class Clienteempresa(database.Model):
     id_empresa = database.Column(database.Integer, primary_key=True)
     razao = database.Column(database.String(100))
     nome = database.Column(database.String(100))
-    cliente = database.relationship('Cliente', backref='Clienteempresa', lazy=True)
-    atendimento = database.relationship('Cliente', backref='Atendimentos', lazy=True)
+    cliente = database.relationship('Cliente', backref='clienteempresa', lazy=True)
 
 
 class Setor(database.Model):
@@ -39,7 +42,7 @@ class Setor(database.Model):
     atendimento = database.relationship('Atendimento', backref='setor', lazy=True)
 
 
-class Problemas(database.Model):
+class Problema(database.Model):
     id_problema = database.Column(database.Integer, primary_key=True)
     descricao = database.Column(database.String(200), nullable=True)
     atendimento = database.relationship('Atendimento', backref='problema', lazy=True)
@@ -54,6 +57,6 @@ class Atendimento(database.Model):
     prioridade = database.Column(database.String(20), nullable=False)
     local = database.Column(database.String(20), nullable=False)
     observacao = database.Column(database.String(300))
-    problema = database.Column(database.String(200), nullable=False)
+    id_problema = database.Column(database.Integer, database.ForeignKey('problema.id_problema'))
     id_cliente = database.Column(database.Integer, database.ForeignKey('cliente.id_cliente'), nullable=False)
     id_setor = database.Column(database.Integer, database.ForeignKey('setor.id_setor'), nullable=False)

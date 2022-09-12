@@ -2,6 +2,7 @@ from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta
 from indoc.models import Usuario, database
+from flask_login import login_user
 
 lista_clientes = ['Bruno Cesar', 'Luana Lorrane', 'Haline Melo']
 
@@ -17,8 +18,13 @@ def login():
     form_solicitarcadastro = SolicitacaoCadastro()
 
     if form_login.validate_on_submit() and 'botao_submit_login' in request.form:
-        flash(f'Seja bem vindo {form_login.email.data}', 'alert-success')
-        return redirect(url_for('home'))
+        user = Usuario.query.filter_by(email=form_login.email.data).first()
+        if user and bcrypt.check_password_hash(user.senha, form_login.senha.data):
+            login_user(user, remember=form_login.lembra_acesso.data)
+            flash(f'Seja bem vindo {user.username}', 'alert-success')
+            return redirect(url_for('home'))
+        else:
+            flash('Falha no login, verifique seu email e senha.', 'alert-danger')
     if form_solicitarcadastro.validate_on_submit() and 'botao_submit_enviar' in request.form:
         flash(f'Informações encaminhadas! Logo faremos parte do mesmo time.', 'alert-primary')
 
@@ -44,7 +50,8 @@ def usuario():
                           nome_completo=form_criarconta.nome_completo.data,
                           email=form_criarconta.email.data,
                           telefone=form_criarconta.telefone.data,
-                          senha=senha_cript)
+                          senha=senha_cript,
+                          cargo=form_criarconta.cargo.data)
         database.session.add(usuario)
         database.session.commit()
         redirect(url_for('home'))

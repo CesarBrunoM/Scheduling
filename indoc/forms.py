@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
-
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from indoc.models import Usuario
 
 class FormCriarConta(FlaskForm):
     username = StringField('Nome usuário', validators=[DataRequired()])
@@ -12,6 +12,11 @@ class FormCriarConta(FlaskForm):
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     cargo = StringField('Cargo')
     botao_submit_criar = SubmitField('Gravar')
+
+    def validate_email(self, email):
+        usuario = Usuario.query.filter_by(email=email.data).first()
+        if usuario:
+            raise ValidationError('Email já cadastrado.')
 
 
 class FormLogin(FlaskForm):
