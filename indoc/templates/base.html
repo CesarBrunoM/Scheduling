@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - INDOC</title>
     <!-- CSS only -->
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
     {% block head %}
     {% endblock %}
 </head>
