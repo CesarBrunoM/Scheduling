@@ -1,6 +1,6 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
-from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta
+from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil
 from indoc.models import Usuario, database
 from flask_login import login_user, logout_user, current_user, login_required
 
@@ -35,10 +35,34 @@ def login():
     return render_template('login.html', form_login=form_login, form_solicitarcadastro=form_solicitarcadastro)
 
 
-@app.route("/perfil/", methods=['GET', 'POST'])
+@app.route("/perfil", methods=['GET', 'POST'])
 @login_required
 def perfil():
-    return render_template('perfil.html')
+    form_criarconta = FormCriarConta()
+    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+    if form_criarconta.validate_on_submit() and 'botao_submit_criar' in request.form:
+        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
+        user = Usuario(username=form_criarconta.username.data,
+                       nome_completo=form_criarconta.nome_completo.data,
+                       email=form_criarconta.email.data,
+                       telefone=form_criarconta.telefone.data,
+                       data_nascimento=form_criarconta.data_nascimento.data,
+                       senha=senha_cript,
+                       cargo=form_criarconta.cargo.data,
+                       foto_perfil=form_criarconta.foto_perfil.data)
+        database.session.add(user)
+        database.session.commit()
+        redirect(url_for('home'))
+        flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
+    return render_template('perfil.html', form_criarconta=form_criarconta, foto_perfil=foto_perfil)
+
+
+@app.route('/perfil/editar', methods=['GET', 'POST'])
+@login_required
+def editarperfil():
+    form_editar_perfil = FormEditarPerfil()
+    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+    return render_template('editarperfil.html', form_editar_perfil=form_editar_perfil, foto_perfil=foto_perfil)
 
 
 @app.route("/atendimento", methods=['GET', 'POST'])

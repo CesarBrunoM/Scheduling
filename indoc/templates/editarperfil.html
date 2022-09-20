@@ -1,0 +1,135 @@
+{% extends 'perfil.html' %}
+
+{% block form_editar_perfil %}
+<div class="container rounded bg-secondary mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
+                                                                                         width="150px"
+                                                                                         src="{{ foto_perfil }}"><span
+                    class="font-weight-bold">{{ current_user.username }}</span><span class="text-black-50">{{ current_user.email }}
+            </span><span></span>
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <form method="POST" action="">
+                    {{ form_editar_perfil.csrf_token }}
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">{{ form_editar_perfil.username.label(class="labels") }}
+                            {% if form_editar_perfil.errors %}
+                            {{ form_editar_perfil.username(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.username.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.username(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">{{ form_editar_perfil.nome_completo.label(class="labels") }}
+                            {% if form_editar_perfil.errors %}
+                            {{ form_editar_perfil.nome_completo(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.nome_completo.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.nome_completo(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12">{{ form_editar_perfil.email.label(class="labels") }}
+                            {% if form_editar_perfil.email.errors %}
+                            {{ form_editar_perfil.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.email.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.email(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12">{{ form_editar_perfil.telefone.label(class="labels") }}
+                            {% if form_editar_perfil.telefone.errors %}
+                            {{ form_editar_perfil.telefone(class="form-control is-invalid", type="tel" ) }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.telefone.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.telefone(class="form-control",type="tel") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-12">{{ form_editar_perfil.data_nascimento.label(class="labels")}}
+                            {% if form_editar_perfil.data_nascimento.errors %}
+                            {{ form_editar_perfil.data_nascimento(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.data_nascimento.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.data_nascimento(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-12">{{ form_editar_perfil.senha.label(class="labels") }}
+                            {% if form_editar_perfil.errors %}
+                            {{ form_editar_perfil.senha(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.senha.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.senha(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12">{{ form_editar_perfil.confirma_senha.label(class="labels") }}
+                            {% if form_editar_perfil.errors %}
+                            {{ form_editar_perfil.confirma_senha(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.confirma_senha.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.confirma_senha(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">{{ form_editar_perfil.cargo.label(class="labels") }}
+                            {% if form_editar_perfil.errors %}
+                            {{ form_editar_perfil.cargo(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_perfil.cargo.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form_editar_perfil.cargo(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">{{ form_editar_perfil.botao_submit_editarperfil(class="btn btn-primary
+                        profile-button") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
