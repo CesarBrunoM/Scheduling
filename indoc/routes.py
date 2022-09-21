@@ -52,17 +52,34 @@ def perfil():
                        foto_perfil=form_criarconta.foto_perfil.data)
         database.session.add(user)
         database.session.commit()
-        redirect(url_for('home'))
         flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
+        return redirect(url_for('home'))
     return render_template('perfil.html', form_criarconta=form_criarconta, foto_perfil=foto_perfil)
 
 
 @app.route('/perfil/editar', methods=['GET', 'POST'])
 @login_required
 def editarperfil():
-    form_editar_perfil = FormEditarPerfil()
+    form = FormEditarPerfil()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.nome_completo = form.nome_completo.data
+        current_user.email = form.email.data
+        current_user.telefone = form.telefone.data
+        current_user.data_nascimento = form.data_nascimento.data
+        current_user.cargo = form.cargo.data
+        database.session.commit()
+        flash('Perfil atualizado com sucesso', 'alert-success')
+        return redirect(url_for('perfil'))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.nome_completo.data = current_user.nome_completo
+        form.email.data = current_user.email
+        form.telefone.data = current_user.telefone
+        form.data_nascimento.data = current_user.data_nascimento
+        form.cargo.data = current_user.cargo
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('editarperfil.html', form_editar_perfil=form_editar_perfil, foto_perfil=foto_perfil)
+    return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil)
 
 
 @app.route("/atendimento", methods=['GET', 'POST'])
@@ -85,8 +102,8 @@ def usuario():
                        cargo=form_criarconta.cargo.data)
         database.session.add(user)
         database.session.commit()
-        redirect(url_for('home'))
         flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
+        return redirect(url_for('home'))
     return render_template('usuarios.html', form_criarconta=form_criarconta)
 
 

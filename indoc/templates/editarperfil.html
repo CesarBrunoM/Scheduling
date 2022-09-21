@@ -2,6 +2,8 @@
 
 {% block form_editar_perfil %}
 <div class="container rounded bg-secondary mt-5 mb-5">
+    <form method="POST" action="" enctype="multipart/form-data">
+    {{ form_editar_perfil.csrf_token }}
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
@@ -13,8 +15,7 @@
         </div>
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
-                <form method="POST" action="">
-                    {{ form_editar_perfil.csrf_token }}
+
 
                     <div class="row mt-2">
                         <div class="col-md-6">{{ form_editar_perfil.username.label(class="labels") }}
@@ -121,15 +122,23 @@
                             {% endif %}
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            {{ form_editar_perfil.foto_perfil.label(class="labels") }}
+                            {{ form_editar_perfil.foto_perfil(class="form-control-file") }}
+                            {% if form_editar_perfil.foto_perfil.errors %}
+                                {% for erro in form_editar_perfil.foto_perfil.errors %}
+                                    <span class="text-info">{{ erro }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
                     <div class="mt-5 text-center">{{ form_editar_perfil.botao_submit_editarperfil(class="btn btn-primary
                         profile-button") }}
                     </div>
-                </form>
             </div>
         </div>
-        <div class="col-md-4">
-
-        </div>
     </div>
+    </form>
 </div>
 {% endblock %}

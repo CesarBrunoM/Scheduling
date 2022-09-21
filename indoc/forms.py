@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField, TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from indoc.models import Usuario
+from flask_login import current_user
 
 
 class FormCriarConta(FlaskForm):
@@ -12,7 +14,8 @@ class FormCriarConta(FlaskForm):
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
-    foto_perfil = StringField('Foto perfil')
+    foto_perfil = FileField('Foto perfil', validators=[
+        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
     cargo = StringField('Cargo')
     botao_submit_criar = SubmitField('Confirmar')
@@ -46,7 +49,14 @@ class FormEditarPerfil(FlaskForm):
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
-    foto_perfil = StringField('Foto perfil')
+    foto_perfil = FileField('Foto perfil', validators=[
+        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
     cargo = StringField('Cargo')
     botao_submit_editarperfil = SubmitField('Confirmar')
+
+    def validate_email(self, email):
+        if current_user.email != email.data:
+            usuario = Usuario.query.filter_by(email=email.data).first()
+            if usuario:
+                raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
