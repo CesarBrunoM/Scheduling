@@ -3,6 +3,9 @@ from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil
 from indoc.models import Usuario, database
 from flask_login import login_user, logout_user, current_user, login_required
+import secrets
+import os
+from PIL import Image
 
 lista_clientes = ['Bruno Cesar', 'Luana Lorrane', 'Haline Melo']
 
@@ -33,6 +36,19 @@ def login():
         flash(f'Informações encaminhadas! Logo faremos parte do mesmo time.', 'alert-primary')
 
     return render_template('login.html', form_login=form_login, form_solicitarcadastro=form_solicitarcadastro)
+
+
+def salvar_imagem(imagem):
+    codigo = secrets.token_hex(8)
+    nome, extencao = os.path.splitext(imagem.filename)
+    nome_arquivo = nome + '_' + codigo + extencao
+    caminho_imagem = os.path.join(app.root_path, 'static/foto_perfil', nome_arquivo)
+
+    tamanho = (200, 200)
+    imagem_reduzida = Image.open(imagem)
+    imagem_reduzida.thumbnail(tamanho)
+    imagem_reduzida.save(caminho_imagem)
+    return nome_arquivo
 
 
 @app.route("/perfil", methods=['GET', 'POST'])
@@ -68,6 +84,9 @@ def editarperfil():
         current_user.telefone = form.telefone.data
         current_user.data_nascimento = form.data_nascimento.data
         current_user.cargo = form.cargo.data
+        if form.foto_perfil.data:
+            nome_imagem = salvar_imagem(form.foto_perfil.data)
+            current_user.foto_perfil = nome_imagem
         database.session.commit()
         flash('Perfil atualizado com sucesso', 'alert-success')
         return redirect(url_for('perfil'))
