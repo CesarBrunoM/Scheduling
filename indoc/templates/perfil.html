@@ -5,18 +5,18 @@
 {% endblock %}
 
 {% block body %}
-    <section style="background-color: dark;">
-    <div class="container py-5 bg-secondary">
+<div class="topico1 col my-3">
+    <div class="container py-5">
 
     <div class="row">
       <div class="col-lg-4">
-        <div class="card mb-4" style="background-color: #67370A">
+        <div class="card mb-4" style="background-color: Peru">
           <div class="card-body text-center">
             <img src="{{ foto_perfil }}" alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px;">
             <h5 class="my-3">{{ current_user.username }}</h5>
-            <p class="text-muted mb-1">{{ current_user.email }}</p>
-            <p class="text-muted mb-4">{{ current_user.cargo }}</p>
+            <p class="text-white mb-1">{{ current_user.email }}</p>
+            <p class="text-white mb-4">{{ current_user.cargo }}</p>
             <div class="d-flex justify-content-center mb-2">
               <a href="{{ url_for('editarperfil') }}">
                 <button type="button" class="btn btn-primary">Editar</button>
@@ -27,13 +27,13 @@
       </div>
       <div class="col-lg-8">
         <div class="card mb-4">
-          <div class="card-body" style="background-color: #67370A">
+          <div class="card-body" style="background-color: Peru">
             <div class="row">
               <div class="col-sm-3">
                 <p class="mb-0">Nome completo</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ current_user.nome_completo }}</p>
+                <p class="text-white mb-0">{{ current_user.nome_completo }}</p>
               </div>
             </div>
             <hr>
@@ -42,7 +42,7 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ current_user.email }}</p>
+                <p class="text-white mb-0">{{ current_user.email }}</p>
               </div>
             </div>
             <hr>
@@ -51,7 +51,7 @@
                 <p class="mb-0">Telefone</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ current_user.telefone }}</p>
+                <p class="text-white mb-0">{{ current_user.telefone }}</p>
               </div>
             </div>
             <hr>
@@ -60,7 +60,7 @@
                 <p class="mb-0">Data nascimento</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ current_user.data_nascimento }}</p>
+                <p class="text-white mb-0">{{ current_user.data_nascimento }}</p>
               </div>
             </div>
             <hr>
@@ -69,7 +69,7 @@
                 <p class="mb-0">Data cadastro</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ current_user.data_criacao }}</p>
+                <p class="text-white mb-0">{{ current_user.data_criacao }}</p>
               </div>
             </div>
           </div>
@@ -77,8 +77,8 @@
       </div>
     </div>
     </div>
-    </section>
 
+</div>
 {% block form_editar_perfil %}
 {% endblock %}
 

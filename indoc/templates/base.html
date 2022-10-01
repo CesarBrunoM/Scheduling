@@ -6,10 +6,11 @@
     <!-- CSS only -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/cadastrousuariso.css') }}">
     {% block head %}
     {% endblock %}
 </head>
-<body class="bg-dark text-white">
+<body>
     <div class="container ">
         {% with mensagens = get_flashed_messages(with_categories=True) %}
             {% if mensagens %}
@@ -21,9 +22,22 @@
             {% endif %}
         {% endwith %}
     </div>
-    {% include 'barra_navegacao.html '%}
-    {% block body %}
-    {% endblock %}
+    <div class="container-fluid">
+        <div class="content row">
+            <div class="menu col-3 col-sm-3 p-0">
+                {% include 'barra_navegacao.html '%}
+            </div>
+            <article class="col-9 d-flex justify-content-center">
+                <div class="conteudo row mb-3 px-2">
+                    <div class="topico1 col my-3">
+                        {% block body %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    {% include 'footer.html '%}
     <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
 </body>

@@ -1,8 +1,11 @@
 {% extends 'perfil.html' %}
 
 {% block form_editar_perfil %}
-<div class="container rounded bg-secondary mt-5 mb-5">
+<hr>
+
+<div class="container rounded mt-5 mb-5">
     <form method="POST" action="" enctype="multipart/form-data">
+        <h1 class="text-center">Edição de perfil</h1>
     {{ form_editar_perfil.csrf_token }}
     <div class="row">
         <div class="col-md-3 border-right">

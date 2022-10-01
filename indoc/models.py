@@ -34,7 +34,7 @@ class Usuario(database.Model, UserMixin):
     data_nascimento = database.Column(database.DateTime)
     data_criacao = database.Column(database.DateTime, default=datetime.utcnow)
     cargo = database.Column(database.String(25), default='Não Informado')
-    id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
+    id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'))
     atendimento = database.relationship('ParticipanteUsuario', backref='usuario', lazy=True)
 
 
