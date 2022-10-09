@@ -5,81 +5,81 @@
 {% endblock %}
 
 {% block body %}
-<div class="topico1 col my-3">
-    <div class="container py-5">
+  <div class="topico1 col my-3">
+      <div class="container py-5">
 
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card mb-4" style="background-color: Peru">
-          <div class="card-body text-center">
-            <img src="{{ foto_perfil }}" alt="avatar"
-              class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">{{ current_user.username }}</h5>
-            <p class="text-white mb-1">{{ current_user.email }}</p>
-            <p class="text-white mb-4">{{ current_user.cargo }}</p>
-            <div class="d-flex justify-content-center mb-2">
-              <a href="{{ url_for('editarperfil') }}">
-                <button type="button" class="btn btn-primary">Editar</button>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-8">
-        <div class="card mb-4">
-          <div class="card-body" style="background-color: Peru">
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Nome completo</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-white mb-0">{{ current_user.nome_completo }}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Email</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-white mb-0">{{ current_user.email }}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Telefone</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-white mb-0">{{ current_user.telefone }}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Data nascimento</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-white mb-0">{{ current_user.data_nascimento }}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Data cadastro</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-white mb-0">{{ current_user.data_criacao }}</p>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4" style="background-color: Peru">
+            <div class="card-body text-center">
+              <img src="{{ foto_perfil }}" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px;">
+              <h5 class="my-3">{{ current_user.username }}</h5>
+              <p class="text-white mb-1">{{ current_user.email }}</p>
+              <p class="text-white mb-4">{{ current_user.cargo }}</p>
+              <div class="d-flex justify-content-center mb-2">
+                <a href="{{ url_for('editarperfil') }}">
+                  <button type="button" class="btn btn-primary">Editar</button>
+                </a>
               </div>
             </div>
           </div>
         </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body" style="background-color: Peru">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Nome completo</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.nome_completo }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.email }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Telefone</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.telefone }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Data nascimento</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.data_nascimento }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Data cadastro</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.data_criacao }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
+      </div>
 
-</div>
-{% block form_editar_perfil %}
-{% endblock %}
+  </div>
+  {% block form_editar_perfil %}
+  {% endblock %}
 
 {% endblock %}

@@ -51,6 +51,7 @@ class Clienteempresa(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     razao = database.Column(database.String(100))
     nome = database.Column(database.String(100))
+    cnpj = database.Column(database.String(14))
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
     cliente = database.relationship('Cliente', backref='clienteempresa', lazy=True)
 

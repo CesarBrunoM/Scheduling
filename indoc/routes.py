@@ -1,7 +1,8 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
-from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa
-from indoc.models import Usuario, database, Empresa
+from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, EmpresaCliente, \
+    FormCliente
+from indoc.models import Usuario, database, Empresa, Clienteempresa, Cliente
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -83,7 +84,7 @@ def login():
     return render_template('login.html', form_login=form_login, form_solicitarcadastro=form_solicitarcadastro)
 
 
-@app.route("/usuario", methods=['GET', 'POST'])
+@app.route("/usuario/cadastro", methods=['GET', 'POST'])
 # @login_required
 def usuario():
     form_criarconta = FormCriarConta()
@@ -119,24 +120,8 @@ def usuario():
 @app.route("/perfil", methods=['GET', 'POST'])
 @login_required
 def perfil():
-    form_criarconta = FormCriarConta()
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    if form_criarconta.validate_on_submit() and 'botao_submit_criar' in request.form:
-        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
-        user = Usuario(username=form_criarconta.username.data,
-                       nome_completo=form_criarconta.nome_completo.data,
-                       email=form_criarconta.email.data,
-                       telefone=form_criarconta.telefone.data,
-                       data_nascimento=form_criarconta.data_nascimento.data,
-                       senha=senha_cript,
-                       cargo=form_criarconta.cargo.data,
-                       id_empresa=form_criarconta.id_empresa.data,
-                       foto_perfil=form_criarconta.foto_perfil.data)
-        database.session.add(user)
-        database.session.commit()
-        flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
-        return redirect(url_for('home'))
-    return render_template('perfil.html', form_criarconta=form_criarconta, foto_perfil=foto_perfil)
+    return render_template('perfil.html', foto_perfil=foto_perfil)
 
 
 @app.route('/perfil/editar', methods=['GET', 'POST'])
@@ -167,17 +152,67 @@ def editarperfil():
     return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil)
 
 
+@app.route("/cliente/cadastro", methods=['GET', 'POST'])
+@login_required
+def cadastrocliente():
+    form = FormCliente()
+    if form.validate_on_submit() and 'btn_submit_cliente' in request.form:
+        client = Cliente(
+            nome=form.nome.data,
+            contato=form.contato.data,
+            id_cli_empresa=form.id_cli_empresa.data,
+            id_empresa=current_user.id_empresa
+        )
+        database.session.add(client)
+        database.session.commit()
+        flash(f'Cliente {form.nome.data} cadastrado com sucesso.')
+        return redirect(url_for('cliente'))
+    return render_template('cadastro_cliente.html', form=form)
+
+
 @app.route("/cliente")
 @login_required
 def cliente():
+    lista_cliente = Cliente.query.filter_by(id_empresa=current_user.id_empresa)
+    return render_template('clientes.html', lista_clientes=lista_cliente)
+
+
+@app.route("/usuario")
+@login_required
+def listuser():
     lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('clientes.html', lista_clientes=lista_usuarios)
+    return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios)
 
 
 @app.route("/atendimento", methods=['GET', 'POST'])
 @login_required
 def atendimento():
     return render_template('atendimentos.html')
+
+
+@app.route("/empresas", methods=['GET', 'POST'])
+@login_required
+def lista_empresa():
+    lista = Clienteempresa.query.filter_by(id_empresa=current_user.id_empresa)
+    return render_template('empresas_cliente.html', lista=lista)
+
+
+@app.route("/cliente/empresa/cadastro", methods=['GET', 'POST'])
+@login_required
+def empresacliente():
+    form = EmpresaCliente()
+    if form.validate_on_submit() and 'btn_submit_cadempresa' in request.form:
+        cadempresa = Clienteempresa(
+            razao=form.razao.data,
+            nome=form.nome.data,
+            cnpj=form.cnpj.data,
+            id_empresa=current_user.id_empresa)
+        database.session.add(cadempresa)
+        database.session.commit()
+        flash(f'Empresa {form.nome.data} cadastrada com sucesso.', 'alert-success')
+        return redirect(url_for('lista_empresa'))
+
+    return render_template('cliente_empresa_cad.html', form=form)
 
 
 @app.route('/sair')

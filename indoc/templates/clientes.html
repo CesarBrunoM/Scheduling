@@ -6,9 +6,19 @@ Clientes
 {% block body %}
 <div class="container">
   <h1>Tela cadastro de clientes.</h1>
+  <hr>
   {% for cliente in lista_clientes %}
-    <p>{{ cliente.username }}</p>
+    <div class="row">
+      <div class="col">
+        <p>{{ cliente.nome }}</p>
+      </div>
+    </div>
     <hr>
   {% endfor %}
+  <div class="d-flex align-items-end p-2">
+    <a href="{{ url_for('cadastrocliente') }}">
+      <button type="button" class="btn btn-primary d-block">Novo</button>
+    </a>
+  </div>
 </div>
 {% endblock %}

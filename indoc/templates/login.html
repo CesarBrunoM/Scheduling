@@ -176,7 +176,7 @@
                 {{ form_solicitarcadastro.emailrequerido (class="form-control", placeholder="exemplo@email.com") }}
             {% endif %}
 
-            {{ form_solicitarcadastro.whatsapp.label (class="form-control-label")}}
+            {{ form_solicitarcadastro.whatsapp.label (class="form-control-label") }}
             {% if form_solicitarcadastro.whatsapp.errors %}
                 {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" ) }}
                 {% for erro in form_solicitarcadastro.whatsapp.errors %}
