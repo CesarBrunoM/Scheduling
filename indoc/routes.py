@@ -1,8 +1,7 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
-from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, EmpresaCliente, \
-    FormCliente
-from indoc.models import Usuario, database, Empresa, Clienteempresa, Cliente
+from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente
+from indoc.models import Usuario, database, Empresa, Cliente
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -113,7 +112,7 @@ def usuario():
         database.session.add(user)
         database.session.commit()
         flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
-        return redirect(url_for('home'))
+        return redirect(url_for('listuser'))
     return render_template('usuarios.html', form_criarconta=form_criarconta)
 
 
@@ -159,8 +158,9 @@ def cadastrocliente():
     if form.validate_on_submit() and 'btn_submit_cliente' in request.form:
         client = Cliente(
             nome=form.nome.data,
+            razao=form.razao.data,
+            cnpj=form.cnpj.data,
             contato=form.contato.data,
-            id_cli_empresa=form.id_cli_empresa.data,
             id_empresa=current_user.id_empresa
         )
         database.session.add(client)
@@ -188,31 +188,6 @@ def listuser():
 @login_required
 def atendimento():
     return render_template('atendimentos.html')
-
-
-@app.route("/empresas", methods=['GET', 'POST'])
-@login_required
-def lista_empresa():
-    lista = Clienteempresa.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('empresas_cliente.html', lista=lista)
-
-
-@app.route("/cliente/empresa/cadastro", methods=['GET', 'POST'])
-@login_required
-def empresacliente():
-    form = EmpresaCliente()
-    if form.validate_on_submit() and 'btn_submit_cadempresa' in request.form:
-        cadempresa = Clienteempresa(
-            razao=form.razao.data,
-            nome=form.nome.data,
-            cnpj=form.cnpj.data,
-            id_empresa=current_user.id_empresa)
-        database.session.add(cadempresa)
-        database.session.commit()
-        flash(f'Empresa {form.nome.data} cadastrada com sucesso.', 'alert-success')
-        return redirect(url_for('lista_empresa'))
-
-    return render_template('cliente_empresa_cad.html', form=form)
 
 
 @app.route('/sair')

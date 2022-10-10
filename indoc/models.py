@@ -17,7 +17,6 @@ class Empresa(database.Model):
     telefone = database.Column(database.String(12))
     usuario = database.relationship('Usuario', backref='empresa', lazy=True)
     cliente = database.relationship('Cliente', backref='empresa', lazy=True)
-    clienteempresa = database.relationship('Clienteempresa', backref='empresa', lazy=True)
     setor = database.relationship('Setor', backref='empresa', lazy=True)
     problema = database.relationship('Problema', backref='empresa', lazy=True)
     atendimento = database.relationship('Atendimento', backref='empresa', lazy=True)
@@ -41,19 +40,11 @@ class Usuario(database.Model, UserMixin):
 class Cliente(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     nome = database.Column(database.String(70))
+    razao = database.Column(database.String(100))
+    cnpj = database.Column(database.String(14))
     contato = database.Column(database.String(13))
-    id_cli_empresa = database.Column(database.Integer, database.ForeignKey('clienteempresa.id_empresa'))
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
     participante = database.relationship('Atendimento', backref='cliente', lazy=True)
-
-
-class Clienteempresa(database.Model):
-    id = database.Column(database.Integer, primary_key=True)
-    razao = database.Column(database.String(100))
-    nome = database.Column(database.String(100))
-    cnpj = database.Column(database.String(14))
-    id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
-    cliente = database.relationship('Cliente', backref='clienteempresa', lazy=True)
 
 
 class Setor(database.Model):

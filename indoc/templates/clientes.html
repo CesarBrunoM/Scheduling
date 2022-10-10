@@ -1,19 +1,41 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Clientes
+  Clientes
 {% endblock %}
 {% block body %}
 <div class="container">
-  <h1>Tela cadastro de clientes.</h1>
+  <h1>Lista clientes.</h1>
   <hr>
+  <div class="row border border-dark font">
+    <div class="col">
+      <h5>Nome</h5>
+    </div>
+    <div class="col">
+      <h5>Razão</h5>
+    </div>
+    <div class="col">
+      <h5>CNPJ</h5>
+    </div>
+    <div class="col">
+      <h5>Contato</h5>
+    </div>
+  </div>
   {% for cliente in lista_clientes %}
-    <div class="row">
-      <div class="col">
+    <div class="row align-items-center">
+      <div class="col border border-dark">
         <p>{{ cliente.nome }}</p>
       </div>
+      <div class="col border border-dark">
+        <p>{{ cliente.razao }}</p>
+      </div>
+      <div class="col border border-dark">
+        <p>{{ cliente.cnpj }}</p>
+      </div>
+      <div class="col border border-dark">
+        <p>{{ cliente.contato }}</p>
+      </div>
     </div>
-    <hr>
   {% endfor %}
   <div class="d-flex align-items-end p-2">
     <a href="{{ url_for('cadastrocliente') }}">

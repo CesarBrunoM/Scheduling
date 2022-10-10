@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField, FieldList, IntegerField
+from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField
 from wtforms.fields import TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from indoc.models import Usuario, Clienteempresa
+from indoc.models import Usuario, Cliente
 from flask_login import current_user
 
 
@@ -75,23 +75,17 @@ class FormEditarPerfil(FlaskForm):
                 raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
 
 
-class EmpresaCliente(FlaskForm):
+class FormCliente(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     razao = StringField('Razão social', validators=[DataRequired()])
     cnpj = StringField('CNPJ', validators=[DataRequired()])
-    btn_submit_cadempresa = SubmitField('Confirmar')
+    contato = TelField('Contato', validators=[DataRequired()])
+    btn_submit_cliente = SubmitField('Confirmar')
 
     def validate_cnpj(self, cnpj):
-        empresa = Clienteempresa.query.filter_by(cnpj=cnpj.data, id_empresa=current_user.id_empresa).first()
+        empresa = Cliente.query.filter_by(cnpj=cnpj.data, id_empresa=current_user.id_empresa).first()
         if empresa:
             raise ValidationError('Empresa já cadastrada.')
-
-
-class FormCliente(FlaskForm):
-    nome = StringField('Nome', validators=[DataRequired()])
-    contato = TelField('Contato', validators=[DataRequired()])
-    id_cli_empresa = StringField('Empresa')
-    btn_submit_cliente = SubmitField('Confirmar')
 
 
 class FormProblema(FlaskForm):

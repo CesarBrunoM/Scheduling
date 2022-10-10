@@ -17,18 +17,17 @@
           <a class="nav-link" href="{{ url_for('listuser') }}">Empresa</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('listuser') }}">Usuários</a>
-        </li>
+          <a class="nav-link" href="{{ url_for('listuser') }}">Usuários</a>        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cadastros
           </a>
           <ul class="dropdown-menu" style="background-color:PeachPuff">
-            <li><a class="dropdown-item" href="{{ url_for('lista_empresa') }}">Empresa Cliente</a></li>
             <li><a class="dropdown-item" href="{{ url_for('cliente') }}">Cliente</a></li>
             <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Usuário</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ url_for('atendimento') }}">Atendimentos</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('atendimento') }}">Prioridades</a></li>
             <li><a class="dropdown-item" href="{{ url_for('atendimento') }}">Problemas</a></li>
             <li><a class="dropdown-item" href="{{ url_for('atendimento') }}">Setores</a></li>
           </ul>

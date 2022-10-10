@@ -30,6 +30,34 @@
                     </div>
                 </div>
                 <div class="row mt-2">
+                    <div class="col-md-10">{{ form.razao.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.razao(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.razao.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.razao(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-10">{{ form.cnpj.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.cnpj(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.cnpj.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.cnpj(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mt-2">
                     <div class="col-md-10">{{ form.contato.label(class="labels") }}
                         {% if form.errors %}
                             {{ form.contato(class="form-control is-invalid") }}
@@ -43,22 +71,8 @@
                         {% endif %}
                     </div>
                 </div>
-                <!---<div class="row mt-2">
-                    <div class="col-md-5">{{ form.id_cli_empresa.label(class="labels") }}
-                        {% if form.errors %}
-                            {{ form.id_cli_empresa(class="form-control is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for erro in form.id_cli_empresa.errors %}
-                                {{ erro }}
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                            {{ form.id_cli_empresa(class="form-control") }}
-                        {% endif %}
-                    </div>
-                </div>-->
                 <div class="mt-5 text-center">{{ form.btn_submit_cliente(class="btn btn-primary profile-button") }}
-                    <a href="{{ url_for('lista_empresa') }}">
+                    <a href="{{ url_for('cliente') }}">
                       <button type="button" class="btn btn-primary profile-button">Cancelar</button>
                     </a>
                 </div>
