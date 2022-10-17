@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Problemas
+{% endblock %}
+
+{% block body %}
+  <div class="container py-5">
+    <h1>Lista Problemas</h1>
+    <hr>
+    <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">
+            Descrição problemas
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for problema in lista_problema %}
+          <tr>
+            <th>{{ problema.descricao }}</th>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-center p-2">
+      <a href="{{ url_for('cadastroproblema') }}">
+        <button type="button" class="btn btn-primary">Novo</button>
+      </a>
+    </div>
+  </div>
+{% endblock %}
