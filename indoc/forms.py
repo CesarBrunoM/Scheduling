@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField
 from wtforms.fields import TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from indoc.models import Usuario, Cliente
+from indoc.models import Usuario, Cliente, Empresa
 from flask_login import current_user
 
 
@@ -17,6 +17,16 @@ class FormEmpresa(FlaskForm):
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     botao_submit_concluir = SubmitField('Confirmar')
+
+    def validate_cnpj(self, cnpj):
+        empresa = Empresa.query.filter_by(cnpj=cnpj.data).first()
+        if empresa:
+            raise ValidationError('Empresa já cadastrada.')
+
+    def validate_email(self, email):
+        usuario = Usuario.query.filter_by(email=email.data).first()
+        if usuario:
+            raise ValidationError('Email já cadastrado.')
 
 
 class FormCriarConta(FlaskForm):
@@ -90,7 +100,9 @@ class FormCliente(FlaskForm):
 
 class FormProblema(FlaskForm):
     descricao = StringField('Descricao', validators=[DataRequired()])
+    btn_submit_problema = SubmitField('Confirmar')
 
 
 class FormSetor(FlaskForm):
     nome = StringField('Nome setor', validators=[DataRequired()])
+    btn_submit_setor = SubmitField('Confirmar')

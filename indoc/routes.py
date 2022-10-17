@@ -1,11 +1,13 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
-from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente
-from indoc.models import Usuario, database, Empresa, Cliente
+from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
+    FormProblema, FormSetor
+from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from PIL import Image
+from datetime import datetime
 
 
 @app.route("/")
@@ -120,7 +122,7 @@ def usuario():
 @login_required
 def perfil():
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('perfil.html', foto_perfil=foto_perfil)
+    return render_template('perfil.html', foto_perfil=foto_perfil, datetime=datetime)
 
 
 @app.route('/perfil/editar', methods=['GET', 'POST'])
@@ -148,7 +150,7 @@ def editarperfil():
         form.data_nascimento.data = current_user.data_nascimento
         form.cargo.data = current_user.cargo
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil)
+    return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil, datetime=datetime)
 
 
 @app.route("/cliente/cadastro", methods=['GET', 'POST'])
@@ -165,7 +167,7 @@ def cadastrocliente():
         )
         database.session.add(client)
         database.session.commit()
-        flash(f'Cliente {form.nome.data} cadastrado com sucesso.')
+        flash(f'Cliente {form.nome.data} cadastrado com sucesso.', 'alert-success')
         return redirect(url_for('cliente'))
     return render_template('cadastro_cliente.html', form=form)
 
@@ -182,6 +184,71 @@ def cliente():
 def listuser():
     lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa)
     return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios)
+
+
+@app.route("/problema")
+@login_required
+def problema():
+    lista_problema = Problema.query.filter_by(id_empresa=current_user.id_empresa)
+    return render_template('problema.html', lista_problema=lista_problema)
+
+
+@app.route("/problema/cadastro", methods=['GET', 'POST'])
+@login_required
+def cadastroproblema():
+    form = FormProblema()
+    if form.validate_on_submit() and 'btn_submit_problema' in request.form:
+        problem = Problema(
+            descricao=form.descricao.data,
+            id_empresa=current_user.id_empresa
+        )
+        database.session.add(problem)
+        database.session.commit()
+        flash(f'Problema cadastrado com sucesso.', 'alert-success')
+        return redirect(url_for('problema'))
+    return render_template('cadastroproblema.html', form=form)
+
+
+@app.route("/setor")
+@login_required
+def setor():
+    lista_setor = Setor.query.filter_by(id_empresa=current_user.id_empresa)
+    count = 0
+    for lista in lista_setor:
+        count += 1
+    return render_template('setor.html', lista_setor=lista_setor, count=count)
+
+
+@app.route("/setor/cadastro", methods=['GET', 'POST'])
+@login_required
+def cadastrosetor():
+    form = FormSetor()
+    if form.validate_on_submit() and 'btn_submit_setor' in request.form:
+        setores = Setor(
+            nome=form.nome.data,
+            id_empresa=current_user.id_empresa
+        )
+        database.session.add(setores)
+        database.session.commit()
+        flash(f'Setor {form.nome.data} cadastrado com sucesso.', 'alert-success')
+        return redirect(url_for('setor'))
+    return render_template('cadastrosetor.html', form=form)
+
+
+@app.route("/setor/<setor_id>", methods=['GET', 'POST'])
+@login_required
+def editar_setor(setor_id):
+    form = FormSetor()
+    setores = Setor.query.get(setor_id, id_empresa=current_user.id_empresa)
+    if form.validate_on_submit():
+        setores.nome = form.nome.data
+        database.session.commit()
+        flash(f'Setor {form.nome.data} Atualizado com sucesso.', 'alert-success')
+        return redirect(url_for('setor'))
+    elif request.method == "GET":
+        form.nome.data = setores.nome
+        form.nome.data = setores.nome
+    return render_template('editarsetor.html', form=form, setor=setores)
 
 
 @app.route("/atendimento", methods=['GET', 'POST'])

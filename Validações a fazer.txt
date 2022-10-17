@@ -25,4 +25,7 @@ DIFICULDADE:
                     (como validar qual loja o usuário esta usando.)
         * Utilizar nome de usuário para logar no sistema, assim para cada username o sistema já interpreta qual empresa,
         pois esta vinculada a apenas esta empresa, deixando aberta a opção de cadastrar um e-mail mais de uma vez.
-        
+
+
+==========================================================================================================================
+

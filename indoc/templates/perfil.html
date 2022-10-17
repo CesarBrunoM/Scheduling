@@ -14,10 +14,9 @@
             <div class="card-body text-center">
               <img src="{{ foto_perfil }}" alt="avatar"
                 class="rounded-circle img-fluid" style="width: 150px;">
-              <h5 class="my-3">{{ current_user.username }}</h5>
-              <p class="text-white mb-1">{{ current_user.email }}</p>
-              <p class="text-white mb-4">{{ current_user.cargo }}</p>
-              <div class="d-flex justify-content-center mb-2">
+              <h3 class="my-3">{{ current_user.username }}</h3>
+              <h4><span class="badge rounded-pill bg-dark">{{ current_user.cargo }}</span></h4>
+              <div class="d-flex justify-content-center mb-2 p-2">
                 <a href="{{ url_for('editarperfil') }}">
                   <button type="button" class="btn btn-primary">Editar</button>
                 </a>
@@ -60,7 +59,7 @@
                   <p class="mb-0">Data nascimento</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-white mb-0">{{ current_user.data_nascimento }}</p>
+                  <p class="text-white mb-0">{{ datetime.strftime(current_user.data_nascimento, '%d/%m/%Y') }}</p>
                 </div>
               </div>
               <hr>
@@ -69,7 +68,7 @@
                   <p class="mb-0">Data cadastro</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-white mb-0">{{ current_user.data_criacao }}</p>
+                  <p class="text-white mb-0 data-hora">{{ datetime.strftime(current_user.data_criacao, '%d/%m/%Y às %H:%M') }}</p>
                 </div>
               </div>
             </div>
