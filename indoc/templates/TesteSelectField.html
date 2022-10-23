@@ -1,37 +1,32 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Edição Setor
+  SelectField Setor
 {% endblock %}
 
 {% block body %}
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
     {{ form.csrf_token }}
     <div class="row">
         <div class="col-md-10 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Editar setor</h4>
+                    <h4 class="text-right">Novo Select</h4>
                 </div>
                 <hr>
                 <div class="row mt-2">
-                    <div class="col-md-10">{{ form.nome.label(class="labels") }}
+                    <div class="col-md-10">{{ form.testeselect.label(class="labels") }}
                         {% if form.errors %}
-                            {{ form.nome(class="form-control is-invalid") }}
+                            {{ form.testeselect(class="form-control is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for erro in form.nome.errors %}
+                            {% for erro in form.testeselect.errors %}
                                 {{ erro }}
                             {% endfor %}
                         </div>
                         {% else %}
-                            {{ form.nome(class="form-control") }}
+                            {{ form.testeselect(class="form-control") }}
                         {% endif %}
                     </div>
-                </div>
-                <div class="mt-5 text-center">{{ form.btn_submit_setor(class="btn btn-primary profile-button") }}
-                    <a href="{{ url_for('setor') }}">
-                      <button type="button" class="btn btn-primary profile-button">Cancelar</button>
-                    </a>
                 </div>
             </div>
         </div>

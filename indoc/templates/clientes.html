@@ -1,36 +1,37 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Clientes
+Clientes
 {% endblock %}
 {% block body %}
 <div class="container">
-  <h1>Lista clientes.</h1>
-  <hr>
-  <table class="table table-striped table-dark">
-    <thead>
-      <tr>
-        <th scope="col">Nome</th>
-        <th scope="col">Razão</th>
-        <th scope="col">CNPJ</th>
-        <th scope="col">Contato</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for cliente in lista_clientes %}
+    <h1>Lista clientes.</h1>
+    <hr>
+    <table class="table table-striped table-dark">
+        <thead>
         <tr>
-          <td>{{ cliente.nome }}</td>
-          <td>{{ cliente.razao }}</td>
-          <td>{{ cliente.cnpj }}</td>
-          <td>{{ cliente.contato }}</td>
+            <th scope="col">Nome</th>
+            <th scope="col">Razão</th>
+            <th scope="col">CNPJ</th>
+            <th scope="col">Contato</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <div class="d-flex align-items-end p-2">
-    <a href="{{ url_for('cadastrocliente') }}">
-      <button type="button" class="btn btn-primary d-block">Novo</button>
-    </a>
-  </div>
+        </thead>
+        <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+            <td><a class="link-light" href="{{ url_for('editar_cliente', cliente_id=cliente.id) }}"
+                   style="text-decoration:none">{{ cliente.nome }}</a></td>
+            <td>{{ cliente.razao }}</td>
+            <td>{{ cliente.cnpj }}</td>
+            <td>{{ cliente.contato }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex align-items-end p-2">
+        <a href="{{ url_for('cadastrocliente') }}">
+            <button type="button" class="btn btn-primary d-block">Novo</button>
+        </a>
+    </div>
 </div>
 {% endblock %}

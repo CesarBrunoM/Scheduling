@@ -59,7 +59,11 @@
                   <p class="mb-0">Data nascimento</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-white mb-0">{{ datetime.strftime(current_user.data_nascimento, '%d/%m/%Y') }}</p>
+                  {% if current_user.data_nascimento == null %}
+                    <p class="text-white mb-0">Não informado.</p>
+                  {% else %}
+                    <p class="text-white mb-0">{{ datetime.strftime(current_user.data_nascimento, '%d/%m/%Y') }}</p>
+                  {% endif %}
                 </div>
               </div>
               <hr>

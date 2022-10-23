@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField
+from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField, SelectField
 from wtforms.fields import TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from indoc.models import Usuario, Cliente, Empresa
@@ -8,9 +8,9 @@ from flask_login import current_user
 
 
 class FormEmpresa(FlaskForm):
-    nome = StringField('Nome empresa', validators=[DataRequired()])
-    razao = StringField('Razão social', validators=[DataRequired()])
-    cnpj = StringField('CNPJ', validators=[DataRequired()])
+    nome = StringField('Nome empresa', validators=[DataRequired(), Length(1, 100)])
+    razao = StringField('Razão social', validators=[DataRequired(), Length(1, 100)])
+    cnpj = StringField('CNPJ', validators=[DataRequired(), Length(14, 14)])
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
     senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
@@ -30,8 +30,8 @@ class FormEmpresa(FlaskForm):
 
 
 class FormCriarConta(FlaskForm):
-    username = StringField('Nome usuário', validators=[DataRequired()])
-    nome_completo = StringField('Nome completo', validators=[DataRequired()])
+    username = StringField('Nome usuário', validators=[DataRequired(), Length(1, 100)])
+    nome_completo = StringField('Nome completo', validators=[DataRequired(), Length(1, 100)])
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
     senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
@@ -40,7 +40,7 @@ class FormCriarConta(FlaskForm):
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
-    cargo = StringField('Cargo')
+    cargo = StringField('Cargo', validators=[Length(1, 25)])
     botao_submit_criar = SubmitField('Confirmar')
 
     def validate_email(self, email):
@@ -85,6 +85,26 @@ class FormEditarPerfil(FlaskForm):
                 raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
 
 
+class FormEditarUsuario(FlaskForm):
+    username = StringField('Nome usuário', validators=[DataRequired()])
+    nome_completo = StringField('Nome completo', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
+    senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
+    confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
+                                                                                            message='Os campos de senha devem ser iguais.')])
+    telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    foto_perfil = FileField('Foto perfil', validators=[
+        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+    data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
+    cargo = StringField('Cargo')
+    botao_submit_editarperfil = SubmitField('Confirmar')
+
+    def validate_email(self, email):
+        usuario = Usuario.query.filter_by(email=email.data).first()
+        if usuario:
+            raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
+
+
 class FormCliente(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     razao = StringField('Razão social', validators=[DataRequired()])
@@ -106,3 +126,7 @@ class FormProblema(FlaskForm):
 class FormSetor(FlaskForm):
     nome = StringField('Nome setor', validators=[DataRequired()])
     btn_submit_setor = SubmitField('Confirmar')
+
+
+class FormAtendimento(FlaskForm):
+    testeselect = SelectField('Prioridade', choices=[('Baixo'), ('Norma'), ('Urgente')])

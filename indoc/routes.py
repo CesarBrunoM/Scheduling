@@ -1,7 +1,7 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
-    FormProblema, FormSetor
+    FormProblema, FormSetor, FormEditarUsuario, FormAtendimento
 from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -11,6 +11,7 @@ from datetime import datetime
 
 
 @app.route("/")
+@login_required
 def home():
     return render_template('home.html')
 
@@ -86,7 +87,7 @@ def login():
 
 
 @app.route("/usuario/cadastro", methods=['GET', 'POST'])
-# @login_required
+@login_required
 def usuario():
     form_criarconta = FormCriarConta()
     if form_criarconta.validate_on_submit() and 'botao_submit_criar' in request.form:
@@ -153,6 +154,55 @@ def editarperfil():
     return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil, datetime=datetime)
 
 
+@app.route("/usuario")
+@login_required
+def listuser():
+    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa)
+    return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios)
+
+
+@app.route("/usuario/<usuario_id>", methods=['GET', 'POST'])
+@login_required
+def editar_usuario(usuario_id):
+    form = FormEditarUsuario()
+    user = Usuario.query.get(usuario_id)
+    if request.method == "GET":
+        form.username.data = user.username
+        form.nome_completo.data = user.nome_completo
+        form.email.data = user.email
+        form.telefone.data = user.telefone
+        form.data_nascimento.data = user.data_nascimento
+        form.cargo.data = user.cargo
+    elif form.validate_on_submit() and user.email != form.email.data:
+        user.username = form.username.data
+        user.nome_completo = form.nome_completo.data
+        user.email = form.email.data
+        user.telefone = form.telefone.data
+        user.data_nascimento = form.data_nascimento.data
+        user.cargo = form.cargo.data
+        if form.foto_perfil.data:
+            nome_imagem = salvar_imagem(form.foto_perfil.data)
+            user.foto_perfil = nome_imagem
+        database.session.commit()
+        flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
+        return redirect(url_for('listuser'))
+    else:
+        user.username = form.username.data
+        user.nome_completo = form.nome_completo.data
+        user.telefone = form.telefone.data
+        user.data_nascimento = form.data_nascimento.data
+        user.cargo = form.cargo.data
+        if form.foto_perfil.data:
+            nome_imagem = salvar_imagem(form.foto_perfil.data)
+            user.foto_perfil = nome_imagem
+        database.session.commit()
+        flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
+        return redirect(url_for('listuser'))
+
+    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(user.foto_perfil))
+    return render_template('editar_usuario.html', form=form, foto_perfil=foto_perfil, usuario=user)
+
+
 @app.route("/cliente/cadastro", methods=['GET', 'POST'])
 @login_required
 def cadastrocliente():
@@ -179,18 +229,42 @@ def cliente():
     return render_template('clientes.html', lista_clientes=lista_cliente)
 
 
-@app.route("/usuario")
+@app.route("/cliente/<cliente_id>", methods=['GET', 'POST'])
 @login_required
-def listuser():
-    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios)
+def editar_cliente(cliente_id):
+    form = FormCliente()
+    client = Cliente.query.get(cliente_id)
+    if request.method == 'GET':
+        form.nome.data = client.nome
+        form.razao.data = client.razao
+        form.cnpj.data = client.cnpj
+        form.contato.data = client.contato
+    elif form.validate_on_submit() and client.cnpj != form.cnpj.data:
+        client.nome = form.nome.data
+        client.razao = form.razao.data
+        client.cnpj = form.cnpj.data
+        client.contato = form.contato.data
+        database.session.commit()
+        flash(f'client {form.nome.data} atualizado com sucesso.')
+        return redirect(url_for('cliente'))
+    else:
+        client.nome = form.nome.data
+        client.razao = form.razao.data
+        client.contato = form.contato.data
+        database.session.commit()
+        flash(f'client {form.nome.data} atualizado com sucesso.')
+        return redirect(url_for('cliente'))
+    return render_template('editarcliente.html', form=form, client=client)
 
 
 @app.route("/problema")
 @login_required
 def problema():
     lista_problema = Problema.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('problema.html', lista_problema=lista_problema)
+    count = 0
+    for lista in lista_problema:
+        count += 1
+    return render_template('problema.html', lista_problema=lista_problema, count=count)
 
 
 @app.route("/problema/cadastro", methods=['GET', 'POST'])
@@ -207,6 +281,21 @@ def cadastroproblema():
         flash(f'Problema cadastrado com sucesso.', 'alert-success')
         return redirect(url_for('problema'))
     return render_template('cadastroproblema.html', form=form)
+
+
+@app.route("/problema/<problema_id>", methods=['GET', 'POST'])
+@login_required
+def editar_problema(problema_id):
+    form = FormProblema()
+    problem = Problema.query.get(problema_id)
+    if form.validate_on_submit():
+        problem.descricao = form.descricao.data,
+        database.session.commit()
+        flash(f'Problema atualizado com sucesso.', 'alert-success')
+        return redirect(url_for('problema'))
+    elif request.method == 'GET':
+        form.descricao.data = problem.descricao
+    return render_template('editarproblema.html', form=form, problem=problem)
 
 
 @app.route("/setor")
@@ -239,7 +328,7 @@ def cadastrosetor():
 @login_required
 def editar_setor(setor_id):
     form = FormSetor()
-    setores = Setor.query.get(setor_id, id_empresa=current_user.id_empresa)
+    setores = Setor.query.get(setor_id)
     if form.validate_on_submit():
         setores.nome = form.nome.data
         database.session.commit()
@@ -247,14 +336,14 @@ def editar_setor(setor_id):
         return redirect(url_for('setor'))
     elif request.method == "GET":
         form.nome.data = setores.nome
-        form.nome.data = setores.nome
     return render_template('editarsetor.html', form=form, setor=setores)
 
 
 @app.route("/atendimento", methods=['GET', 'POST'])
 @login_required
 def atendimento():
-    return render_template('atendimentos.html')
+    form = FormAtendimento()
+    return render_template('TesteSelectField.html', form=form)
 
 
 @app.route('/sair')
