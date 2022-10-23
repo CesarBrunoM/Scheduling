@@ -129,12 +129,12 @@ class FormSetor(FlaskForm):
 
 
 class FormAtendimento(FlaskForm):
-    cliente = SelectField('Prioridade', choices=[(1, 'Luana'), (2, 'Bruno'), (3, 'Nortesys')],
+    cliente = SelectField('Cliente', choices=[(1, 'Luana'), (2, 'Bruno'), (3, 'Nortesys')],
                           validators=[DataRequired()])
     solicitante = StringField('Solicitante', validators=[DataRequired()])
     prioridade = SelectField('Prioridade', choices=[('Baixo'), ('Norma'), ('Urgente')], validators=[DataRequired()])
-    problema = SelectField('Problema', choices=[('erro'), ('erro'), ('erro')], validators=[DataRequired()])
+    problema = SelectField('Problema', choices=[('erro 1'), ('erro 2'), ('erro 3')], validators=[DataRequired()])
     data_vencimento = DateField('Vencimento')
-    setor = SelectField('Setor', choices=[])
+    setor = SelectField('Setor', choices=['Setor 1','Setor 2','Setor 3','Setor 4',])
     participante = SelectField('Participante', choices=[(1, 'Luana'), (2, 'Bruno'), (3, 'Nortesys')])
     observacao = TextAreaField('Observação', validators=[DataRequired()])

@@ -343,7 +343,7 @@ def editar_setor(setor_id):
 @login_required
 def atendimento():
     form = FormAtendimento()
-    return render_template('TesteSelectField.html', form=form)
+    return render_template('atendimentos.html', form=form)
 
 
 @app.route('/sair')

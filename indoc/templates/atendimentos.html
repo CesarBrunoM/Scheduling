@@ -1,10 +1,107 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Atendimentos
+  Novo atendimento
 {% endblock %}
+
 {% block body %}
-<div class="container">
-    <h1>Atendimentos aqui</h1>
-</div>
+    <form method="POST" action="" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="row">
+        <div class="col-md-10 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Novo Atendimento</h4>
+                </div>
+                <hr>
+                <div class="row mt-2">
+                    <div class="col-md-10">{{ form.cliente.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.cliente(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.cliente.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.cliente(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">{{ form.solicitante.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.solicitante(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.solicitante.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.solicitante(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">{{ form.prioridade.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.prioridade(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.prioridade.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.prioridade(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">{{ form.problema.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.problema(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.problema.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.problema(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">{{ form.setor.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.setor(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.setor.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.setor(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">{{ form.data_vencimento.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.data_vencimento(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.data_vencimento.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.data_vencimento(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">{{ form.observacao.label(class="labels") }}
+                        {% if form.errors %}
+                            {{ form.observacao(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form.observacao.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.observacao(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
 {% endblock %}
