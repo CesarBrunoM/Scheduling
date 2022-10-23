@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField, SelectField
+from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField, SelectField, TextAreaField
 from wtforms.fields import TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from indoc.models import Usuario, Cliente, Empresa
@@ -129,4 +129,12 @@ class FormSetor(FlaskForm):
 
 
 class FormAtendimento(FlaskForm):
-    testeselect = SelectField('Prioridade', choices=[('Baixo'), ('Norma'), ('Urgente')])
+    cliente = SelectField('Prioridade', choices=[(1, 'Luana'), (2, 'Bruno'), (3, 'Nortesys')],
+                          validators=[DataRequired()])
+    solicitante = StringField('Solicitante', validators=[DataRequired()])
+    prioridade = SelectField('Prioridade', choices=[('Baixo'), ('Norma'), ('Urgente')], validators=[DataRequired()])
+    problema = SelectField('Problema', choices=[('erro'), ('erro'), ('erro')], validators=[DataRequired()])
+    data_vencimento = DateField('Vencimento')
+    setor = SelectField('Setor', choices=[])
+    participante = SelectField('Participante', choices=[(1, 'Luana'), (2, 'Bruno'), (3, 'Nortesys')])
+    observacao = TextAreaField('Observação', validators=[DataRequired()])
