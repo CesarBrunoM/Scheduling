@@ -343,6 +343,9 @@ def editar_setor(setor_id):
 @login_required
 def atendimento():
     form = FormAtendimento()
+    setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa)]
+    form.setor.choices = setores
+
     return render_template('atendimentos.html', form=form)
 
 
