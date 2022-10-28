@@ -17,18 +17,12 @@ Problemas
             </tr>
         </thead>
         <tbody>
-            {% if count > 0 %}
-                {% for problema in lista_problema %}
-                <tr>
-                    <th><a class="link-light" href="{{ url_for('editar_problema', problema_id=problema.id) }}"
-                           style="text-decoration:none">{{ problema.descricao }}</a></th>
-                </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <th>Não a dados</th>
-                </tr>
-            {% endif %}
+            {% for problema in lista_problema %}
+            <tr>
+                <th><a class="link-light" href="{{ url_for('editar_problema', problema_id=problema.id) }}"
+                       style="text-decoration:none">{{ problema.descricao }}</a></th>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <div class="d-flex justify-content-center p-2">

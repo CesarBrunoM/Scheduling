@@ -1,6 +1,6 @@
 from indoc import database, login_manager
 from datetime import datetime
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 
 
 @login_manager.user_loader
@@ -15,6 +15,8 @@ class Empresa(database.Model):
     nome = database.Column(database.String(100))
     email = database.Column(database.String(100), nullable=False, unique=True)
     telefone = database.Column(database.String(12))
+    ativo = database.Column(database.Boolean, default=True, nullable=False)
+    data_cadastro = database.Column(database.DateTime, default=datetime.utcnow)
     usuario = database.relationship('Usuario', backref='empresa', lazy=True)
     cliente = database.relationship('Cliente', backref='empresa', lazy=True)
     setor = database.relationship('Setor', backref='empresa', lazy=True)
@@ -31,10 +33,12 @@ class Usuario(database.Model, UserMixin):
     telefone = database.Column(database.String(12))
     foto_perfil = database.Column(database.String(150), default='default.jpg')
     data_nascimento = database.Column(database.DateTime, default=datetime.utcnow)
-    data_criacao = database.Column(database.DateTime, default=datetime.utcnow)
+    data_cadastro = database.Column(database.DateTime, default=datetime.utcnow)
     cargo = database.Column(database.String(25), default='Não Informado')
+    ativo = database.Column(database.Boolean, default=True, nullable=False)
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'))
-    atendimento = database.relationship('ParticipanteUsuario', backref='usuario', lazy=True)
+    atendimento = database.relationship('Atendimento', backref='usuario', lazy=True)
+    participante = database.relationship('ParticipanteUsuario', backref='usuario', lazy=True)
 
 
 class Cliente(database.Model):
@@ -43,6 +47,9 @@ class Cliente(database.Model):
     razao = database.Column(database.String(100))
     cnpj = database.Column(database.String(14))
     contato = database.Column(database.String(13))
+    logomarca = database.Column(database.String(150), default='default.jpg')
+    ativo = database.Column(database.Boolean, default=True, nullable=False)
+    data_cadastro = database.Column(database.DateTime, default=datetime.utcnow)
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
     participante = database.relationship('Atendimento', backref='cliente', lazy=True)
 
@@ -50,20 +57,24 @@ class Cliente(database.Model):
 class Setor(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     nome = database.Column(database.String(70))
+    ativo = database.Column(database.Boolean, default=True, nullable=False)
+    data_cadastro = database.Column(database.DateTime, default=datetime.utcnow)
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
     atendimento = database.relationship('Atendimento', backref='setor', lazy=True)
 
 
 class Problema(database.Model):
     id = database.Column(database.Integer, primary_key=True)
-    descricao = database.Column(database.String(200), nullable=True)
+    descricao = database.Column(database.String(200), nullable=False)
+    ativo = database.Column(database.Boolean, default=True, nullable=False)
+    data_cadastro = database.Column(database.DateTime, default=datetime.utcnow)
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
     atendimento = database.relationship('Atendimento', backref='problema', lazy=True)
 
 
 class Atendimento(database.Model):
     id = database.Column(database.Integer, primary_key=True)
-    protocolo = database.Column(database.String(20), nullable=False)
+    protocolo = database.Column(database.Integer, nullable=False)
     data_cadastro = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
     data_inicio = database.Column(database.DateTime)
     data_vencimento = database.Column(database.DateTime)
@@ -71,6 +82,7 @@ class Atendimento(database.Model):
     observacao = database.Column(database.String(300))
     prioridade = database.Column(database.String(20), nullable=False)
     solicitante = database.Column(database.String(35))
+    tipo_atendimento = database.Column(database.String(20))
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'), nullable=False)
     id_usuario = database.Column(database.Integer, database.ForeignKey('usuario.id'), nullable=False)
     id_problema = database.Column(database.Integer, database.ForeignKey('problema.id'), nullable=False)
@@ -83,3 +95,4 @@ class ParticipanteUsuario(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     id_usuario = database.Column(database.Integer, database.ForeignKey('usuario.id'), nullable=False)
     id_atendimento = database.Column(database.Integer, database.ForeignKey('atendimento.id'), nullable=False)
+    data_vinculo = database.Column(database.DateTime, default=datetime.utcnow)

@@ -2,7 +2,7 @@ from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
     FormProblema, FormSetor, FormEditarUsuario, FormAtendimento
-from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor
+from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor, Atendimento
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -21,6 +21,19 @@ def salvar_imagem(imagem):
     nome, extencao = os.path.splitext(imagem.filename)
     nome_arquivo = nome + '_' + codigo + extencao
     caminho_imagem = os.path.join(app.root_path, 'static/foto_perfil', nome_arquivo)
+
+    tamanho = (200, 200)
+    imagem_reduzida = Image.open(imagem)
+    imagem_reduzida.thumbnail(tamanho)
+    imagem_reduzida.save(caminho_imagem)
+    return nome_arquivo
+
+
+def salvar_logomarca_cliente(imagem):
+    codigo = secrets.token_hex(8)
+    nome, extencao = os.path.splitext(imagem.filename)
+    nome_arquivo = nome + '_' + codigo + extencao
+    caminho_imagem = os.path.join(app.root_path, 'static/logomarca_cliente', nome_arquivo)
 
     tamanho = (200, 200)
     imagem_reduzida = Image.open(imagem)
@@ -173,6 +186,7 @@ def editar_usuario(usuario_id):
         form.telefone.data = user.telefone
         form.data_nascimento.data = user.data_nascimento
         form.cargo.data = user.cargo
+        form.ativo.data = user.ativo
     elif form.validate_on_submit() and user.email != form.email.data:
         user.username = form.username.data
         user.nome_completo = form.nome_completo.data
@@ -180,6 +194,7 @@ def editar_usuario(usuario_id):
         user.telefone = form.telefone.data
         user.data_nascimento = form.data_nascimento.data
         user.cargo = form.cargo.data
+        user.ativo = form.ativo.data
         if form.foto_perfil.data:
             nome_imagem = salvar_imagem(form.foto_perfil.data)
             user.foto_perfil = nome_imagem
@@ -192,6 +207,7 @@ def editar_usuario(usuario_id):
         user.telefone = form.telefone.data
         user.data_nascimento = form.data_nascimento.data
         user.cargo = form.cargo.data
+        user.ativo = form.ativo.data
         if form.foto_perfil.data:
             nome_imagem = salvar_imagem(form.foto_perfil.data)
             user.foto_perfil = nome_imagem
@@ -208,13 +224,24 @@ def editar_usuario(usuario_id):
 def cadastrocliente():
     form = FormCliente()
     if form.validate_on_submit() and 'btn_submit_cliente' in request.form:
-        client = Cliente(
-            nome=form.nome.data,
-            razao=form.razao.data,
-            cnpj=form.cnpj.data,
-            contato=form.contato.data,
-            id_empresa=current_user.id_empresa
-        )
+        if form.logomarca.data:
+            logomarca = salvar_logomarca_cliente(form.logomarca.data)
+            client = Cliente(
+                nome=form.nome.data,
+                razao=form.razao.data,
+                cnpj=form.cnpj.data,
+                contato=form.contato.data,
+                ativo=form.ativo.data,
+                logomarca=logomarca,
+                id_empresa=current_user.id_empresa)
+        else:
+            client = Cliente(
+                nome=form.nome.data,
+                razao=form.razao.data,
+                cnpj=form.cnpj.data,
+                contato=form.contato.data,
+                ativo=form.ativo.data,
+                id_empresa=current_user.id_empresa)
         database.session.add(client)
         database.session.commit()
         flash(f'Cliente {form.nome.data} cadastrado com sucesso.', 'alert-success')
@@ -239,11 +266,15 @@ def editar_cliente(cliente_id):
         form.razao.data = client.razao
         form.cnpj.data = client.cnpj
         form.contato.data = client.contato
+        form.ativo.data = client.ativo
     elif form.validate_on_submit() and client.cnpj != form.cnpj.data:
         client.nome = form.nome.data
         client.razao = form.razao.data
-        client.cnpj = form.cnpj.data
         client.contato = form.contato.data
+        client.ativo = form.ativo.data
+        if form.logomarca.data:
+            nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
+            client.logomarca = nome_imagem
         database.session.commit()
         flash(f'client {form.nome.data} atualizado com sucesso.')
         return redirect(url_for('cliente'))
@@ -251,6 +282,10 @@ def editar_cliente(cliente_id):
         client.nome = form.nome.data
         client.razao = form.razao.data
         client.contato = form.contato.data
+        client.ativo = form.ativo.data
+        if form.logomarca.data:
+            nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
+            client.logomarca = nome_imagem
         database.session.commit()
         flash(f'client {form.nome.data} atualizado com sucesso.')
         return redirect(url_for('cliente'))
@@ -261,10 +296,7 @@ def editar_cliente(cliente_id):
 @login_required
 def problema():
     lista_problema = Problema.query.filter_by(id_empresa=current_user.id_empresa)
-    count = 0
-    for lista in lista_problema:
-        count += 1
-    return render_template('problema.html', lista_problema=lista_problema, count=count)
+    return render_template('problema.html', lista_problema=lista_problema)
 
 
 @app.route("/problema/cadastro", methods=['GET', 'POST'])
@@ -274,6 +306,7 @@ def cadastroproblema():
     if form.validate_on_submit() and 'btn_submit_problema' in request.form:
         problem = Problema(
             descricao=form.descricao.data,
+            ativo=form.ativo.data,
             id_empresa=current_user.id_empresa
         )
         database.session.add(problem)
@@ -290,11 +323,13 @@ def editar_problema(problema_id):
     problem = Problema.query.get(problema_id)
     if form.validate_on_submit():
         problem.descricao = form.descricao.data,
+        problem.ativo = form.ativo.data
         database.session.commit()
         flash(f'Problema atualizado com sucesso.', 'alert-success')
         return redirect(url_for('problema'))
     elif request.method == 'GET':
         form.descricao.data = problem.descricao
+        form.ativo.data = problem.ativo
     return render_template('editarproblema.html', form=form, problem=problem)
 
 
@@ -302,10 +337,7 @@ def editar_problema(problema_id):
 @login_required
 def setor():
     lista_setor = Setor.query.filter_by(id_empresa=current_user.id_empresa)
-    count = 0
-    for lista in lista_setor:
-        count += 1
-    return render_template('setor.html', lista_setor=lista_setor, count=count)
+    return render_template('setor.html', lista_setor=lista_setor)
 
 
 @app.route("/setor/cadastro", methods=['GET', 'POST'])
@@ -315,6 +347,7 @@ def cadastrosetor():
     if form.validate_on_submit() and 'btn_submit_setor' in request.form:
         setores = Setor(
             nome=form.nome.data,
+            ativo=form.ativo.data,
             id_empresa=current_user.id_empresa
         )
         database.session.add(setores)
@@ -331,22 +364,60 @@ def editar_setor(setor_id):
     setores = Setor.query.get(setor_id)
     if form.validate_on_submit():
         setores.nome = form.nome.data
+        setores.ativo = form.ativo.data
         database.session.commit()
         flash(f'Setor {form.nome.data} Atualizado com sucesso.', 'alert-success')
         return redirect(url_for('setor'))
     elif request.method == "GET":
         form.nome.data = setores.nome
+        form.ativo.data = setores.ativo
     return render_template('editarsetor.html', form=form, setor=setores)
 
 
 @app.route("/atendimento", methods=['GET', 'POST'])
 @login_required
 def atendimento():
-    form = FormAtendimento()
-    setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa)]
-    form.setor.choices = setores
+    atendimentos = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.id.desc())
+    return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime)
 
-    return render_template('atendimentos.html', form=form)
+
+@app.route("/atendimento/cadastro", methods=['GET', 'POST'])
+@login_required
+def cadastro_atendimento():
+    clientes = [(s.id, s.nome) for s in Cliente.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
+    problemas = [(s.id, s.descricao) for s in Problema.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
+    setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
+    protocolo = Atendimento.query.filter_by(id_empresa=current_user.id_empresa)
+    form = FormAtendimento(request.form)
+    form.setor.choices = setores
+    form.cliente.choices = clientes
+    form.problema.choices = problemas
+    print(protocolo)
+    print(request.form.get('cliente'))
+    if form.validate_on_submit() and 'btn_submit_novo' in request.form:
+        new_atendimento = Atendimento(
+            protocolo=1,
+            data_vencimento=form.data_vencimento.data,
+            observacao=form.observacao.data,
+            prioridade=form.prioridade.data,
+            solicitante=form.solicitante.data,
+            id_empresa=current_user.id_empresa,
+            id_usuario=current_user.id,
+            id_problema=request.form.get('problema'),
+            id_cliente=request.form.get('cliente'),
+            id_setor=request.form.get('setor'))
+        database.session.add(new_atendimento)
+        database.session.commit()
+        flash(f'Atendimento cadastrado com sucesso.', 'alert-success')
+        return redirect(url_for('atendimento'))
+    return render_template('cadastro_atendimento.html', form=form)
+
+
+@app.route('/atendimento/<atendimento_id>', methods=['GET', 'POST'])
+@login_required
+def visualizar_atendimento(atendimento_id):
+    acompanhamento = Atendimento.query.get(atendimento_id)
+    return render_template('visualizar_atendimento.html', atendimento=acompanhamento, datetime=datetime)
 
 
 @app.route('/sair')

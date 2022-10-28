@@ -27,6 +27,10 @@
                             {{ form.descricao(class="form-control") }}
                         {% endif %}
                     </div>
+                <div class="mt-2">
+                        {{ form.ativo.label }}
+                        {{ form.ativo (class="form-check-input") }}
+                </div>
                 </div>
                 <div class="mt-5 text-center">{{ form.btn_submit_problema(class="btn btn-primary profile-button") }}
                     <a href="{{ url_for('problema') }}">

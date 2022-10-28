@@ -116,9 +116,13 @@
                                 {% endfor %}
                             </div>
                             {% else %}
-                            {{ form.cargo(class="form-control") }}
+                                {{ form.cargo(class="form-control") }}
                             {% endif %}
                         </div>
+                    </div>
+                    <div class="mt-2">
+                        {{ form.ativo.label }}
+                        {{ form.ativo (class="form-check-input") }}
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6">
@@ -131,6 +135,7 @@
                             {% endif %}
                         </div>
                     </div>
+
                     <div class="mt-5 text-center">{{ form.botao_submit_editarperfil(class="btn btn-primary
                         profile-button") }}
                     </div>

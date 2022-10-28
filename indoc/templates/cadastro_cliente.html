@@ -70,6 +70,21 @@
                             {{ form.contato(class="form-control") }}
                         {% endif %}
                     </div>
+                    <div class="mt-2">
+                            {{ form.ativo.label }}
+                            {{ form.ativo (class="form-check-input") }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        {{ form.logomarca.label(class="labels") }}
+                        {{ form.logomarca(class="form-control-file") }}
+                        {% if form.logomarca.errors %}
+                            {% for erro in form.logomarca.errors %}
+                                <span class="text-info">{{ erro }}</span><br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="mt-5 text-center">{{ form.btn_submit_cliente(class="btn btn-primary profile-button") }}
                     <a href="{{ url_for('cliente') }}">

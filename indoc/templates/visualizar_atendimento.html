@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Novo atendimento
+  Novo atendimento
 {% endblock %}
 
 {% block body %}
-
-<div class="conteiner mt-2 p-3">
-    <h1>Atendimentos</h1>
-    <hr>
-    {% for atendimento in atendimentos %}
-    <a class="link-dark" href="{{ url_for('visualizar_atendimento', atendimento_id=atendimento.id) }}"
-                             style="text-decoration:none">
+    <div class="conteiner mt-2 p-3">
+        <h1>Atendimentos</h1>
+        <hr>
+        <div class="d-flex align-items-end p-2">
+          <a href="{{ url_for('usuario') }}">
+            <button type="button" class="btn btn-primary d-block">Iniciar atendimento</button>
+          </a>
+        </div>
         <div class="row mt-4 p-2 bgatendimento">
             <div class="col col-2">
                 <div class="card-body text-center">
@@ -30,8 +31,6 @@ Novo atendimento
                 <p>{{ atendimento.observacao }}</p>
             </div>
         </div>
-    </a>
-    {% endfor %}
-</div>
 
+    </div>
 {% endblock %}

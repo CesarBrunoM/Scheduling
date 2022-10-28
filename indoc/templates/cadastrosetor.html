@@ -28,6 +28,10 @@
                         {% endif %}
                     </div>
                 </div>
+                <div class="mt-2">
+                        {{ form.ativo.label }}
+                        {{ form.ativo (class="form-check-input") }}
+                </div>
                 <div class="mt-5 text-center">{{ form.btn_submit_setor(class="btn btn-primary profile-button") }}
                     <a href="{{ url_for('setor') }}">
                       <button type="button" class="btn btn-primary profile-button">Cancelar</button>
