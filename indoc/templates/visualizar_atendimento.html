@@ -8,10 +8,44 @@
     <div class="conteiner mt-2 p-3">
         <h1>Atendimentos</h1>
         <hr>
-        <div class="d-flex align-items-end p-2">
-          <a href="{{ url_for('usuario') }}">
-            <button type="button" class="btn btn-primary d-block">Iniciar atendimento</button>
-          </a>
+        <div class="d-flex align-items-end">
+            {% if atendimento.status == 'Aberto' %}
+                <div class="m-1">
+                    <form method="POST" action="{{ url_for('iniciar_atendimento', atendimento_id=atendimento.id) }}">
+                        <button type="submit" class="btn btn-primary profile-button ">
+                            Iniciar
+                        </button>
+                    </form>
+                </div>
+            {% elif atendimento.status == 'Atendendo' %}
+                <div class="m-1">
+                    <button type="button" class="btn btn-secondary profile-button" data-bs-toggle="modal" data-bs-target="#formsub">
+                      Novo comentário
+                    </button>
+                </div>
+                <div class="m-1">
+                    <button type="button" class="btn btn-danger profile-button" data-bs-toggle="modal" data-bs-target="#formcancel">
+                      Cancelar
+                    </button>
+                </div>
+                <div class="m-1">
+                    <button type="button" class="btn btn-secondary profile-button" data-bs-toggle="modal" data-bs-target="#formfechar">
+                      Fechar
+                    </button>
+                </div>
+            {% elif atendimento.status == 'Fechado' %}
+                <div class="m-1">
+                    <button type="button" class="btn btn-secondary profile-button" disabled>
+                       Atendimento encerrado
+                    </button>
+                </div>
+            {% elif atendimento.status == 'Cancelado' %}
+                <div class="m-1">
+                    <button type="button" class="btn btn-danger profile-button" disabled>
+                       Atendimento Cancelado
+                    </button>
+                </div>
+            {% endif %}
         </div>
         <div class="row mt-4 p-2 bgatendimento">
             <div class="col col-2">
@@ -19,7 +53,15 @@
                     <img src="{{ url_for('static', filename='logomarca_cliente/{}'.format(atendimento.cliente.logomarca)) }}"
                          alt="avatar"
                          class="rounded-circle img-fluid" style="width: 100px;">
-                    <b class="badge rounded-pill bg-dark">{{ atendimento.prioridade }}</b>
+                    {% if atendimento.prioridade == 'Baixo' %}
+                        <b class="badge bg-primary">{{ atendimento.prioridade }}</b>
+                    {% elif atendimento.prioridade == 'Normal' %}
+                        <b class="badge bg-info">{{ atendimento.prioridade }}</b>
+                    {% elif atendimento.prioridade == 'Alta' %}
+                        <b class="badge bg-warning">{{ atendimento.prioridade }}</b>
+                    {% elif atendimento.prioridade == 'Urgente' %}
+                        <b class="badge bg-danger">{{ atendimento.prioridade }}</b>
+                    {% endif %}
                 </div>
             </div>
             <div class="col col-10">
@@ -31,6 +73,158 @@
                 <p>{{ atendimento.observacao }}</p>
             </div>
         </div>
-
     </div>
+    <div class="conteiner mt-2 p-3">
+        <h3>Histórico</h3>
+        <hr>
+        {% for sub in subaten %}
+            <div class="row mt-4 p-2 bgatendimento">
+                <div class="col col-2">
+                    <div class="card-body text-center">
+                        <img src="{{ url_for('static', filename='foto_perfil/{}'.format(sub.usuario.foto_perfil)) }}"
+                             alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 100px;">
+                        <b class="badge rounded-pill bg-dark">{{ sub.usuario.username }}</b>
+                    </div>
+                </div>
+                <div class="col col-10">
+                    <h4>Problema: {{ sub.problema.descricao }} - <a class="text-muted" href="" style="font-size=8px">Editar</a></h4>
+                    <hr>
+                    <b>Observação</b>
+                    <p>{{ sub.observacao }}</p>
+                    <hr>
+                    <b>Data:</b> {{ datetime.strftime(sub.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+<!-- Modal comentário -->
+
+    <div class="modal fade" id="formsub" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="Label">Sub atendimento</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="">
+              {{ form.csrf_token }}
+              <div class="col-md-10">{{ form.usuario.label(class="labels") }}
+                {% if form.errors %}
+                    {{ form.usuario(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for erro in form.usuario.errors %}
+                        {{ erro }}
+                    {% endfor %}
+                </div>
+                {% else %}
+                    {{ form.usuario(class="form-control") }}
+                {% endif %}
+              </div>
+              <div class="col-md-10">{{ form.problema.label(class="labels") }}
+                {% if form.errors %}
+                    {{ form.problema(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for erro in form.problema.errors %}
+                        {{ erro }}
+                    {% endfor %}
+                </div>
+                {% else %}
+                    {{ form.problema(class="form-control") }}
+                {% endif %}
+              </div>
+              <div class="col-md-10">{{ form.observacao.label(class="labels") }}
+                {% if form.errors %}
+                    {{ form.observacao(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for erro in form.observacao.errors %}
+                        {{ erro }}
+                    {% endfor %}
+                </div>
+                {% else %}
+                    {{ form.observacao(class="form-control") }}
+                {% endif %}
+              </div>
+                <div class="mt-5 text-center">
+                    <button type="button" class="btn btn-primary profile-button" data-bs-dismiss="modal">Close</button>
+                    {{ form.btn_submit_salvar(class="btn btn-primary profile-button") }}
+                </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+<!-- Modal cancelamento -->
+    <div class="modal fade" id="formcancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Cancelar atendimento?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="">
+              {{ form_cancel.csrf_token }}
+              <div class="col-md-10">{{ form_cancel.motivo.label(class="labels") }}
+                {% if form_cancel.errors %}
+                    {{ form_cancel.motivo(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for erro in form_cancel.motivo.errors %}
+                        {{ erro }}
+                    {% endfor %}
+                </div>
+                {% else %}
+                    {{ form_cancel.motivo(class="form-control") }}
+                {% endif %}
+              </div>
+                <div class="mt-5 text-center">
+                    <button type="button" class="btn btn-primary profile-button" data-bs-dismiss="modal">Close</button>
+                    {{ form_cancel.btn_submit_cancelar(class="btn btn-primary profile-button") }}
+                </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+<!-- Modal Fechamento -->
+    <div class="modal fade" id="formfechar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticLabel">Fechar atendimento?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="">
+              {{ form_fechar.csrf_token }}
+              <div class="col-md-10">{{ form_fechar.obs_fechamento.label(class="labels") }}
+                {% if form_fechar.errors %}
+                    {{ form_fechar.obs_fechamento(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for erro in form_fechar.obs_fechamento.errors %}
+                        {{ erro }}
+                    {% endfor %}
+                </div>
+                {% else %}
+                    {{ form_fechar.obs_fechamento(class="form-control") }}
+                {% endif %}
+              </div>
+                <div class="mt-5 text-center">
+                    <button type="button" class="btn btn-primary profile-button" data-bs-dismiss="modal">Cancelar</button>
+                    {{ form_fechar.btn_submit_fechar(class="btn btn-primary profile-button") }}
+                </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 {% endblock %}

@@ -1,8 +1,8 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
-    FormProblema, FormSetor, FormEditarUsuario, FormAtendimento
-from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor, Atendimento
+    FormProblema, FormSetor, FormEditarUsuario, FormAtendimento, FormComentario, FormCancelamento, FormFecharAtendimento
+from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor, Atendimento, SubAtendimento
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -416,8 +416,73 @@ def cadastro_atendimento():
 @app.route('/atendimento/<atendimento_id>', methods=['GET', 'POST'])
 @login_required
 def visualizar_atendimento(atendimento_id):
-    acompanhamento = Atendimento.query.get(atendimento_id)
-    return render_template('visualizar_atendimento.html', atendimento=acompanhamento, datetime=datetime)
+    form = FormComentario()
+    form_cancel = FormCancelamento()
+    form_fechar = FormFecharAtendimento()
+    problemas = [(s.id, s.descricao) for s in Problema.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
+    usuarios = [(s.id, s.username) for s in Usuario.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
+    form.usuario.choices = usuarios
+    form.problema.choices = problemas
+    atend = Atendimento.query.get(atendimento_id)
+    subatend = SubAtendimento.query.filter_by(id_atendimento=atendimento_id).order_by(SubAtendimento.id.desc())
+    if form.validate_on_submit() and 'btn_submit_salvar' in request.form:
+        new_sub = SubAtendimento(
+            id_usuario=request.form.get('usuario'),
+            id_problema=request.form.get('problema'),
+            observacao=form.observacao.data,
+            id_atendimento=atendimento_id
+        )
+        database.session.add(new_sub)
+        database.session.commit()
+        flash(f'Comentário cadastrado com sucesso.', 'alert-success')
+    elif form_cancel.validate_on_submit() and 'btn_submit_cancelar' in request.form:
+        atend.data_cancelamento = datetime.utcnow()
+        atend.status = 'Cancelado'
+        atend.motivo_cancelamento = form_cancel.motivo.data
+        coment = SubAtendimento(
+            id_usuario=current_user.id,
+            id_problema=atend.problema.id,
+            observacao=f'{form_cancel.motivo.data}. Atendimento cancelado pelo atendente {current_user.username}.',
+            id_atendimento=atendimento_id
+        )
+        database.session.add(coment)
+        database.session.commit()
+        flash('Atendimento Cancelado', 'alert-success')
+        return redirect(url_for('atendimento'))
+    elif form_fechar.validate_on_submit() and 'btn_submit_fechar' in request.form:
+        atend.obs_fechamento = form_fechar.obs_fechamento.data
+        atend.data_conclusao = datetime.utcnow()
+        atend.status = 'Fechado'
+        coment = SubAtendimento(
+            id_usuario=current_user.id,
+            id_problema=atend.problema.id,
+            observacao=f'{form_fechar.obs_fechamento.data}. Atendimento finalizado pelo atendente {current_user.username}.',
+            id_atendimento=atendimento_id
+        )
+        database.session.add(coment)
+        database.session.commit()
+        flash('Atendimento Concluído', 'alert-success')
+        return redirect(url_for('atendimento'))
+    return render_template('visualizar_atendimento.html', atendimento=atend, datetime=datetime,
+                           subaten=subatend, form=form, form_cancel=form_cancel, form_fechar=form_fechar)
+
+
+@app.route('/atendimento/<atendimento_id>/iniciar', methods=['GET', 'POST'])
+@login_required
+def iniciar_atendimento(atendimento_id):
+    atendiment = Atendimento.query.get(atendimento_id)
+    atendiment.data_inicio = datetime.utcnow()
+    atendiment.status = 'Atendendo'
+    coment = SubAtendimento(
+        id_usuario=current_user.id,
+        id_problema=atendiment.problema.id,
+        observacao=f'Atendimento iniciado pelo atendente {current_user.username}.',
+        id_atendimento=atendimento_id
+    )
+    database.session.add(coment)
+    database.session.commit()
+    flash('Atendimento iniciado', 'alert-success')
+    return redirect(url_for('visualizar_atendimento', atendimento_id=atendimento_id))
 
 
 @app.route('/sair')

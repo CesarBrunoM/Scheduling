@@ -92,7 +92,7 @@ class FormEditarUsuario(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
     senha = PasswordField('Senha', validators=[Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[EqualTo('senha',
-                                                                                            message='Os campos de senha devem ser iguais.')])
+                                                                            message='Os campos de senha devem ser iguais.')])
     telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
@@ -138,7 +138,8 @@ class FormSetor(FlaskForm):
 class FormAtendimento(FlaskForm):
     cliente = SelectField('Cliente', choices=[], coerce=int, validators=[DataRequired()])
     solicitante = StringField('Solicitante', validators=[DataRequired()])
-    prioridade = SelectField('Prioridade', choices=[('Baixo'), ('Normal'), ('Alta'), ('Urgente')], validators=[DataRequired()])
+    prioridade = SelectField('Prioridade', choices=[('Baixo'), ('Normal'), ('Alta'), ('Urgente')],
+                             validators=[DataRequired()])
     problema = SelectField('Problema', choices=[], coerce=int, validators=[DataRequired()])
     data_vencimento = DateField('Data Vencimento', validators=[DataRequired()])
     hora_vencimento = TimeField('Hora Vencimento', validators=[DataRequired()])
@@ -150,3 +151,20 @@ class FormAtendimento(FlaskForm):
         if len(self.cliente.choices == 0):
             return False
         return True
+
+
+class FormComentario(FlaskForm):
+    usuario = SelectField('Usuário', choices=[], coerce=int, validators=[DataRequired()])
+    problema = SelectField('Problema', choices=[], coerce=int, validators=[DataRequired()])
+    observacao = TextAreaField('Observação', validators=[DataRequired()])
+    btn_submit_salvar = SubmitField('Salvar')
+
+
+class FormCancelamento(FlaskForm):
+    motivo = TextAreaField('Motivo cancelamento', validators=[DataRequired()])
+    btn_submit_cancelar = SubmitField('Concluir')
+
+
+class FormFecharAtendimento(FlaskForm):
+    obs_fechamento = TextAreaField('Solução', validators=[DataRequired()])
+    btn_submit_fechar = SubmitField('Concluir')
