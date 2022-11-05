@@ -13,7 +13,8 @@ from datetime import datetime
 @app.route("/")
 @login_required
 def home():
-    return render_template('home.html')
+    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+    return render_template('home.html', foto_perfil=foto_perfil)
 
 
 def salvar_imagem(imagem):
@@ -170,8 +171,9 @@ def editarperfil():
 @app.route("/usuario")
 @login_required
 def listuser():
+    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios)
+    return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios, datetime=datetime, foto_perfil=foto_perfil)
 
 
 @app.route("/usuario/<usuario_id>", methods=['GET', 'POST'])

@@ -3,36 +3,54 @@
 {% block title %}
   Usuários
 {% endblock %}
+
+{% block nav %}
+    <nav class="navbar topico1">
+        <div class="col col-4">
+            <span class="navbar-text"><h4>Lista usuários</h4></span>
+        </div>
+        <div class="col col-5">
+            <a href="{{ url_for('usuario') }}">
+                <button type="button" class="btn btn-primary profile-button">Novo</button>
+            </a>
+            <a href="{{ url_for('usuario') }}">
+                <button type="button" class="btn btn-primary profile-button">Filtros</button>
+            </a>
+        </div>
+        <div class="col col-2 d-flex flex-row-reverse">
+            {{ current_user.username }}
+            {{ current_user.email }}
+        </div>
+        <div class="col col-1 d-flex flex-row-reverse">
+            <img src="{{ foto_perfil }}" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 50px;">
+        </div>
+    </nav>
+{% endblock %}
+
 {% block body %}
-  <div class="container">
-    <h1>Lista usuários</h1>
-    <hr>
-    <table class="table table-striped table-dark">
-      <thead>
-        <tr>
-          <th scope="col">Nome Usuário</th>
-          <th scope="col">Nome Completo</th>
-          <th scope="col">E-mail</th>
-          <th scope="col">Contato</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for usuario in lista_usuarios %}
-          <tr>
-            <td><a class="link-light" href="{{ url_for('editar_usuario', usuario_id=usuario.id) }}"
-                             style="text-decoration:none">{{ usuario.username }}</a></td>
-            <td>{{ usuario.nome_completo }}</td>
-            <td>{{ usuario.email }}</td>
-            <td>{{ usuario.telefone }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <div class="d-flex align-items-end p-2">
-      <a href="{{ url_for('usuario') }}">
-        <button type="button" class="btn btn-primary d-block">Novo</button>
-      </a>
-    </div>
+
+  <div class="container p-3">
+    {% for usuario in lista_usuarios %}
+       <div class="row mt-4 p-2 bgcard">
+          <div class="col col-2 justify-content-center">
+            <div class="card-body text-center">
+              <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}"
+                         alt="avatar"
+                         class="rounded-circle" style="width: 80px;">
+              <b class="badge rounded-pill bg-dark">{{ usuario.username }}</b>
+            </div>
+          </div>
+          <div class="col col-5 mt-2">
+            <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
+            <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>
+          </div>
+         <div class="col col-5 mt-2">
+            <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
+            <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
+          </div>
+      </div>
+    {% endfor %}
 
   </div>
   {% block form %}

@@ -4,6 +4,9 @@
   Novo atendimento
 {% endblock %}
 
+{% block nav %}
+{% endblock %}
+
 {% block body %}
     <div class="conteiner mt-2 p-3">
         <h1>Atendimentos</h1>
@@ -47,7 +50,7 @@
                 </div>
             {% endif %}
         </div>
-        <div class="row mt-4 p-2 bgatendimento">
+        <div class="row mt-4 p-2 bgcard">
             <div class="col col-2">
                 <div class="card-body text-center">
                     <img src="{{ url_for('static', filename='logomarca_cliente/{}'.format(atendimento.cliente.logomarca)) }}"
@@ -78,7 +81,7 @@
         <h3>Histórico</h3>
         <hr>
         {% for sub in subaten %}
-            <div class="row mt-4 p-2 bgatendimento">
+            <div class="row mt-4 p-2 bgcard">
                 <div class="col col-2">
                     <div class="card-body text-center">
                         <img src="{{ url_for('static', filename='foto_perfil/{}'.format(sub.usuario.foto_perfil)) }}"

@@ -39,6 +39,69 @@
     border: solid 1px #BA68C8
 }
 
-.bgatendimento {
+.bgcard {
     background: #d3c79e !important;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: #d3c79e;
+    overflow-y: auto;
+    width: 300px;
+    transition: all ease-in-out 0.5s;
+    padding: 0 15px;
+    z-index: 9997;
+}
+
+#header .profile img {
+    margin: 5px auto;
+    display: block;
+    width: 120px;
+    border: 8px solid #2c2f3f;
+    border-radius: 50%;
+}
+
+#header .profile a {
+    font-size: 1rem;
+    padding; 0.6rem;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.nav-menu {
+    padding: 1.5rem;
+}
+
+.nav-menu a,
+.nav-manu a:focus {
+    display: flex;
+    align-items: center;
+    color: #2F4F4F;
+    transition: 0.3s;
+    font-size:15px;
+}
+
+.nav-menu a i,
+.nav-menu a:focus i{
+    font-size: 24px;
+    padding-right: 0.8rem;
+    color: #2F4F4F;
+}
+
+.nav-menu a:hover,
+.nav-menu .active,
+.nav-menu .active:focus,
+.nav-menu li:hover > a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-menu a:hover i,
+.nav-menu .active i,
+.nav-menu .active:focus i,
+.nav-menu li:hover > a i{
+    color: #800000;
 }
