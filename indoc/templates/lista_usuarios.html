@@ -4,29 +4,18 @@
   Usuários
 {% endblock %}
 
-{% block nav %}
-    <nav class="navbar topico1">
-        <div class="col col-4">
-            <span class="navbar-text"><h4>Lista usuários</h4></span>
-        </div>
-        <div class="col col-5">
-            <a href="{{ url_for('usuario') }}">
-                <button type="button" class="btn btn-primary profile-button">Novo</button>
-            </a>
-            <a href="{{ url_for('usuario') }}">
-                <button type="button" class="btn btn-primary profile-button">Filtros</button>
-            </a>
-        </div>
-        <div class="col col-2 d-flex flex-row-reverse">
-            {{ current_user.username }}
-            {{ current_user.email }}
-        </div>
-        <div class="col col-1 d-flex flex-row-reverse">
-            <img src="{{ foto_perfil }}" alt="avatar"
-                class="rounded-circle img-fluid" style="width: 50px;">
-        </div>
-    </nav>
+{% block page %}
+  <h4>Atendentes</h4>
 {% endblock %}
+
+{% block button %}                                
+  <a href="{{ url_for('usuario') }}">
+      <button type="button" class="btn btn-primary profile-button">Novo</button>
+  </a>
+  <a href="{{ url_for('usuario') }}">
+      <button type="button" class="btn btn-primary profile-button">Filtros</button>
+  </a>
+{% endblock %}  
 
 {% block body %}
 

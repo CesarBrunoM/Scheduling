@@ -4,7 +4,14 @@
 Setor
 {% endblock %}
 
-{% block nav %}
+{% block page %}
+  <h4>Setores</h4>
+{% endblock %}
+
+{% block button %}                                
+  <a href="{{ url_for('cadastrosetor') }}">
+    <button type="button" class="btn btn-primary profile-button">Novo Setor</button>
+  </a>
 {% endblock %}
 
 {% block body %}
@@ -38,10 +45,5 @@ Setor
             {% endfor %}
         </tbody>
     </table>
-    <div class="d-flex justify-content-center p-2">
-        <a href="{{ url_for('cadastrosetor') }}">
-            <button type="button" class="btn btn-primary">Novo</button>
-        </a>
-    </div>
 </div>
 {% endblock %}

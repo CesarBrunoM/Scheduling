@@ -6,41 +6,50 @@
     <!-- CSS only -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/cadastrousuariso.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     {% block head %}
     {% endblock %}
 </head>
 <body>
-    <div class="container ">
-        {% with mensagens = get_flashed_messages(with_categories=True) %}
-            {% if mensagens %}
-                {% for categoria, mensagem in mensagens %}
-                    <div class="alert {{ categoria }}">
-                        {{ mensagem }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
-    {% include 'menu_lateral.html '%}
-    <div class="container-fluid">
-        <div class="content row">
-            <!--<div class="menu col-2 p-0">
-                {% include 'barra_navegacao.html '%}
-            </div>-->
-            <article class="col-9 d-flex justify-content-center">
-                <div class="conteudo row mb-3 px-2">
+    {% include 'menu_lateral.html' %}    
+    <main id="main">
+        <section id="inicio" class="row m-0 p-0">
+            <div class="container">
+                {% with mensagens = get_flashed_messages(with_categories=True) %}
+                    {% if mensagens %}
+                        {% for categoria, mensagem in mensagens %}
+                            <div class="alert {{ categoria }}">
+                                {{ mensagem }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <article class="col">
+                <div class="row mb-3 px-2">
                     {% block nav %}
+                        <nav class="navbar topico1">
+                            <div class="col col-md-4">
+                            <h3>Indoc</h3>
+                            </div>
+                            <div class="col col-md-5">
+                                {% block page %}
+                                {% endblock %}
+                            </div>
+                            <div class="col col-3">
+                                {% block button %}
+                                {% endblock %}
+                            </div>
+                        </nav>  
                     {% endblock %}
-                    <div class="topico1 col my-3">
-                        {% block body %}
-                        {% endblock %}
-                    </div>
+                </div>
+                <div class="topico1 col my-3">
+                    {% block body %}
+                    {% endblock %}
                 </div>
             </article>
-        </div>
-    </div>
+        </section>
+    </main>
     {% include 'footer.html '%}
     <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>

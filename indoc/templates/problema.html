@@ -4,7 +4,14 @@
 Problemas
 {% endblock %}
 
-{% block nav %}
+{% block page %}
+  <h4>Problemas</h4>
+{% endblock %}
+
+{% block button %}                                
+  <a href="{{ url_for('cadastroproblema') }}">
+    <button type="button" class="btn btn-primary profile-button">Novo Problema</button>
+  </a>
 {% endblock %}
 
 {% block body %}
@@ -28,10 +35,6 @@ Problemas
             {% endfor %}
         </tbody>
     </table>
-    <div class="d-flex justify-content-center p-2">
-        <a href="{{ url_for('cadastroproblema') }}">
-            <button type="button" class="btn btn-primary">Novo</button>
-        </a>
-    </div>
 </div>
 {% endblock %}
+
