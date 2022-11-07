@@ -13,8 +13,7 @@ from datetime import datetime
 @app.route("/")
 @login_required
 def home():
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('home.html', foto_perfil=foto_perfil)
+    return render_template('home.html')
 
 
 def salvar_imagem(imagem):
@@ -97,7 +96,7 @@ def login():
     if form_solicitarcadastro.validate_on_submit() and 'botao_submit_enviar' in request.form:
         flash(f'Informações encaminhadas! Logo faremos parte do mesmo time.', 'alert-primary')
 
-    return render_template('login.html', form_login=form_login, form_solicitarcadastro=form_solicitarcadastro)
+    return render_template('login.html', form_login=form_login)
 
 
 @app.route("/usuario/cadastro", methods=['GET', 'POST'])
@@ -216,6 +215,7 @@ def editar_usuario(usuario_id):
         database.session.commit()
         flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
         return redirect(url_for('listuser'))
+
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(user.foto_perfil))
     return render_template('editar_usuario.html', form=form, foto_perfil=foto_perfil, usuario=user)
 
@@ -224,7 +224,6 @@ def editar_usuario(usuario_id):
 @login_required
 def cadastrocliente():
     form = FormCliente()
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     if form.validate_on_submit() and 'btn_submit_cliente' in request.form:
         if form.logomarca.data:
             logomarca = salvar_logomarca_cliente(form.logomarca.data)
@@ -248,22 +247,20 @@ def cadastrocliente():
         database.session.commit()
         flash(f'Cliente {form.nome.data} cadastrado com sucesso.', 'alert-success')
         return redirect(url_for('cliente'))
-    return render_template('cadastro_cliente.html', form=form, foto_perfil=foto_perfil)
+    return render_template('cadastro_cliente.html', form=form)
 
 
 @app.route("/cliente")
 @login_required
 def cliente():
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     lista_cliente = Cliente.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('clientes.html', lista_clientes=lista_cliente, foto_perfil=foto_perfil)
+    return render_template('clientes.html', lista_clientes=lista_cliente)
 
 
 @app.route("/cliente/<cliente_id>", methods=['GET', 'POST'])
 @login_required
 def editar_cliente(cliente_id):
     form = FormCliente()
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     client = Cliente.query.get(cliente_id)
     if request.method == 'GET':
         form.nome.data = client.nome
@@ -293,25 +290,32 @@ def editar_cliente(cliente_id):
         database.session.commit()
         flash(f'client {form.nome.data} atualizado com sucesso.')
         return redirect(url_for('cliente'))
-    return render_template('editarcliente.html', form=form, client=client, foto_perfil=foto_perfil)
+    return render_template('editarcliente.html', form=form, client=client)
 
 
-@app.route("/problema", methods=['GET', 'POST'])
+@app.route("/problema")
 @login_required
 def problema():
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     form_problema = FormProblema()
     lista_problema = Problema.query.filter_by(id_empresa=current_user.id_empresa)
-    if form_problema.validate_on_submit() and 'btn_submit_problema' in request.form:
+    return render_template('problema.html', lista_problema=lista_problema, form_problema=form_problema)
+
+
+@app.route("/problema/cadastro", methods=['GET', 'POST'])
+@login_required
+def cadastroproblema():
+    form = FormProblema()    
+    if form.validate_on_submit() and 'btn_submit_problema' in request.form:
         problem = Problema(
-            descricao=form_problema.descricao.data,
-            ativo=form_problema.ativo.data,
+            descricao=form.descricao.data,
+            ativo=form.ativo.data,
             id_empresa=current_user.id_empresa
         )
         database.session.add(problem)
         database.session.commit()
         flash(f'Problema cadastrado com sucesso.', 'alert-success')
-    return render_template('problema.html', lista_problema=lista_problema, form_problema=form_problema, foto_perfil=foto_perfil)
+        return redirect(url_for('problema'))
+    return render_template('cadastroproblema.html', form=form)
 
 
 @app.route("/problema/<problema_id>", methods=['GET', 'POST'])
@@ -331,22 +335,11 @@ def editar_problema(problema_id):
     return render_template('editarproblema.html', form=form, problem=problem)
 
 
-@app.route("/setor", methods=['GET', 'POST'])
+@app.route("/setor")
 @login_required
 def setor():
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    form_setor = FormSetor()
     lista_setor = Setor.query.filter_by(id_empresa=current_user.id_empresa)
-    if form_setor.validate_on_submit() and 'btn_submit_setor' in request.form:
-        setores = Setor(
-            nome=form_setor.nome.data,
-            ativo=form_setor.ativo.data,
-            id_empresa=current_user.id_empresa
-        )
-        database.session.add(setores)
-        database.session.commit()
-        flash(f'Setor {form_setor.nome.data} cadastrado com sucesso.', 'alert-success')
-    return render_template('setor.html', lista_setor=lista_setor, form_setor=form_setor, foto_perfil=foto_perfil)
+    return render_template('setor.html', lista_setor=lista_setor)
 
 
 @app.route("/setor/cadastro", methods=['GET', 'POST'])
@@ -386,14 +379,14 @@ def editar_setor(setor_id):
 @app.route("/atendimento", methods=['GET', 'POST'])
 @login_required
 def atendimento():
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     atendimentos = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.id.desc())
-    return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime, foto_perfil=foto_perfil)
+    return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime)
 
 
 @app.route("/atendimento/cadastro", methods=['GET', 'POST'])
 @login_required
-def cadastro_atendimento():    
+def cadastro_atendimento():
+    
     clientes = [(s.id, s.nome) for s in Cliente.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     problemas = [(s.id, s.descricao) for s in Problema.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]

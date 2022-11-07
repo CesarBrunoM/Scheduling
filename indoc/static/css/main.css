@@ -39,21 +39,6 @@
     border: solid 1px #BA68C8
 }
 
-*{
-    margin: 0;
-}
-
-header {
-    background:linear-gradient(to right, #d3c79e, #7e7356,#3d3838);
-    padding: 10px;
-    text-align: center;
-    color:#efebdf;
-    font-family: "Coolvetica rg";
-    letter-spacing: 2px;
-    font-size: 150%;    
-}
-
-
 .topico1{
     background:linear-gradient(to right, #b0a78a, #95896b,#5b5454);
     border-radius: 5px;
@@ -83,20 +68,8 @@ li{
 }
 
 li a:hover{
-    background: #615840;
+    background: #f08204;
    
-}
-
-.h3 {
-    padding: 5px;
-    font-size: 200%;
-    font-family: "Coolvetica rg";
-    background: #d3c79e;
-    color:#504833;
-    text-align: center;
-    border-radius: 10px;
-    
-    
 }
 
 
@@ -116,20 +89,9 @@ li a:hover{
 }
 
 
-label{
-    
+label{    
     font-family: "Caviar Dreams Bold";
     color:#504833;  
-}
-
-.name{
-    font-size: 120%;
-    font-family: "Caviar Dreams Bold";
-    
-}
-
-.input-group-text{
-    background: #7b7156 !important;
 }
 
 .bgcard {
@@ -201,7 +163,7 @@ label{
 }
 
 #main {
-    margin-left: 300px;
+    margin-left: 300px;    
 }
 
 section#inicio {

@@ -1,6 +1,6 @@
 <aside id="header">
   <section class="profile">
-    <img src="{{ foto_perfil }}" alt="avatar" class="profile">
+    <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar" class="profile">
     <a  class="mt-4 text-center text-dark" href="{{ url_for('perfil') }}"><h4>{{ current_user.username }}</h4></a>
   </section>
   <nav id="navbar" class="nav-menu">

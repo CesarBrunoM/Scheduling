@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">    
     <title>{% block title %}{% endblock %} - INDOC</title>
     <!-- CSS only -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
@@ -44,10 +44,8 @@
                 {% block body %}
                 {% endblock %}
             </div>
-
         </section>
     </main>
-    {% include 'footer.html '%}
     <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
 </body>

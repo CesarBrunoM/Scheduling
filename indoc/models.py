@@ -103,3 +103,5 @@ class SubAtendimento(database.Model):
     id_problema = database.Column(database.Integer, database.ForeignKey('problema.id'), nullable=False)
     id_atendimento = database.Column(database.Integer, database.ForeignKey('atendimento.id'), nullable=False)
     id_usuario = database.Column(database.Integer, database.ForeignKey('usuario.id'), nullable=False)
+
+    

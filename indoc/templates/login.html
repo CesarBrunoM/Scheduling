@@ -155,44 +155,7 @@
             </p>
         </section>
     </article>
-
-    <div class="formulario2" id="envioinformacoes">
-        <form method="POST" action="" class="d-flex flex-column align-items-center p-5">
-            {{ form_solicitarcadastro.csrf_token }}
-            <h4>Torne-se agora um cliente INDOC! </h4>
-            <p>Nos envie seus dados de contato e logo entraremos em contato.</p>
-
-            {{ form_solicitarcadastro.emailrequerido.label (class="form-control-label")}}
-            {% if form_solicitarcadastro.emailrequerido.errors %}
-                {{ form_solicitarcadastro.emailrequerido (class="form-control is-invalid", placeholder="exemplo@email.com") }}
-                <div class="invalid-feedback">
-                    {% for erro in form_solicitarcadastro.emailrequerido.errors %}
-                        {{ erro }}
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form_solicitarcadastro.emailrequerido (class="form-control", placeholder="exemplo@email.com") }}
-            {% endif %}
-
-            {{ form_solicitarcadastro.whatsapp.label (class="form-control-label") }}
-            {% if form_solicitarcadastro.whatsapp.errors %}
-                {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" ) }}
-                {% for erro in form_solicitarcadastro.whatsapp.errors %}
-                    {{ erro }}
-                {% endfor %}
-            {% else %}
-                {{ form_solicitarcadastro.whatsapp (class="form-control", placeholder="(63) 99999-9999" )}}
-            {% endif %}
-
-            <div class="p-2">
-                {{ form_solicitarcadastro.botao_submit_enviar (class="btn btn-light") }}
-            </div>
-        </form>
-    </div>
-
-
 </div>
-{% include 'footer.html '%}
 <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
 <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
 </body>
