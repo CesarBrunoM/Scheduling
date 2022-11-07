@@ -14,7 +14,7 @@
     {% include 'menu_lateral.html' %}    
     <main id="main">
         <section id="inicio" class="row m-0 p-0">
-            <div class="container">
+            <div class="container d-flex justify-content-center align-itens-center">
                 {% with mensagens = get_flashed_messages(with_categories=True) %}
                     {% if mensagens %}
                         {% for categoria, mensagem in mensagens %}
@@ -25,29 +25,26 @@
                     {% endif %}
                 {% endwith %}
             </div>
-            <article class="col">
-                <div class="row mb-3 px-2">
-                    {% block nav %}
-                        <nav class="navbar topico1">
-                            <div class="col col-md-4">
-                            <h3>Indoc</h3>
-                            </div>
-                            <div class="col col-md-5">
-                                {% block page %}
-                                {% endblock %}
-                            </div>
-                            <div class="col col-3">
-                                {% block button %}
-                                {% endblock %}
-                            </div>
-                        </nav>  
-                    {% endblock %}
-                </div>
-                <div class="topico1 col my-3">
-                    {% block body %}
-                    {% endblock %}
-                </div>
-            </article>
+            <div class="row d-flex justify-content-center align-itens-center topico1">
+                <nav class="navbar">
+                    <div class="col col-md-4">
+                    <h3>Indoc</h3>
+                    </div>
+                    <div class="col col-md-5">
+                        {% block page %}
+                        {% endblock %}
+                    </div>
+                    <div class="col col-3">
+                        {% block button %}
+                        {% endblock %}
+                    </div>
+                </nav>  
+            </div>
+            <div class="row d-flex justify-content-center align-itens-center topico1">
+                {% block body %}
+                {% endblock %}
+            </div>
+
         </section>
     </main>
     {% include 'footer.html '%}

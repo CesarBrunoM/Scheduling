@@ -43,10 +43,6 @@
     margin: 0;
 }
 
-html, body{
-    height: 100%;
-}
-
 header {
     background:linear-gradient(to right, #d3c79e, #7e7356,#3d3838);
     padding: 10px;
@@ -54,50 +50,16 @@ header {
     color:#efebdf;
     font-family: "Coolvetica rg";
     letter-spacing: 2px;
-    font-size: 150%;
-    
-    
+    font-size: 150%;    
 }
-
-
-.menu {
-    background: #d3c79e;
-
-}
-
-.menu2, .registroatend{
-    background-color: #d3c79e;
-    
-}
-
-.menu2{
-    height: 90px;
-}
-
-
-nav{
-    width: 100%;
-    font-size: 100%;
-    font-family: "Caviar Dreams Bold";
-}
-
-
-article {
-    font-family: "Dream Orphans";
-    font-size: 75%;
-}
-
 
 
 .topico1{
     background:linear-gradient(to right, #b0a78a, #95896b,#5b5454);
     border-radius: 5px;
     margin-bottom: 20px;   
-}
-
-.topico2{
-    background: #e9e6dc;
-    padding: 10px;       
+    font-family: "Dream Orphans";
+    font-size: 75%;
 }
 
 
@@ -109,8 +71,7 @@ article {
     height: 50px;
     line-height: 40px;
     font-size: 100%;
-    text-align: center;      
-    
+    text-align: center;    
 }
 
 

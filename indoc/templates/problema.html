@@ -9,9 +9,11 @@ Problemas
 {% endblock %}
 
 {% block button %}                                
-  <a href="{{ url_for('cadastroproblema') }}">
-    <button type="button" class="btn btn-primary profile-button">Novo Problema</button>
-  </a>
+    <div class="m-1">
+        <button type="button" class="btn btn-secondary profile-button" data-bs-toggle="modal" data-bs-target="#form_problema">
+            Novo Problema
+        </button>
+    </div>  
 {% endblock %}
 
 {% block body %}
@@ -28,13 +30,55 @@ Problemas
         </thead>
         <tbody>
             {% for problema in lista_problema %}
-            <tr>
-                <th><a class="link-light" href="{{ url_for('editar_problema', problema_id=problema.id) }}"
-                       style="text-decoration:none">{{ problema.descricao }}</a></th>
-            </tr>
+                <tr>
+                    <th><a class="link-light" href="{{ url_for('editar_problema', problema_id=problema.id) }}"
+                        style="text-decoration:none">{{ problema.descricao }}</a></th>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!-- modal -->
+<div class="modal fade" id="form_problema" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Novo problema</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="">
+            {{ form_problema.csrf_token }}
+            <div class="row mt-2">
+                <div class="col-md-10">{{ form_problema.descricao.label(class="labels") }}
+                    {% if form_problema.errors %}
+                        {{ form_problema.descricao(class="form_problema-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for erro in form_problema.descricao.errors %}
+                            {{ erro }}
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form_problema.descricao(class="form-control") }}
+                    {% endif %}
+                </div>
+                <div class="mt-2">
+                    {{ form_problema.ativo.label }}
+                    {{ form_problema.ativo (class="form-check-input") }}
+                </div>
+            </div>
+            <div class="mt-5 text-center">{{ form_problema.btn_submit_problema(class="btn btn-primary profile-button") }}
+                <a href="{{ url_for('problema') }}">
+                  <button type="button" class="btn btn-primary profile-button">Cancelar</button>
+                </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
 
