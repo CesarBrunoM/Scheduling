@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Empresa
+{% endblock %}
+
+{% block page %}
+  <h4>Dados Empresa</h4>
+{% endblock %}
+
+{% block button %}                                
+<div class="m-1">
+    <button type="button" class="btn btn-secondary profile-button" data-bs-toggle="modal" data-bs-target="#formempresa">
+        Editar
+    </button>
+</div
+{% endblock %}
+
+{% block body %}
+  <div class="topico1 col my-3">
+      <div class="container py-5">
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4" style="background-color: Peru">
+            <div class="card-body text-center">
+              <img src="../static/logomarca_empresa/{{ current_user.empresa.logomarca }}" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 100px;">
+              <h3 class="my-3">{{ current_user.empresa.nome }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body" style="background-color: Peru">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Razão Social</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.empresa.razao }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.empresa.email }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Telefone</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.empresa.telefone }}</p>
+                </div>
+              </div>
+              <hr>             
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Data cadastro</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0 data-hora">{{ datetime.strftime(current_user.empresa.data_cadastro, '%d/%m/%Y às %H:%M') }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+  </div>
+{% endblock %}

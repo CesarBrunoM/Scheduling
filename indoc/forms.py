@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms.fields import DateTimeLocalField
-from wtforms import SubmitField, StringField, PasswordField, BooleanField, SelectField, TextAreaField
+from wtforms import SubmitField, StringField, PasswordField, BooleanField, SelectField, TextAreaField, DateTimeLocalField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from indoc.models import Usuario, Cliente, Empresa
 from flask_login import current_user
@@ -17,6 +16,8 @@ class FormEmpresa(FlaskForm):
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    logomarca = FileField('Logomarca', validators=[
+    FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     botao_submit_concluir = SubmitField('Confirmar')
 
     def validate_cnpj(self, cnpj):
@@ -29,6 +30,20 @@ class FormEmpresa(FlaskForm):
         if usuario:
             raise ValidationError('Email já cadastrado.')
 
+class FormEditarEmpresa(FlaskForm):
+    nome = StringField('Nome empresa', validators=[DataRequired(), Length(1, 100)])
+    razao = StringField('Razão social', validators=[DataRequired(), Length(1, 100)])
+    cnpj = StringField('CNPJ', validators=[DataRequired(), Length(14, 14)])
+    email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
+    telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    logomarca = FileField('Logomarca', validators=[
+        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+    botao_submit_concluir = SubmitField('Confirmar')
+
+    def validate_cnpj(self, cnpj):
+        empresa = Empresa.query.filter_by(cnpj=cnpj.data).first()
+        if empresa:
+            raise ValidationError('CNPJ já cadastrado.')
 
 class FormCriarConta(FlaskForm):
     username = StringField('Nome usuário', validators=[DataRequired(), Length(1, 100)])

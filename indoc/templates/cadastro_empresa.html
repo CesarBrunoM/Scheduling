@@ -118,8 +118,17 @@
                         </div>
                     </div>
                     <hr>
-
-
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            {{ formempresa.logomarca.label(class="labels") }}
+                            {{ formempresa.logomarca(class="form-control-file") }}
+                            {% if formempresa.logomarca.errors %}
+                                {% for erro in formempresa.logomarca.errors %}
+                                    <span class="text-info">{{ erro }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
             <div class="my-5 text-center">
                 {{ formempresa.botao_submit_concluir(class="btn btn-primary profile-button") }}
             </div>

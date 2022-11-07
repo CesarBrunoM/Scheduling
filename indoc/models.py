@@ -17,6 +17,7 @@ class Empresa(database.Model):
     telefone = database.Column(database.String(12))
     ativo = database.Column(database.Boolean, default=True, nullable=False)
     data_cadastro = database.Column(database.DateTime, default=datetime.utcnow)
+    logomarca = database.Column(database.String(150), default='default.jpg')
     usuario = database.relationship('Usuario', backref='empresa', lazy=True)
     cliente = database.relationship('Cliente', backref='empresa', lazy=True)
     setor = database.relationship('Setor', backref='empresa', lazy=True)

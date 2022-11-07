@@ -1,7 +1,8 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
-    FormProblema, FormSetor, FormEditarUsuario, FormAtendimento, FormComentario, FormCancelamento, FormFecharAtendimento
+    FormProblema, FormSetor, FormEditarUsuario, FormAtendimento, FormComentario, FormCancelamento, FormFecharAtendimento, \
+    FormEditarEmpresa
 from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor, Atendimento, SubAtendimento
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -42,16 +43,38 @@ def salvar_logomarca_cliente(imagem):
     return nome_arquivo
 
 
+def salvar_logomarca_empresa(imagem):
+    codigo = secrets.token_hex(8)
+    nome, extencao = os.path.splitext(imagem.filename)
+    nome_arquivo = nome + '_' + codigo + extencao
+    caminho_imagem = os.path.join(app.root_path, 'static/logomarca_empresa', nome_arquivo)
+
+    tamanho = (200, 200)
+    imagem_reduzida = Image.open(imagem)
+    imagem_reduzida.thumbnail(tamanho)
+    imagem_reduzida.save(caminho_imagem)
+    return nome_arquivo
+
+
 @app.route("/empresa/cadastro", methods=['GET', 'POST'])
 def empresacadastro():
     formempresa = FormEmpresa()
     if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
         cript_senha = bcrypt.generate_password_hash(formempresa.senha.data)
-        empresa = Empresa(razao=formempresa.razao.data,
-                          nome=formempresa.nome.data,
-                          cnpj=formempresa.cnpj.data,
-                          email=formempresa.email.data,
-                          telefone=formempresa.telefone.data)
+        if formempresa.logomarca:
+            logomarca = salvar_logomarca_empresa(formempresa.logomarca.data)        
+            empresa = Empresa(razao=formempresa.razao.data,
+                            nome=formempresa.nome.data,
+                            cnpj=formempresa.cnpj.data,
+                            email=formempresa.email.data,
+                            telefone=formempresa.telefone.data,
+                            logomarca=logomarca)
+        else:
+            empresa = Empresa(razao=formempresa.razao.data,
+                nome=formempresa.nome.data,
+                cnpj=formempresa.cnpj.data,
+                email=formempresa.email.data,
+                telefone=formempresa.telefone.data)
         database.session.add(empresa)
         database.session.commit()
 
@@ -75,6 +98,40 @@ def empresacadastro():
         return redirect(url_for('home'))
 
     return render_template('cadastro_empresa.html', formempresa=formempresa)
+
+
+@app.route("/empresa/perfil", methods=['GET', 'POST'])
+@login_required
+def empresa():
+    return render_template('perfil_empresa.html', datetime=datetime)
+
+
+@app.route("/empresa/editar/<id_empresa>", methods=['GET', 'POST'])
+@login_required
+def editarempresa(id_empresa):
+    formempresa = FormEditarEmpresa()
+    empresa = Empresa.query.filter_by(id_empresa)
+    if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
+        empresa.cnpj=formempresa.cnpj.data
+        empresa.razao=formempresa.razao.data
+        empresa.nome=formempresa.nome.data
+        empresa.email=formempresa.email.data
+        empresa.telefone=formempresa.telefone.data
+        if formempresa.logomarca.data:
+            logomarca = salvar_logomarca_empresa(formempresa.logomarca.data)
+            empresa.logomarca=logomarca
+        database.session.commit()
+        flash('Empresa atualizada com sucesso', 'alert-success')
+        return redirect(url_for('empresa'))
+    elif request.method == "GET":
+        formempresa.cnpj.data=empresa.cnpj
+        formempresa.nome.data=empresa.nome
+        formempresa.razao.data=empresa.razao
+        formempresa.email.data=empresa.email
+        formempresa.telefone.data=empresa.telefone
+    
+    return render_template('perfil_empresa.html', formempresa=formempresa)
+
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -290,11 +347,21 @@ def editar_cliente(cliente_id):
     return render_template('editarcliente.html', form=form, client=client)
 
 
-@app.route("/problema")
+@app.route("/problema", methods=['GET', 'POST'])
 @login_required
 def problema():
     form_problema = FormProblema()
     lista_problema = Problema.query.filter_by(id_empresa=current_user.id_empresa)
+    if form_problema.validate_on_submit() and 'btn_submit_problema' in request.form:
+        problem = Problema(
+            descricao=form_problema.descricao.data,
+            ativo=form_problema.ativo.data,
+            id_empresa=current_user.id_empresa
+        )
+        database.session.add(problem)
+        database.session.commit()
+        flash(f'Problema cadastrado com sucesso.', 'alert-success')
+        return redirect(url_for('problema'))
     return render_template('problema.html', lista_problema=lista_problema, form_problema=form_problema)
 
 
