@@ -1,31 +1,6 @@
-CADASTRO DA EMPRESA:
-    - Criar Usuario empresa com codigo da empresa no campo "empresa"
+-Validar layout
 
-CADASTRO DE USUÁRIO:
-    - Verificar se o usuário esta cadastrado
-        - caso já tenha cadastro, questionar se quer mudar de empresa.
-        - puxar as informações do usuário cadastrado para o formulário.
-        - alterar as informações do usuário cadastrado.
-    - Cadastro do usuário deve pegar codigo da empresa do usuário corrente.
-    - Vincular o codigo do usuário corrente ao novo usuário cadastrado.
-
-
-VALIDAÇÃO DO LOGIN:
-    - Verificar a qual loja o usuário esta vinculado.
-    - Verificar se o usuário esta ativo.
-
-
-DIFICULDADE:
-    * verificação de qual empresa o usuário quer logar, caso coloque como unico no banco de dados, não pode ter o mesmo
-    e-mail cadastrado varias vezes, assim se vincular o email a uma empresa, caso a pessoa mude de empresa o mesmo não
-    pode acessar a outra, pois vai informar que já existe este email cadastrado.
-    -POSSÍVEIS SOLUÇÃO:
-        * Criar uma tabela auxiliar, onde é vinculado o usuário a empresa e se esta ativo ou não na mesma, caso esteja
-        ativa em mais de uma empresa o usuário deve ser questionado em qual empresa quer logar, antes de entrar no sistema.
-                    (como validar qual loja o usuário esta usando.)
-        * Utilizar nome de usuário para logar no sistema, assim para cada username o sistema já interpreta qual empresa,
-        pois esta vinculada a apenas esta empresa, deixando aberta a opção de cadastrar um e-mail mais de uma vez.
-
-
-==========================================================================================================================
-
+Função editar usuários da empresa.
+Função de edição de dados da empresa.
+filtros 
+graficos 

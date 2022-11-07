@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import SubmitField, StringField, PasswordField, BooleanField, DateField, SelectField, TextAreaField, \
-    TimeField, DateTimeField
-from wtforms.fields import TelField
+from wtforms.fields import DateTimeLocalField
+from wtforms import SubmitField, StringField, PasswordField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from indoc.models import Usuario, Cliente, Empresa
 from flask_login import current_user
+from datetime import datetime
 
 
 class FormEmpresa(FlaskForm):
@@ -16,7 +16,7 @@ class FormEmpresa(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
                                                                                             message='Os campos de senha devem ser iguais.')])
-    telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     botao_submit_concluir = SubmitField('Confirmar')
 
     def validate_cnpj(self, cnpj):
@@ -37,10 +37,10 @@ class FormCriarConta(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
                                                                                             message='Os campos de senha devem ser iguais.')])
-    telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
+    data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo', validators=[Length(1, 25)])
     botao_submit_criar = SubmitField('Confirmar')
 
@@ -57,14 +57,6 @@ class FormLogin(FlaskForm):
     botao_submit_login = SubmitField('Entrar')
 
 
-class SolicitacaoCadastro(FlaskForm):
-    emailrequerido = StringField('Email', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
-    whatsapp = StringField('Whatsapp',
-                           validators=[DataRequired(),
-                                       Length(11, 11)])
-    botao_submit_enviar = SubmitField('Enviar')
-
-
 class FormEditarPerfil(FlaskForm):
     username = StringField('Nome usuário', validators=[DataRequired()])
     nome_completo = StringField('Nome completo', validators=[DataRequired()])
@@ -72,10 +64,10 @@ class FormEditarPerfil(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
                                                                                             message='Os campos de senha devem ser iguais.')])
-    telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
+    data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo')
     botao_submit_editarperfil = SubmitField('Confirmar')
 
@@ -93,10 +85,10 @@ class FormEditarUsuario(FlaskForm):
     senha = PasswordField('Senha', validators=[Length(8, 20)])
     confirma_senha = PasswordField('Confirmação senha', validators=[EqualTo('senha',
                                                                             message='Os campos de senha devem ser iguais.')])
-    telefone = TelField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
+    telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateField('Data Nascimento', validators=[DataRequired()])
+    data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo')
     ativo = BooleanField('Usuário ativo')
     botao_submit_editarperfil = SubmitField('Confirmar')
@@ -111,7 +103,7 @@ class FormCliente(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     razao = StringField('Razão social', validators=[DataRequired()])
     cnpj = StringField('CNPJ', validators=[DataRequired()])
-    contato = TelField('Contato', validators=[DataRequired()])
+    contato = StringField('Contato', validators=[DataRequired()])
     logomarca = FileField('Logomarca', validators=[
         FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     ativo = BooleanField('Ativo')
@@ -141,8 +133,7 @@ class FormAtendimento(FlaskForm):
     prioridade = SelectField('Prioridade', choices=[('Baixo'), ('Normal'), ('Alta'), ('Urgente')],
                              validators=[DataRequired()])
     problema = SelectField('Problema', choices=[], coerce=int, validators=[DataRequired()])
-    data_vencimento = DateField('Data Vencimento', validators=[DataRequired()])
-    hora_vencimento = TimeField('Hora Vencimento', validators=[DataRequired()])
+    data_vencimento = DateTimeLocalField('Data Vencimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     setor = SelectField('Setor', choices=[], coerce=int, validators=[DataRequired()])
     observacao = TextAreaField('Observação', validators=[DataRequired()])
     btn_submit_novo = SubmitField('Confirmar')

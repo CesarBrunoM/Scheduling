@@ -1,6 +1,6 @@
 from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
-from indoc.forms import FormLogin, SolicitacaoCadastro, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
+from indoc.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
     FormProblema, FormSetor, FormEditarUsuario, FormAtendimento, FormComentario, FormCancelamento, FormFecharAtendimento
 from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor, Atendimento, SubAtendimento
 from flask_login import login_user, logout_user, current_user, login_required
@@ -80,7 +80,6 @@ def empresacadastro():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form_login = FormLogin()
-    form_solicitarcadastro = SolicitacaoCadastro()
     if form_login.validate_on_submit() and 'botao_submit_login' in request.form:
         user = Usuario.query.filter_by(email=form_login.email.data).first()
         if user and bcrypt.check_password_hash(user.senha, form_login.senha.data):
@@ -93,8 +92,6 @@ def login():
                 return redirect(url_for('home'))
         else:
             flash('Falha no login, verifique seu email e senha.', 'alert-danger')
-    if form_solicitarcadastro.validate_on_submit() and 'botao_submit_enviar' in request.form:
-        flash(f'Informações encaminhadas! Logo faremos parte do mesmo time.', 'alert-primary')
 
     return render_template('login.html', form_login=form_login)
 

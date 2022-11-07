@@ -87,18 +87,6 @@
                             {{ form.data_vencimento(class="form-control") }}
                         {% endif %}
                     </div>
-                    <div class="col-md-10">{{ form.hora_vencimento.label(class="labels") }}
-                        {% if form.errors %}
-                            {{ form.hora_vencimento(class="form-control is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for erro in form.hora_vencimento.errors %}
-                                {{ erro }}
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                            {{ form.hora_vencimento(class="form-control") }}
-                        {% endif %}
-                    </div>
                     <div class="col-md-10">{{ form.observacao.label(class="labels") }}
                         {% if form.errors %}
                             {{ form.observacao(class="form-control is-invalid") }}
