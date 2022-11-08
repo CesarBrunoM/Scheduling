@@ -106,11 +106,11 @@ def empresa():
     return render_template('perfil_empresa.html', datetime=datetime)
 
 
-@app.route("/empresa/editar/<id_empresa>", methods=['GET', 'POST'])
+@app.route("/empresa_empresa/<id_empresa>", methods=['GET', 'POST'])
 @login_required
 def editarempresa(id_empresa):
     formempresa = FormEditarEmpresa()
-    empresa = Empresa.query.filter_by(id_empresa)
+    empresa = Empresa.query.get(id_empresa)
     if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
         empresa.cnpj=formempresa.cnpj.data
         empresa.razao=formempresa.razao.data
@@ -130,7 +130,7 @@ def editarempresa(id_empresa):
         formempresa.email.data=empresa.email
         formempresa.telefone.data=empresa.telefone
     
-    return render_template('perfil_empresa.html', formempresa=formempresa)
+    return render_template('editar_empresa.html', formempresa=formempresa, datetime=datetime)
 
 
 
@@ -186,7 +186,7 @@ def usuario():
     return render_template('usuarios.html', form_criarconta=form_criarconta)
 
 
-@app.route("/perfil", methods=['GET', 'POST'])
+@app.route("/perfil", methods=['GET'])
 @login_required
 def perfil():
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))

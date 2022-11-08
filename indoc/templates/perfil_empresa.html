@@ -10,9 +10,9 @@
 
 {% block button %}                                
 <div class="m-1">
-    <button type="button" class="btn btn-secondary profile-button" data-bs-toggle="modal" data-bs-target="#formempresa">
-        Editar
-    </button>
+  <a href="{{ url_for('editarempresa', id_empresa=current_user.empresa.id ) }}">
+    <button type="button" class="btn btn-primary">Editar</button>
+  </a>
 </div
 {% endblock %}
 
@@ -39,6 +39,15 @@
                 </div>
                 <div class="col-sm-9">
                   <p class="text-white mb-0">{{ current_user.empresa.razao }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">CNPJ</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-white mb-0">{{ current_user.empresa.cnpj }}</p>
                 </div>
               </div>
               <hr>
@@ -73,6 +82,7 @@
         </div>
       </div>
       </div>
-
   </div>
+  {% block formempresa %}
+  {% endblock %}
 {% endblock %}
