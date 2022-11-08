@@ -145,7 +145,7 @@ class FormSetor(FlaskForm):
 class FormAtendimento(FlaskForm):
     cliente = SelectField('Cliente', choices=[], coerce=int, validators=[DataRequired()])
     solicitante = StringField('Solicitante', validators=[DataRequired()])
-    prioridade = SelectField('Prioridade', choices=[('Baixo'), ('Normal'), ('Alta'), ('Urgente')],
+    prioridade = SelectField('Prioridade', choices=[('Baixa'), ('Normal'), ('Alta'), ('Urgente')],
                              validators=[DataRequired()])
     problema = SelectField('Problema', choices=[], coerce=int, validators=[DataRequired()])
     data_vencimento = DateTimeLocalField('Data Vencimento', default=datetime.today, format='%Y-%m-%dT%H:%M')

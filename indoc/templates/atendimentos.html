@@ -31,11 +31,28 @@ Novo atendimento
                     <img src="{{ url_for('static', filename='logomarca_cliente/{}'.format(atendimento.cliente.logomarca)) }}"
                          alt="avatar"
                          class="rounded-circle img-fluid" style="width: 100px;">
-                    <b class="badge rounded-pill bg-dark">{{ atendimento.prioridade }}</b>
                 </div>
             </div>
             <div class="col col-10">
                 <h4>Protocolo: #{{ atendimento.protocolo }} - {{ atendimento.cliente.nome }}</h4>
+                {% if atendimento.status == "Aberto" %}
+                    <b class="badge badge-pill bg-primary">{{ atendimento.status }}</b>
+                {% elif atendimento.status == "Atendendo" %}
+                    <b class="badge badge-pill bg-warning">{{ atendimento.status }}</b>
+                {% elif atendimento.status == "Fechado" %}
+                    <b class="badge badge-pill bg-success">{{ atendimento.status }}</b>
+                {% elif atendimento.status == 'Cancelado' %}
+                    <b class="badge badge-pill bg-danger">{{ atendimento.status }}</b>
+                {% endif %}
+                {% if atendimento.prioridade == "Baixo" %}
+                <b class="badge badge-pill bg-primary">{{ atendimento.prioridade }}</b>
+                {% elif atendimento.prioridade == "Normal" %}
+                    <b class="badge badge-pill bg-info">{{ atendimento.prioridade }}</b>
+                {% elif atendimento.prioridade == "Alta" %}
+                    <b class="badge badge-pill bg-warning">{{ atendimento.prioridade }}</b>
+                {% elif atendimento.prioridade == 'Urgente' %}
+                    <b class="badge badge-pill bg-danger">{{ atendimento.prioridade }}</b>
+                {% endif %}     
                 <hr>
                 <h6><b>Problema:</b> {{ atendimento.problema.descricao }} - <b>Data Abertura:</b> {{
                     datetime.strftime(atendimento.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
