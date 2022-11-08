@@ -1,7 +1,7 @@
 <aside id="header">
   <section class="profile">
-    <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar" class="profile">
-    <a  class="mt-4 text-center text-dark" href="{{ url_for('perfil') }}"><h4>{{ current_user.username }}</h4></a>
+    <img src="../static/logomarca_empresa/{{ current_user.empresa.logomarca }}" alt="avatar" class="profile">
+    <a  class="mt-4 text-center text-dark" href="{{ url_for('empresa') }}"><h4>{{ current_user.empresa.nome }}</h4></a>
   </section>
   <nav id="navbar" class="nav-menu">
     <ul class="nav flex-column">

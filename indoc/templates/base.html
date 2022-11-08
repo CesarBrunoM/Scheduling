@@ -25,16 +25,18 @@
                     {% endif %}
                 {% endwith %}
             </div>
-            <div class="row d-flex justify-content-center align-itens-center topico1">
+            <div class="container row d-flex justify-content-center align-itens-center topico1">
                 <nav class="navbar">
-                    <div class="col col-md-4">
-                    <h3>Indoc</h3>
+                    <div class="col align-self-start">                        
+                        <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
+                        class="rounded-circle" style="width: 60px;">                        
+                        <b class="badge rounded-pill bg-dark">{{ current_user.username }}</b>
                     </div>
-                    <div class="col col-md-5">
+                    <div class="col align-self-center">
                         {% block page %}
                         {% endblock %}
                     </div>
-                    <div class="col col-3">
+                    <div class="col align-self-end">
                         {% block button %}
                         {% endblock %}
                     </div>

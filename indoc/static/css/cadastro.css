@@ -46,3 +46,7 @@ button:hover{
     background: #d3c79e;
     background:linear-gradient(to right, #a09494, #be9e1f,#a09494);
 }
+
+#logo {
+    background-color: aqua;
+}

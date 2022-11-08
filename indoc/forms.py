@@ -17,7 +17,7 @@ class FormEmpresa(FlaskForm):
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     logomarca = FileField('Logomarca', validators=[
-    FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+    FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     botao_submit_concluir = SubmitField('Confirmar')
 
     def validate_cnpj(self, cnpj):
@@ -37,7 +37,7 @@ class FormEditarEmpresa(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     logomarca = FileField('Logomarca', validators=[
-        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     botao_submit_concluir = SubmitField('Confirmar')
 
     def validate_cnpj(self, cnpj):
@@ -54,7 +54,7 @@ class FormCriarConta(FlaskForm):
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
-        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo', validators=[Length(1, 25)])
     botao_submit_criar = SubmitField('Confirmar')
@@ -81,7 +81,7 @@ class FormEditarPerfil(FlaskForm):
                                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
-        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo')
     botao_submit_editarperfil = SubmitField('Confirmar')
@@ -102,7 +102,7 @@ class FormEditarUsuario(FlaskForm):
                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
-        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo')
     ativo = BooleanField('Usuário ativo')
@@ -120,7 +120,7 @@ class FormCliente(FlaskForm):
     cnpj = StringField('CNPJ', validators=[DataRequired()])
     contato = StringField('Contato', validators=[DataRequired()])
     logomarca = FileField('Logomarca', validators=[
-        FileAllowed(['jpg', 'png'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     ativo = BooleanField('Ativo')
     btn_submit_cliente = SubmitField('Confirmar')
 
