@@ -449,8 +449,7 @@ def atendimento():
 
 @app.route("/atendimento/cadastro", methods=['GET', 'POST'])
 @login_required
-def cadastro_atendimento():
-    
+def cadastro_atendimento():    
     clientes = [(s.id, s.nome) for s in Cliente.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     problemas = [(s.id, s.descricao) for s in Problema.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]

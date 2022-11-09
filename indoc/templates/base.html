@@ -39,9 +39,11 @@
                                 <i class="bi bi-plus-square"></i> Novo
                             </button>
                             <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Dropdown item</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown item</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown item</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atedimento</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
                             </ul>
                         </div> 
                     </div>  

@@ -9,12 +9,12 @@
     <form method="POST" action="" enctype="multipart/form-data">
     {{ form.csrf_token }}
     <div class="row">
-        <div class="col-md-10 border-right">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Formulario Cliente</h4>
-                </div>
-                <hr>
+        <div class="d-flex justify-content-center mt-2">
+            <h4 class="text-right">Formulario Cliente</h4>
+        </div>
+        <hr>
+        <div class="col-md-6 border-right">
+            <div class="p-3">
                 <div class="row mt-2">
                     <div class="col-md-10">{{ form.nome.label(class="labels") }}
                         {% if form.errors %}
@@ -92,6 +92,9 @@
                     </a>
                 </div>
             </div>
+        </div>
+        <div id="ilustracaocliente" class="col col-6 border mt-0" >
+            <img src="../static/images/ilustraçãopersonagem3.svg">
         </div>
     </div>
     </form>
