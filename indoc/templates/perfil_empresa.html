@@ -9,11 +9,11 @@
 {% endblock %}
 
 {% block button %}                                
-<div class="m-1">
+
   <a href="{{ url_for('editarempresa', id_empresa=current_user.empresa.id ) }}">
-    <button type="button" class="btn btn-primary">Editar</button>
+    <button type="button" class="btn btn-primary profile-button">Editar</button>
   </a>
-</div
+
 {% endblock %}
 
 {% block body %}

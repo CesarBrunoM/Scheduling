@@ -27,28 +27,31 @@
             </div>
             <div class="container row d-flex justify-content-center align-itens-center topico1">
                 <nav class="navbar">
-                    <div class="col align-self-start">                        
-                        <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
-                        class="rounded-circle" style="width: 60px;">                        
-                        <b class="badge rounded-pill bg-dark">{{ current_user.username }}</b>
-                    </div>
                     <div class="col align-self-center">
                         {% block page %}
                         {% endblock %}
                     </div>
-                    <div class="col align-self-end">
-                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                            {% block button %}
-                            {% endblock %}
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown
+                    <div class="col d-flex flex-row-reverse">
+                        {% block button %}
+                        {% endblock %}
+                            <div class="dropdown">
+                                <button class="btn btn-secondary profile-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Opções
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="#">Action</a>
+                                  <a class="dropdown-item" href="#">Another action</a>
+                                  <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col d-flex flex-row-reverse">                        
+                            <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
+                            class="rounded-circle" style="width: 60px;"> 
+                            <div>
+                                <b>{{ current_user.username }}</b>
+                                <p>{{ current_user.email }}</p>                              
+                            </div>                            
                         </div>
                     </div>
                 </nav>  
