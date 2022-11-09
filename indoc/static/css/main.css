@@ -1,3 +1,14 @@
+body {
+    background-image: url(../images/background5.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+
+    width: 100%;
+    right: 100vh;
+}
+
 .form-control:focus {
     box-shadow: none;
     border-color: #BA68C8
@@ -166,13 +177,3 @@ label{
     margin-left: 300px;    
 }
 
-section#inicio {
-    background-image: url(../images/background5.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-
-    width: 100%;
-    right: 100vh;
-}
