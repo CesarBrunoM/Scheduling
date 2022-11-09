@@ -25,34 +25,31 @@
                     {% endif %}
                 {% endwith %}
             </div>
-            <div class="container row d-flex justify-content-center align-itens-center topico1">
+            <div class="container row topico1">
                 <nav class="navbar">
-                    <div class="col align-self-center">
+                    <div class="col col-3 d-flex justify-content-start">
                         {% block page %}
                         {% endblock %}
                     </div>
-                    <div class="col d-flex flex-row-reverse">
+                    <div class="col col-5 d-flex justify-content-center">
                         {% block button %}
                         {% endblock %}
-                            <div class="dropdown">
-                                <button class="btn btn-secondary profile-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Opções
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="#">Action</a>
-                                  <a class="dropdown-item" href="#">Another action</a>
-                                  <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col d-flex flex-row-reverse">                        
-                            <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
-                            class="rounded-circle" style="width: 60px;"> 
-                            <div>
-                                <b>{{ current_user.username }}</b>
-                                <p>{{ current_user.email }}</p>                              
-                            </div>                            
-                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-plus-square"></i> Novo
+                            </button>
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Dropdown item</a></li>
+                            <li><a class="dropdown-item" href="#">Dropdown item</a></li>
+                            <li><a class="dropdown-item" href="#">Dropdown item</a></li>
+                            </ul>
+                        </div> 
+                    </div>  
+                    <div class="col col-2 d-flex flex-row-reverse align-items-center">                                                                      
+                        <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
+                        class="rounded-circle p-2" style="width: 50px;"> 
+                        {{ current_user.username }}
+                        {{ current_user.email }}    
                     </div>
                 </nav>  
             </div>
@@ -63,6 +60,6 @@
         </section>
     </main>
     <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
