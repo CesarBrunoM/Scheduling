@@ -1,52 +1,56 @@
 *{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
-body{
+body {
     font-family: "Caviar Dreams Bold";
     background-image: url(../images/background5.png);
     color: #59523a;
 }
 
-.container{
-    background-color:#d3c79e !important;
+.container {
+    width: 800px;
+    background-color: #d3c79e !important;
     border-radius: 10px;
-    padding:0 !important;
+    padding: 0 !important;
 }
 
-header{    
+header {
     text-align: center;
     border-radius: 10px 10px 0 0;
     width: 100%;
     height: 80px;
-    background: #d3c79e;
-    background:linear-gradient(to right, #be9e1f, #7e7356,#a09494);
+    background-color: #59523a;
+
 }
 
-h1{
+h1 {
     font-family: "Coolvetica rg";
-    color: #c3b26b;
+    font-weight: 700;
+    color: white;
 }
 
-button{
-    margin: 10px;
-    background: #d3c79e;
-    background:linear-gradient(to right, #be9e1f, #7e7356,#a09494);
-    font-weight: bold;
-    border-radius: 20px;
-    border: none;
-    font-size: 80%;
-    width: 50%;
-    height: 40px;
-    color: rgb(14, 14, 13);    
+.my-3 {
+    color: #59523a;
+    font-weight: 700;
 }
 
-button:hover{
-    background: #d3c79e;
-    background:linear-gradient(to right, #a09494, #be9e1f,#a09494);
+.btn {
+    padding: 10px 40px;
+    border-style: none;
+    background-color: #59523a;
 }
 
-#logo {
-    background-color: aqua;
+.btn:hover {
+    background-color: #59523ae3;
+    transition: 1s;
+
+}
+
+.labels,
+.form-control-file {
+    color: #59523a;
+    font-weight: 700;
 }

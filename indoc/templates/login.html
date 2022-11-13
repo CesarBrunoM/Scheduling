@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -8,96 +9,58 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/login.css') }}">
 
-    <style>
-        @font-face {
-            font-family: "Coolvetica rg";
-            scr: url("{{ url_for('static',filename='fontes/simplessemserifa/formatowoff/AnyConv.com__coolvetica\ rg.woff') }}");
-        }
-
-        @font-face {
-            font-family: "Caviar Dreams";
-            scr: url("{{ url_for('static',filename='fontes/simplessemserifa/formatowoff/CaviarDreams.woff') }}");
-        }
-    </style>
 </head>
 
 <body>
-<div class="container">
-    {% with mensagens = get_flashed_messages(with_categories=True) %}
+
+    <header class="d-flex flex-column align-items-center">
+        <h1>INDOC</h1>
+        <h2 class="h5">Sistema de Atendimento</h2>
+    </header>
+    <div class="container">
+        {% with mensagens = get_flashed_messages(with_categories=True) %}
         {% if mensagens %}
-            {% for categoria, mensagem in mensagens %}
-                <div class="alert {{ categoria }}">
-                    {{ mensagem }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-</div>
-<header class="d-flex flex-column align-items-center">
-    <h1>INDOC</h1>
-    <h2 class="h5">Sistema de Atendimento</h2>
-</header>
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col col-12 col-sm-12 col-md-8 col-lg-8">
-            <article class="artigo">
-                <section class="secao text-justify">
-                    <h3>Conheça o sistema de gerenciamento de atendimento INDOC</h3>
-
-                    <div class="w-100 py-2 d-flex justify-content-center">
-                        <img class="w-75" src="{{ url_for('static',filename='images/ilustraçãopersonagem.svg') }}"
-                             alt="Mulher ao telefone">
-                    </div>
-
-                    <p>É um fato estabelecido há muito tempo que um leitor se distrairá com o conteúdo legível de uma
-                        página
-                        ao olhar para seu layout. O ponto de usar Lorem Ipsum é que ele tem uma distribuição mais ou
-                        menos
-                        normal de letras, ao contrário de usar 'Conteúdo aqui, conteúdo aqui', fazendo com que pareça
-                        inglês
-                        legível. Muitos pacotes de editoração eletrônica e editores de páginas da web agora usam Lorem
-                        Ipsum
-                        como seu texto de modelo padrão, e uma pesquisa por 'lorem ipsum' descobrirá muitos sites ainda
-                        em
-                        sua infância. Várias versões evoluíram ao longo dos anos, às vezes por acidente, às vezes de
-                        propósito (humor injetado e afins).</p>
-                </section>
-            </article>
+        {% for categoria, mensagem in mensagens %}
+        <div class="alert {{ categoria }}">
+            {{ mensagem }}
         </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <div class="container">
+        <div class="conteudo">
+            <div class="img-login"></div>
 
-        <div class="col col-md-4 col-lg-4">
-
-            <aside class="d-flex justify-content-md-end justify-content-sm-center justify-content-center ">
+            <div class="tela-login">
 
                 <form method="POST" action="" class="formulario1 d-flex flex-column align-items-center p-3">
+                    <h2>Login</h2>
                     {{ form_login.csrf_token }}
-                    <div class="imagemlogin d-flex justify-content-center"><img
-                            src="{{ url_for('static',filename='images/imagemlogin.svg') }}"
-                            alt="">
-                    </div>
+
                     {{ form_login.email.label (class="form-control.label") }}
 
                     {% if form_login.email.errors %}
-                        {{ form_login.email (class="form-control is-invalid", placeholder="exemplo@email.com") }}
-                        <div class="invalid-feedback">
-                            {% for erro in form_login.email.errors %}
-                                {{ erro }}
-                            {% endfor %}
-                        </div>
+                    {{ form_login.email (class="form-control is-invalid", placeholder="exemplo@email.com") }}
+                    <div class="invalid-feedback">
+                        {% for erro in form_login.email.errors %}
+                        {{ erro }}
+                        {% endfor %}
+                    </div>
                     {% else %}
-                        {{ form_login.email (class="form-control", placeholder="exemplo@email.com") }}
+                    {{ form_login.email (class="form-control", placeholder="exemplo@email.com") }}
                     {% endif %}
 
                     {{ form_login.senha.label (class="form-control.label") }}
                     {% if form_login.senha.errors %}
-                        {{ form_login.senha (class="form-control is-invalid", placeholder="6 a 20 caracteres") }}
-                        <div class="invalid-feedback">
-                            {% for erro in form_login.senha.errors %}
-                                {{ erro }}
-                            {% endfor %}
-                        </div>
+                    {{ form_login.senha (class="form-control is-invalid", placeholder="6 a 20 caracteres") }}
+                    <div class="invalid-feedback">
+                        {% for erro in form_login.senha.errors %}
+                        {{ erro }}
+                        {% endfor %}
+                    </div>
                     {% else %}
-                        {{ form_login.senha (class="form-control", placeholder="6 a 20 caracteres") }}
+                    {{ form_login.senha (class="form-control", placeholder="6 a 20 caracteres") }}
                     {% endif %}
 
 
@@ -106,58 +69,83 @@
                         {{ form_login.lembra_acesso (class="form-check-input") }}
                     </div>
                     <div class="p-2">
-                    {{ form_login.botao_submit_login (class="btn btn-light") }}
+                        {{ form_login.botao_submit_login (class="btn btn-light") }}
                     </div>
                     <div class="textologin text-center">
                         <p>Ainda não é cliente INDOC? <a class="text-warning text-decotion-none"
-                                                         href="{{ url_for('empresacadastro') }}">Cadastre-se aqui!</a></p>
+                                href="{{ url_for('empresacadastro') }}">Cadastre-se aqui!</a></p>
                     </div>
 
                 </form>
+            </div>
 
-            </aside>
+
+
         </div>
+        <article>
+            <section class="explicacao">
+                <h3>Conheça o sistema de gerenciamento de atendimento INDOC</h3>
+                <p class="color01">
+                    É um fato estabelecido há muito tempo que um leitor se distrairá com o conteúdo legível de uma
+                    página
+                    ao olhar para seu layout. O ponto de usar Lorem Ipsum é que ele tem uma distribuição mais ou
+                    menos
+                    normal de letras, ao contrário de usar 'Conteúdo aqui, conteúdo aqui', fazendo com que pareça
+                    inglês
+                    legível. Muitos pacotes de editoração eletrônica e editores de páginas da web agora usam Lorem
+                    Ipsum
+                    como seu texto de modelo padrão, e uma pesquisa por 'lorem ipsum' descobrirá muitos sites ainda
+                    em
+                    sua infância. Várias versões evoluíram ao longo dos anos, às vezes por acidente, às vezes de
+                    propósito.
+                </p>
+            </section>
+            <section class="explicacao">
+                <h3>As vantagens do sistema INDOC</h3>
+
+                <p class="color01">
+                    O que é Lorem Ipsum?
+                    Lorem Ipsum é simplesmente um texto fictício da indústria tipográfica e de impressão. Lorem Ipsum
+                    tem
+                    sido o texto fictício padrão da indústria desde os anos 1500, quando um impressor desconhecido pegou
+                    uma
+                    cozinha de tipos e embaralhou-a para fazer um livro de espécimes de tipos. Ele sobreviveu não apenas
+                    cinco séculos, mas também o salto para a composição eletrônica, permanecendo essencialmente
+                    inalterado.
+                    Foi popularizado na década de 1960 com o lançamento de folhas Letraset contendo passagens de Lorem
+                    Ipsum
+                    e, mais recentemente, com software de editoração eletrônica como Aldus PageMaker.
+
+
+                </p>
+            </section>
+        </article>
+        <article>
+            <section class="explicacao02">
+                <h3>Porque usamos isso?</h3>
+                <p class="color01">
+                    É um fato estabelecido há muito tempo que um leitor se distrairá com o conteúdo legível de uma
+                    página ao
+                    olhar para seu layout. O ponto de usar Lorem Ipsum é que ele tem uma distribuição mais ou menos
+                    normal
+                    de letras, ao contrário de usar 'Conteúdo aqui, conteúdo aqui', fazendo com que pareça inglês
+                    legível.
+                    Muitos pacotes de editoração eletrônica e editores de páginas da web agora usam Lorem Ipsum como seu
+                    texto de modelo padrão, e uma pesquisa por 'lorem ipsum' descobrirá muitos sites ainda em sua
+                    infância.
+                    Várias versões evoluíram ao longo dos anos, às vezes por acidente, às vezes de propósito (humor
+                    injetado
+                    e afins).
+                    De onde isso vem?
+                </p>
+            </section>
+        </article>
+
+
     </div>
+    <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
 
-    <article class="row w-80 p-3">
-
-        <section class="secao text-justify">
-            <h3>As vantagens do sistema INDOC</h3>
-
-            <p>O que é Lorem Ipsum?
-                Lorem Ipsum é simplesmente um texto fictício da indústria tipográfica e de impressão. Lorem Ipsum
-                tem
-                sido o texto fictício padrão da indústria desde os anos 1500, quando um impressor desconhecido pegou
-                uma
-                cozinha de tipos e embaralhou-a para fazer um livro de espécimes de tipos. Ele sobreviveu não apenas
-                cinco séculos, mas também o salto para a composição eletrônica, permanecendo essencialmente
-                inalterado.
-                Foi popularizado na década de 1960 com o lançamento de folhas Letraset contendo passagens de Lorem
-                Ipsum
-                e, mais recentemente, com software de editoração eletrônica como Aldus PageMaker, incluindo versões
-                de
-                Lorem Ipsum.
-
-                Porque usamos isso?
-                É um fato estabelecido há muito tempo que um leitor se distrairá com o conteúdo legível de uma
-                página ao
-                olhar para seu layout. O ponto de usar Lorem Ipsum é que ele tem uma distribuição mais ou menos
-                normal
-                de letras, ao contrário de usar 'Conteúdo aqui, conteúdo aqui', fazendo com que pareça inglês
-                legível.
-                Muitos pacotes de editoração eletrônica e editores de páginas da web agora usam Lorem Ipsum como seu
-                texto de modelo padrão, e uma pesquisa por 'lorem ipsum' descobrirá muitos sites ainda em sua
-                infância.
-                Várias versões evoluíram ao longo dos anos, às vezes por acidente, às vezes de propósito (humor
-                injetado
-                e afins).
-                De onde isso vem?
-            </p>
-        </section>
-    </article>
-</div>
-<script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
 </body>
 
 </html>

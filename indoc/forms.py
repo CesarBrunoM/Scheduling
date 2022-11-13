@@ -40,10 +40,12 @@ class FormEditarEmpresa(FlaskForm):
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     botao_submit_concluir = SubmitField('Confirmar')
 
-    def validate_cnpj(self, cnpj):
-        empresa = Empresa.query.filter_by(cnpj=cnpj.data).first()
+    def validate_cnpj(self, cnpj):    
+        empresa = Empresa.query.filter_by(cnpj=cnpj.data).first()        
         if empresa:
-            raise ValidationError('CNPJ já cadastrado.')
+            if empresa.cnpj != cnpj.data:
+                raise ValidationError('CNPJ já cadastrado.')
+            
 
 class FormCriarConta(FlaskForm):
     username = StringField('Nome usuário', validators=[DataRequired(), Length(1, 100)])
@@ -76,21 +78,18 @@ class FormEditarPerfil(FlaskForm):
     username = StringField('Nome usuário', validators=[DataRequired()])
     nome_completo = StringField('Nome completo', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
-    senha = PasswordField('Senha', validators=[DataRequired(), Length(8, 20)])
-    confirma_senha = PasswordField('Confirmação senha', validators=[DataRequired(), EqualTo('senha',
-                                                                                            message='Os campos de senha devem ser iguais.')])
+    senha = PasswordField('Senha')
+    confirma_senha = PasswordField('Confirmação senha', validators=[EqualTo('senha' ,message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
-    foto_perfil = FileField('Foto perfil', validators=[
-        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+    foto_perfil = FileField('Foto perfil', validators=[FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo')
     botao_submit_editarperfil = SubmitField('Confirmar')
-
-    def validate_email(self, email):
-        if current_user.email != email.data:
-            usuario = Usuario.query.filter_by(email=email.data).first()
-            if usuario:
-                raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
+            
+    def validate_senha(self, senha):
+        if senha.data:
+            if len(senha.data) < 8 or len(senha.data) > 20:
+                raise ValidationError('Senha deve ter de 8 a 20 caracteres.')
 
 
 class FormEditarUsuario(FlaskForm):
@@ -112,6 +111,11 @@ class FormEditarUsuario(FlaskForm):
         usuario = Usuario.query.filter_by(email=email.data).first()
         if usuario:
             raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
+        
+    def validate_senha(self, senha):
+        if senha.data:
+            if len(senha.data) < 8 or len(senha.data) > 20:
+                raise ValidationError('Senha deve ter de 8 a 20 caracteres.')
 
 
 class FormCliente(FlaskForm):
@@ -122,7 +126,23 @@ class FormCliente(FlaskForm):
     logomarca = FileField('Logomarca', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     ativo = BooleanField('Ativo')
-    btn_submit_cliente = SubmitField('Confirmar')
+    btn_submit_cliente = SubmitField('Confirmar')  
+
+    def validate_cnpj(self, cnpj):
+        empresa = Cliente.query.filter_by(cnpj=cnpj.data, id_empresa=current_user.id_empresa).first()
+        if empresa:
+            raise ValidationError('Empresa já cadastrada.')
+        
+        
+class FormEditarCliente(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    razao = StringField('Razão social', validators=[DataRequired()])
+    cnpj = StringField('CNPJ', validators=[DataRequired()])
+    contato = StringField('Contato', validators=[DataRequired()])
+    logomarca = FileField('Logomarca', validators=[
+        FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
+    ativo = BooleanField('Ativo')
+    btn_submit_cliente = SubmitField('Confirmar')  
 
     def validate_cnpj(self, cnpj):
         empresa = Cliente.query.filter_by(cnpj=cnpj.data, id_empresa=current_user.id_empresa).first()

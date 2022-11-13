@@ -1,179 +1,235 @@
-body {
-    background-image: url(../images/background5.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
 
-    width: 100%;
-    right: 100vh;
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
 }
 
-.form-control:focus {
-    box-shadow: none;
-    border-color: #BA68C8
-}
+    body {
+        background-image: url(../images/background5.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
 
-.profile-button {
-    background: rgb(99, 39, 120);
-    box-shadow: none;
-    border: none
-}
+        width: 100%;
+        right: 100vh;
+    }
 
-.profile-button:hover {
-    background: #682773
-}
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
 
-.profile-button:focus {
-    background: #682773;
-    box-shadow: none
-}
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 15px;
+        border-radius: 15px;
+        background: #665E58;
 
-.profile-button:active {
-    background: #682773;
-    box-shadow: none
-}
+    }
 
-.back:hover {
-    color: #682773;
-    cursor: pointer
-}
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #BA68C8
+    }
 
-.labels {
-    font-size: 11px
-}
+    .profile-button {
+        background-color: #000000c2;
+        color: #ffffff;
+        font-size: 1.5em;
+        border-radius: 5px;
+        border: none;
+        margin: 0px 5px;
+    }
 
-.add-experience:hover {
-    background: #BA68C8;
-    color: #fff;
-    cursor: pointer;
-    border: solid 1px #BA68C8
-}
+    .profile-button:hover {
+        background-color: #dbb740;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.411);
+        transition: 1s;
+    }
 
-.topico1{
-    background:linear-gradient(to right, #b0a78a, #95896b,#5b5454);
-    border-radius: 5px;
-    margin-bottom: 20px;   
-    font-family: "Dream Orphans";
-    font-size: 75%;
-}
+    .profile-button:focus {
+        background-color: #dbb740;
+        box-shadow: none
+    }
 
+    .profile-button:active {
+        background-color: #dbb740;
+        box-shadow: none
+    }
 
-.menu li a{
-    background: #d3c79e;
-    text-decoration: none;
-    color: #59523a;
-    width: 100%;
-    height: 50px;
-    line-height: 40px;
-    font-size: 100%;
-    text-align: center;    
-}
+    .back:hover {
+        color: #682773;
+        cursor: pointer
+    }
 
-
-
-li{
-    border-top: 2px solid #b1a47e;
-    border-bottom: 2px solid #d5d1ba;
+    .labels, th{
+        font-size: 1.5em;
+    }
     
-}
 
-li a:hover{
-    background: #f08204;
-   
-}
+    .add-experience:hover {
+        background: #BA68C8;
+        color: #fff;
+        cursor: pointer;
+        border: solid 1px #BA68C8
+    }
 
-
-.menu2 a, .dropdown-item{
-    font-size: 110%;
-}
-
-.dropdown-item:hover{
-    background: #ae6113;
-    color: #3d3838;
-
-}
-
-.menu button{
-    position: relative;
-    left: 20%;
-}
+    .topico1 {
+        background: linear-gradient(to right, #b0a78a, #95896b, #5b5454);
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-family: "Dream Orphans";
+        font-size: 75%;
+    }
 
 
-label{    
-    font-family: "Caviar Dreams Bold";
-    color:#504833;  
-}
+    .menu li a {
+        background: #d3c79e;
+        text-decoration: none;
+        color: #59523a;
+        width: 100%;
+        height: 50px;
+        line-height: 40px;
+        font-size: 100%;
+        text-align: center;
+    }
 
-.bgcard {
-    background: #d3c79e !important;
-    border-radius: 15px;
-}
 
-#header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: #d3c79e;
-    overflow-y: auto;
-    width: 300px;
-    transition: all ease-in-out 0.5s;
-    padding: 0 15px;
-    z-index: 9997;
-}
 
-#header .profile img {
-    margin: 5px auto;
-    display: block;
-    width: 120px;
-    border: 8px solid #2c2f3f;
-    border-radius: 50%;
-}
+    li {
+        border-top: 2px solid #b1a47e;
+        border-bottom: 2px solid #d5d1ba;
+        background-color: #D3C79E;
+    }
 
-#header .profile a {
-    font-size: 1rem;
-    padding: 0.6rem;
-    transition: 0.3s;
-    text-decoration: none;
-}
+    li a:hover {
+        background: #665e5863;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.411);
+        border-radius: 5px;
 
-.nav-menu {
-    padding: 1.5rem;
-}
+    }
 
-.nav-menu a,
-.nav-manu a:focus {
-    display: flex;
-    align-items: center;
-    color: #2F4F4F;
-    transition: 0.3s;
-    font-size:15px;
-}
 
-.nav-menu a i,
-.nav-menu a:focus i{
-    font-size: 24px;
-    padding-right: 0.8rem;
-    color: #2F4F4F;
-}
+    .menu2 a,
+    .dropdown-item {
+        font-size: 110%;
 
-.nav-menu a:hover,
-.nav-menu .active,
-.nav-menu .active:focus,
-.nav-menu li:hover > a {
-    text-decoration: none;
-    color: #fff;
-}
+    }
 
-.nav-menu a:hover i,
-.nav-menu .active i,
-.nav-menu .active:focus i,
-.nav-menu li:hover > a i{
-    color: #800000;
-}
+    .dropdown-item:hover {
+        background-color: #A99E83;
+        border-radius: 0px;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.493);
+        color: white;
+        transition: 0.5s;
 
-#main {
-    margin-left: 300px;    
-}
+    }
 
+    .menu button {
+        position: relative;
+        left: 20%;
+    }
+
+
+    label {
+        font-family: "Caviar Dreams Bold";
+        color: #504833;
+    }
+
+    .bgcard {
+        background: #d3c79e !important;
+        border-radius: 15px;
+    }
+
+    #header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background: #d3c79e;
+        overflow-y: auto;
+        width: 300px;
+        transition: all ease-in-out 0.5s;
+        z-index: 9997;
+
+    }
+  
+    
+    #header .profile img {
+        display: block;
+        margin: 5px auto;
+        border-radius: 50%;
+        border: 3px solid #2c2f3f;
+        
+    }
+
+    #header .profile a {
+        display: block;
+        font-size: 1rem;
+        padding: 0.6rem;
+        transition: 0.3s;
+        text-decoration: none;
+        
+    }
+
+    .nav-menu {
+        padding: 1.5rem;
+    }
+
+    .nav-menu a,
+    .nav-manu a:focus {
+        display: flex;
+        align-items: center;
+        color: #2F4F4F;
+        transition: 1s;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .nav-menu a i,
+    .nav-menu a:focus i {
+        font-size: 24px;
+        padding-right: 0.8rem;
+        color: #2F4F4F;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu .active,
+    .nav-menu .active:focus,
+    .nav-menu li:hover>a {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .nav-menu a:hover i,
+    .nav-menu .active i,
+    .nav-menu .active:focus i,
+    .nav-menu li:hover>a i {
+        color: #800000;
+    }
+
+    #main {
+        margin-left: 323px;
+    }
+
+    section#inicio {
+        background-image: url(../images/background5.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+
+        width: 100%;
+        right: 100vh;
+    }
+
+    .dropdown-menu {
+        width: 250px;
+        padding: 0px;
+
+    }
+
+    .mt-5{
+        margin-bottom: 20px;
+    }
+    

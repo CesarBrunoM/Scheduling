@@ -2,7 +2,7 @@ from indoc import app, bcrypt
 from flask import render_template, redirect, flash, url_for, request
 from indoc.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormEmpresa, FormCliente, \
     FormProblema, FormSetor, FormEditarUsuario, FormAtendimento, FormComentario, FormCancelamento, FormFecharAtendimento, \
-    FormEditarEmpresa
+    FormEditarEmpresa, FormEditarCliente
 from indoc.models import Usuario, database, Empresa, Cliente, Problema, Setor, Atendimento, SubAtendimento
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -112,14 +112,13 @@ def editarempresa(id_empresa):
     formempresa = FormEditarEmpresa()
     empresa = Empresa.query.get(id_empresa)
     if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
-        empresa.cnpj=formempresa.cnpj.data
         empresa.razao=formempresa.razao.data
         empresa.nome=formempresa.nome.data
         empresa.email=formempresa.email.data
         empresa.telefone=formempresa.telefone.data
         if formempresa.logomarca.data:
             logomarca = salvar_logomarca_empresa(formempresa.logomarca.data)
-            empresa.logomarca=logomarca
+            empresa.logomarca=logomarca   
         database.session.commit()
         flash('Empresa atualizada com sucesso', 'alert-success')
         return redirect(url_for('empresa'))
@@ -197,7 +196,7 @@ def perfil():
 @login_required
 def editarperfil():
     form = FormEditarPerfil()
-    if form.validate_on_submit():
+    if form.validate_on_submit():        
         current_user.username = form.username.data
         current_user.nome_completo = form.nome_completo.data
         current_user.email = form.email.data
@@ -207,6 +206,9 @@ def editarperfil():
         if form.foto_perfil.data:
             nome_imagem = salvar_imagem(form.foto_perfil.data)
             current_user.foto_perfil = nome_imagem
+        elif form.senha.data:
+            senha_cript = bcrypt.generate_password_hash(form.senha.data)
+            current_user.senha = senha_cript
         database.session.commit()
         flash('Perfil atualizado com sucesso', 'alert-success')
         return redirect(url_for('perfil'))
@@ -253,6 +255,9 @@ def editar_usuario(usuario_id):
         if form.foto_perfil.data:
             nome_imagem = salvar_imagem(form.foto_perfil.data)
             user.foto_perfil = nome_imagem
+        elif form.senha.data:
+            senha_cript = bcrypt.generate_password_hash(form.senha.data)
+            user.senha = senha_cript
         database.session.commit()
         flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
         return redirect(url_for('listuser'))
@@ -314,7 +319,7 @@ def cliente():
 @app.route("/cliente/<cliente_id>", methods=['GET', 'POST'])
 @login_required
 def editar_cliente(cliente_id):
-    form = FormCliente()
+    form = FormEditarCliente()
     client = Cliente.query.get(cliente_id)
     if request.method == 'GET':
         form.nome.data = client.nome
@@ -322,22 +327,12 @@ def editar_cliente(cliente_id):
         form.cnpj.data = client.cnpj
         form.contato.data = client.contato
         form.ativo.data = client.ativo
-    elif form.validate_on_submit() and client.cnpj != form.cnpj.data:
+    elif form.validate_on_submit():
         client.nome = form.nome.data
         client.razao = form.razao.data
         client.contato = form.contato.data
         client.ativo = form.ativo.data
-        if form.logomarca.data:
-            nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
-            client.logomarca = nome_imagem
-        database.session.commit()
-        flash(f'client {form.nome.data} atualizado com sucesso.')
-        return redirect(url_for('cliente'))
-    else:
-        client.nome = form.nome.data
-        client.razao = form.razao.data
-        client.contato = form.contato.data
-        client.ativo = form.ativo.data
+        client.cnpj = form.cnpj.data
         if form.logomarca.data:
             nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
             client.logomarca = nome_imagem
