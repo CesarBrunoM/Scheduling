@@ -39,20 +39,6 @@
                         </div>
                     </div> 
                     <div class="row mt-2">
-                        <div class="col-md-12">{{ formempresa.cnpj.label(class="labels") }}
-                            {% if formempresa.errors %}
-                            {{ formempresa.cnpj(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.cnpj.errors %}
-                                {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ formempresa.cnpj(class="form-control") }}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row mt-2">
                         <div class="col-md-12">{{ formempresa.email.label(class="labels") }}
                             {% if formempresa.errors %}
                             {{ formempresa.email(class="form-control is-invalid") }}

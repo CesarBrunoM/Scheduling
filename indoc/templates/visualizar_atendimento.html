@@ -5,6 +5,14 @@
 {% endblock %}
 
 {% block nav %}
+<div class="dropdown">
+    <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-plus-square"></i> Filtros
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Nome</a></li>
+    </ul>
+</div> 
 {% endblock %}
 
 {% block body %}
@@ -80,7 +88,7 @@
     <div class="conteiner mt-2 p-3">
         <h3>Histórico</h3>
         <hr>
-        {% for sub in subaten %}
+        {% for sub in subaten.items %}
             <div class="row mt-4 p-2 bgcard">
                 <div class="col col-2">
                     <div class="card-body text-center">
@@ -99,6 +107,18 @@
                     <b>Data:</b> {{ datetime.strftime(sub.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
                 </div>
             </div>
+        {% endfor %}
+        <hr>
+        {% for page_num in subaten.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if subaten.page == page_num %}
+                    <a class="btn btn-secondary active" href="{{ url_for('visualizar_atendimento', atendimento_id=atendimento.id, page=page_num ) }}">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-danger profile-button" href="{{ url_for('visualizar_atendimento', atendimento_id=atendimento.id, page=page_num ) }}">{{ page_num }}</a>
+                {% endif %}            
+            {% else %}        
+                ...
+            {% endif %}
         {% endfor %}
     </div>
 <!-- Modal comentário -->

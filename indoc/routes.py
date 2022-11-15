@@ -123,7 +123,6 @@ def editarempresa(id_empresa):
         flash('Empresa atualizada com sucesso', 'alert-success')
         return redirect(url_for('empresa'))
     elif request.method == "GET":
-        formempresa.cnpj.data=empresa.cnpj
         formempresa.nome.data=empresa.nome
         formempresa.razao.data=empresa.razao
         formempresa.email.data=empresa.email
@@ -244,7 +243,7 @@ def editar_usuario(usuario_id):
         form.data_nascimento.data = user.data_nascimento
         form.cargo.data = user.cargo
         form.ativo.data = user.ativo
-    elif form.validate_on_submit() and user.email != form.email.data:
+    elif form.validate_on_submit():
         user.username = form.username.data
         user.nome_completo = form.nome_completo.data
         user.email = form.email.data
@@ -258,19 +257,6 @@ def editar_usuario(usuario_id):
         elif form.senha.data:
             senha_cript = bcrypt.generate_password_hash(form.senha.data)
             user.senha = senha_cript
-        database.session.commit()
-        flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
-        return redirect(url_for('listuser'))
-    else:
-        user.username = form.username.data
-        user.nome_completo = form.nome_completo.data
-        user.telefone = form.telefone.data
-        user.data_nascimento = form.data_nascimento.data
-        user.cargo = form.cargo.data
-        user.ativo = form.ativo.data
-        if form.foto_perfil.data:
-            nome_imagem = salvar_imagem(form.foto_perfil.data)
-            user.foto_perfil = nome_imagem
         database.session.commit()
         flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
         return redirect(url_for('listuser'))
@@ -315,6 +301,11 @@ def cliente():
     lista_cliente = Cliente.query.filter_by(id_empresa=current_user.id_empresa)
     return render_template('clientes.html', lista_clientes=lista_cliente)
 
+def validade_cnpj(cnpj, id):
+    cliente = Cliente.query.filter_by(cnpj=cnpj).first()
+    if cliente and cliente.id != id:
+        flash('CNPJ já cadastrado', 'alert-danger')
+    
 
 @app.route("/cliente/<cliente_id>", methods=['GET', 'POST'])
 @login_required
@@ -327,17 +318,17 @@ def editar_cliente(cliente_id):
         form.cnpj.data = client.cnpj
         form.contato.data = client.contato
         form.ativo.data = client.ativo
-    elif form.validate_on_submit():
+    elif form.validate_on_submit():            
         client.nome = form.nome.data
         client.razao = form.razao.data
         client.contato = form.contato.data
         client.ativo = form.ativo.data
-        client.cnpj = form.cnpj.data
         if form.logomarca.data:
             nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
             client.logomarca = nome_imagem
+        validade_cnpj(form.cnpj.data, client.id)
         database.session.commit()
-        flash(f'client {form.nome.data} atualizado com sucesso.')
+        flash(f'client {form.nome.data} atualizado com sucesso.', 'alert-success')
         return redirect(url_for('cliente'))
     return render_template('editarcliente.html', form=form, client=client)
 
@@ -438,7 +429,8 @@ def editar_setor(setor_id):
 @app.route("/atendimento", methods=['GET', 'POST'])
 @login_required
 def atendimento():
-    atendimentos = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.id.desc())
+    page = request.args.get('page',1 , type=int)
+    atendimentos = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.id.desc()).paginate(page=page, per_page=5)
     return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime)
 
 
@@ -485,7 +477,8 @@ def visualizar_atendimento(atendimento_id):
     form.usuario.choices = usuarios
     form.problema.choices = problemas
     atend = Atendimento.query.get(atendimento_id)
-    subatend = SubAtendimento.query.filter_by(id_atendimento=atendimento_id).order_by(SubAtendimento.id.desc())
+    page = request.args.get('page', 1, type=int)
+    subatend = SubAtendimento.query.filter_by(id_atendimento=atendimento_id).order_by(SubAtendimento.id.desc()).paginate(page=page, per_page=5)
     if form.validate_on_submit() and 'btn_submit_salvar' in request.form:
         new_sub = SubAtendimento(
             id_usuario=request.form.get('usuario'),

@@ -12,6 +12,14 @@ Setor
   <a href="{{ url_for('cadastrosetor') }}">
     <button type="button" class="btn btn-primary profile-button">Novo Setor</button>
   </a>
+  <div class="dropdown">
+    <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-plus-square"></i> Filtros
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Nome</a></li>
+    </ul>
+</div> 
 {% endblock %}
 
 {% block body %}

@@ -95,7 +95,7 @@ class Atendimento(database.Model):
     id_cliente = database.Column(database.Integer, database.ForeignKey('cliente.id'), nullable=False)
     id_setor = database.Column(database.Integer, database.ForeignKey('setor.id'), nullable=False)
     subatendimento = database.relationship('SubAtendimento', backref='atendimento', lazy=True)
-
+    
 
 class SubAtendimento(database.Model):
     id = database.Column(database.Integer, primary_key=True)

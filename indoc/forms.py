@@ -30,21 +30,15 @@ class FormEmpresa(FlaskForm):
         if usuario:
             raise ValidationError('Email já cadastrado.')
 
+
 class FormEditarEmpresa(FlaskForm):
     nome = StringField('Nome empresa', validators=[DataRequired(), Length(1, 100)])
     razao = StringField('Razão social', validators=[DataRequired(), Length(1, 100)])
-    cnpj = StringField('CNPJ', validators=[DataRequired(), Length(14, 14)])
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     logomarca = FileField('Logomarca', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     botao_submit_concluir = SubmitField('Confirmar')
-
-    def validate_cnpj(self, cnpj):    
-        empresa = Empresa.query.filter_by(cnpj=cnpj.data).first()        
-        if empresa:
-            if empresa.cnpj != cnpj.data:
-                raise ValidationError('CNPJ já cadastrado.')
             
 
 class FormCriarConta(FlaskForm):
@@ -90,6 +84,11 @@ class FormEditarPerfil(FlaskForm):
         if senha.data:
             if len(senha.data) < 8 or len(senha.data) > 20:
                 raise ValidationError('Senha deve ter de 8 a 20 caracteres.')
+    
+    def validate_email(self, email):
+        user = Usuario.query.filter_by(email=email.data).first()
+        if user and user.id != current_user.id:
+            raise ValidationError('E-mail já cadastrado.')
 
 
 class FormEditarUsuario(FlaskForm):
@@ -143,12 +142,7 @@ class FormEditarCliente(FlaskForm):
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     ativo = BooleanField('Ativo')
     btn_submit_cliente = SubmitField('Confirmar')  
-
-    def validate_cnpj(self, cnpj):
-        empresa = Cliente.query.filter_by(cnpj=cnpj.data, id_empresa=current_user.id_empresa).first()
-        if empresa:
-            raise ValidationError('Empresa já cadastrada.')
-
+       
 
 class FormProblema(FlaskForm):
     descricao = StringField('Descricao', validators=[DataRequired()])
