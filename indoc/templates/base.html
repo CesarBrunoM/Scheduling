@@ -11,6 +11,7 @@
     {% endblock %}
 </head>
 <body>
+    <i class="bi bi-list menu-mobile"></i>
     {% include 'menu_lateral.html' %}    
     <main id="main">
         <section id="inicio" class="row m-0 p-0">
@@ -63,5 +64,6 @@
     </main>
     <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/script.js') }}"></script>
 </body>
 </html>

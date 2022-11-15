@@ -232,7 +232,32 @@
     .mt-5{
         margin-bottom: 20px;
     }
+
+    i.menu-mobile {
+        position: fixed;
+        color: #fff;
+        background-color: #59523a;
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+        border-radius: 4rem;
+        cursor: pointer;
+        z-index: 10;
+        width: 45px;
+        height: 45px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
     
+    .menu-nav-active{
+        overflow: hidden;
+    }
+
+    .menu-nav-active #header {
+        left: 0px;
+    }
+
     @media (max-width: 1024px) {
         #header {
             left: -300px;
