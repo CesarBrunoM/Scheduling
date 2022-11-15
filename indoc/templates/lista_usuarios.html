@@ -1,60 +1,74 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Usuários
+Usuários
 {% endblock %}
 
 {% block page %}
-  <h4>Atendentes</h4>
+<h4>Atendentes</h4>
 {% endblock %}
 
-{% block button %}                                
-  <a href="{{ url_for('usuario') }}">
-      <button type="button" class="btn btn-primary profile-button">Novo</button>
-  </a>
-  <div class="dropdown">
-    <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-plus-square"></i> Filtros
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Data Cadastro</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Inicio</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Fechamento</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Cancelamento</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Cliente</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Prioridade</a></li>
-    </ul>
-</div> 
-{% endblock %}  
+{% block button %}
+<a href="{{ url_for('usuario') }}">
+  <button type="button" class="btn btn-primary profile-button">Novo</button>
+</a>
+<div class="dropdown">
+  <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    <i class="bi bi-plus-square"></i> Filtros
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Data Cadastro</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Inicio</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Fechamento</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Cancelamento</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Cliente</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Prioridade</a></li>
+  </ul>
+</div>
+{% endblock %}
 
 {% block body %}
-
-  <div class="container p-3">
-    {% for usuario in lista_usuarios %}
-       <div class="row mt-4 p-2 bgcard">
-          <div class="col col-2 justify-content-center">
-            <div class="card-body text-center">
-              <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}"
-                         alt="avatar"
-                         class="rounded-circle" style="width: 80px;">
-              <b class="badge rounded-pill bg-dark">{{ usuario.username }}</b>
-            </div>
-          </div>
-          <div class="col col-5 mt-2">
-            <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
-            <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>
-          </div>
-         <div class="col col-5 mt-2">
-            <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
-            <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
-          </div>
+<div class="container p-3">
+  {% for usuario in lista_usuarios.items %}
+  <div class="row mt-1 p-1 bgcard d-flex">
+    <div class="col col-2 justify-content-center">
+      <div class="card-body text-center">
+        <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"
+          class="rounded-circle" style="width: 70px;">
+        <b class="badge rounded-pill bg-dark">{{ usuario.username }}</b>
       </div>
-    {% endfor %}
-
+    </div>
+    <div class="col col-5 mt-4">
+      <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
+      <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>
+      <h6><strong>Cargo: </strong>{{ usuario.cargo }}</h6>
+    </div>
+    <div class="col col-5 mt-4">
+      <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
+      <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
+      <div class="d-flex flex-row-reverse">
+        <a href="{{ url_for('editar_usuario', usuario_id=usuario.id )}}">
+          <button class="btn profile-button">Editar</button>
+        </a>
+      </div>
+    </div>
   </div>
-  {% block form %}
-  {% endblock %}
+  {% endfor %}
+  <hr>
+  {% for page_num in lista_usuarios.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+      {% if lista_usuarios.page == page_num %}
+        <a class="btn btn-secondary active mt-3" href="{{ url_for('listuser', page=page_num ) }}">{{ page_num }}</a>
+      {% else %}
+        <a class="btn profile-button mt-3" href="{{ url_for('listuser', page=page_num ) }}">{{ page_num }}</a>
+      {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+  {% endfor %}
+</div>
 {% endblock %}
