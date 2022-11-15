@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">    
+    <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - INDOC</title>
     <!-- CSS only -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
@@ -10,20 +11,21 @@
     {% block head %}
     {% endblock %}
 </head>
+
 <body>
     <i class="bi bi-list menu-mobile"></i>
-    {% include 'menu_lateral.html' %}    
+    {% include 'menu_lateral.html' %}
     <main id="main">
         <section id="inicio" class="row m-0 p-0">
             <div class="container d-flex justify-content-center align-itens-center">
                 {% with mensagens = get_flashed_messages(with_categories=True) %}
-                    {% if mensagens %}
-                        {% for categoria, mensagem in mensagens %}
-                            <div class="alert {{ categoria }}">
-                                {{ mensagem }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                {% if mensagens %}
+                {% for categoria, mensagem in mensagens %}
+                <div class="alert {{ categoria }}">
+                    {{ mensagem }}
+                </div>
+                {% endfor %}
+                {% endif %}
                 {% endwith %}
             </div>
             <div class="container row topico1">
@@ -36,25 +38,27 @@
                         {% block button %}
                         {% endblock %}
                         <div class="dropdown">
-                            <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-primary profile-button dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-plus-square"></i> Novo
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atedimento</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atedimento</a>
+                                </li>
                                 <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
                             </ul>
-                        </div> 
-                    </div>  
-                    <div class="col col-2 d-flex flex-row-reverse align-items-center">                                                                      
-                        <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
-                        class="rounded-circle p-2" style="width: 50px;"> 
-                        {{ current_user.username }}
-                        {{ current_user.email }}    
+                        </div>
                     </div>
-                </nav>  
+                    <div class="col col-2 d-flex flex-row-reverse align-items-center">
+                        <img src="../static/foto_perfil/{{ current_user.foto_perfil }}" alt="avatar"
+                            class="rounded-circle p-2" style="width: 50px;">
+                        {{ current_user.username }}
+                        {{ current_user.email }}
+                    </div>
+                </nav>
             </div>
             <div class="row d-flex justify-content-center align-itens-center topico1">
                 {% block body %}
@@ -66,4 +70,5 @@
     <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/script.js') }}"></script>
 </body>
+
 </html>

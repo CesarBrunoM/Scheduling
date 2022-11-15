@@ -1,12 +1,15 @@
 <aside id="header">
   <section class="profile">
     <img src="../static/logomarca_empresa/{{ current_user.empresa.logomarca }}" alt="avatar" class="profile">
-    <a  class="mt-4 text-center text-dark" href="{{ url_for('empresa') }}"><h4>{{ current_user.empresa.nome }}</h4></a>
+    <a class="mt-4 text-center text-dark" href="{{ url_for('empresa') }}">
+      <h4>{{ current_user.empresa.nome }}</h4>
+    </a>
   </section>
   <nav id="navbar" class="nav-menu">
     <ul class="nav flex-column">
       <li class="nav-item border-top-0">
-        <a class="nav-link" aria-current="page" href="{{ url_for('home') }}"><i class="bi bi-house-door-fill"></i> Pagina Inicial</a>
+        <a class="nav-link" aria-current="page" href="{{ url_for('home') }}"><i class="bi bi-house-door-fill"></i>
+          Pagina Inicial</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('atendimento') }}"><i class="bi bi-card-list"></i> Atendimentos</a>
@@ -15,7 +18,8 @@
         <a class="nav-link" href="{{ url_for('cliente') }}"><i class="bi bi-file-person"></i> Clientes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('listuser') }}"><i class="bi bi-person-video2"></i></i> Usuários</a></li>
+        <a class="nav-link" href="{{ url_for('listuser') }}"><i class="bi bi-person-video2"></i></i> Usuários</a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-file-post"></i> Cadastros
@@ -23,7 +27,9 @@
         <ul class="dropdown-menu" style="background-color:PeachPuff">
           <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>
           <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Usuário</a></li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atendimentos</a></li>
           <li><a class="dropdown-item" href="{{ url_for('problema') }}">Problemas</a></li>
           <li><a class="dropdown-item" href="{{ url_for('setor') }}">Setores</a></li>
