@@ -12,7 +12,6 @@ from datetime import datetime
 
 
 @app.route("/")
-@login_required
 def home():
     return render_template('home.html')
 
@@ -222,11 +221,12 @@ def editarperfil():
     return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil, datetime=datetime)
 
 
-@app.route("/usuario")
+@app.route("/usuario", methods=['GET'])
 @login_required
 def listuser():
+    page = request.args.get('page',1 , type=int) 
+    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa).paginate(page=page, per_page=5) 
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa)
     return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios, datetime=datetime, foto_perfil=foto_perfil)
 
 

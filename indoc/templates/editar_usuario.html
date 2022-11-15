@@ -1,8 +1,37 @@
-{% extends 'lista_usuarios.html' %}
+{% extends 'base.html' %}
 
-{% block form %}
-<hr>
+{% block title %}
+    Edição Usuário
+{% endblock %}
 
+{% block page %}
+    <h4>Edição Usuário</h4>
+{% endblock %}
+
+{% block button %}
+<a href="{{ url_for('usuario') }}">
+  <button type="button" class="btn btn-primary profile-button">Novo</button>
+</a>
+<div class="dropdown">
+  <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    <i class="bi bi-plus-square"></i> Filtros
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Data Cadastro</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Inicio</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Fechamento</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Cancelamento</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Cliente</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Prioridade</a></li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block body %}
 <div class="container rounded mt-5 mb-5">
     <form method="POST" action="" enctype="multipart/form-data">
         <h1 class="text-center">Edição de Usuário</h1>
