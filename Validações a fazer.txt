@@ -6,7 +6,6 @@ filtros
 graficos 
 
 pesquisar 
---paginate()
 --flask_filter
 --https://betterprogramming.pub/how-to-implement-filtering-sorting-and-pagination-in-flask-c4def1ca004a
 --https://flask-restless.readthedocs.io/en/latest/filtering.html
