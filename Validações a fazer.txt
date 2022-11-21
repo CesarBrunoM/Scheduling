@@ -1,7 +1,5 @@
 -Validar layout
 
-Função editar usuários da empresa.
-Função de edição de dados da empresa.
 filtros 
 graficos 
 

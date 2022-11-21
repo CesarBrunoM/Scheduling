@@ -30,24 +30,33 @@ Setor
             <thead>
             <tr>
                 <th scope="col">
-                    Setores
+                    <h5>Setor</h5>
                 </th>
                 <th scope="col">
-                    Status
+                    <h5>Status</h5>
+                </th>
+                <th scope="col">
+                    <h5>Opção</h5>
                 </th>
             </tr>
             </thead>
             <tbody>
                 {% for setor in lista_setor %}
                 <tr>
-                    <th><a class="link-light" href="{{ url_for('editar_setor', setor_id=setor.id) }}"
-                        style="text-decoration:none">{{ setor.nome }}</a></th>
+                    <th>
+                        {{ setor.nome }}
+                    </th>
                     <th>
                         {% if setor.ativo == True %}
                             <b>ativado</b>
                         {% else %}
                             <b>desativado</b>
                         {% endif %}
+                    </th>
+                    <th>
+                        <a class="link-light" href="{{ url_for('editar_setor', setor_id=setor.id) }}">
+                            <button type="button" class="btn btn-primary profile-button">Editar</button>
+                        </a>
                     </th>
                 </tr>
                 {% endfor %}

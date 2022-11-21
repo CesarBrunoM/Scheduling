@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import SubmitField, StringField, PasswordField, BooleanField, SelectField, TextAreaField, DateTimeLocalField
+from wtforms import SubmitField, StringField, PasswordField, BooleanField, SelectField, TextAreaField, DateTimeLocalField, \
+    DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from indoc.models import Usuario, Cliente, Empresa
 from flask_login import current_user
@@ -51,7 +52,7 @@ class FormCriarConta(FlaskForm):
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
+    data_nascimento = DateField('Data Nascimento', default=datetime.today)
     cargo = StringField('Cargo', validators=[Length(1, 25)])
     botao_submit_criar = SubmitField('Confirmar')
 
@@ -76,7 +77,7 @@ class FormEditarPerfil(FlaskForm):
     confirma_senha = PasswordField('Confirmação senha', validators=[EqualTo('senha' ,message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
+    data_nascimento = DateField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
     cargo = StringField('Cargo')
     botao_submit_editarperfil = SubmitField('Confirmar')
             
@@ -101,7 +102,7 @@ class FormEditarUsuario(FlaskForm):
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateTimeLocalField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
+    data_nascimento = DateField('Data Nascimento', default=datetime.today)
     cargo = StringField('Cargo')
     ativo = BooleanField('Usuário ativo')
     botao_submit_editarperfil = SubmitField('Confirmar')
