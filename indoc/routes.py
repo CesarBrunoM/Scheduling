@@ -12,6 +12,7 @@ from datetime import datetime
 
 
 @app.route("/")
+@login_required
 def home():
     return render_template('home.html')
 
@@ -56,6 +57,7 @@ def salvar_logomarca_empresa(imagem):
 
 
 @app.route("/empresa/cadastro", methods=['GET', 'POST'])
+@login_required
 def empresacadastro():
     formempresa = FormEmpresa()
     if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
@@ -351,7 +353,7 @@ def problema():
     return render_template('problema.html', lista_problema=lista_problema, form_problema=form_problema)
 
 
-@app.route("/problema/cadastro", methods=['GET', 'POST'])
+@app.route("/problemacadastro", methods=['GET', 'POST'])
 @login_required
 def cadastroproblema():
     form = FormProblema()    
@@ -365,7 +367,7 @@ def cadastroproblema():
         database.session.commit()
         flash(f'Problema cadastrado com sucesso.', 'alert-success')
         return redirect(url_for('problema'))
-    return render_template('cadastroproblema.html', form=form)
+    return render_template('cadastro_problema.html', form=form)
 
 
 @app.route("/problema/<problema_id>", methods=['GET', 'POST'])
@@ -537,6 +539,11 @@ def iniciar_atendimento(atendimento_id):
     database.session.commit()
     flash('Atendimento iniciado', 'alert-success')
     return redirect(url_for('visualizar_atendimento', atendimento_id=atendimento_id))
+
+
+@app.route('/<data>')
+def dashboard():
+    atendimento = Atendimento.query.filter_by(id_empresa=current_user.id_empresa, data_cadastro=datetime.utcnow)
 
 
 @app.route('/sair')
