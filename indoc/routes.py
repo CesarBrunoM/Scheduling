@@ -237,6 +237,7 @@ def listuser():
 def editar_usuario(usuario_id):
     form = FormEditarUsuario()
     user = Usuario.query.get(usuario_id)
+    validate_email = Usuario.query.filter(Usuario.id != usuario_id, Usuario.email == form.email.data).first()
     if request.method == "GET":
         form.username.data = user.username
         form.nome_completo.data = user.nome_completo
@@ -246,22 +247,25 @@ def editar_usuario(usuario_id):
         form.cargo.data = user.cargo
         form.ativo.data = user.ativo
     elif form.validate_on_submit():
-        user.username = form.username.data
-        user.nome_completo = form.nome_completo.data
-        user.email = form.email.data
-        user.telefone = form.telefone.data
-        user.data_nascimento = form.data_nascimento.data
-        user.cargo = form.cargo.data
-        user.ativo = form.ativo.data
-        if form.foto_perfil.data:
-            nome_imagem = salvar_imagem(form.foto_perfil.data)
-            user.foto_perfil = nome_imagem
-        elif form.senha.data:
-            senha_cript = bcrypt.generate_password_hash(form.senha.data)
-            user.senha = senha_cript
-        database.session.commit()
-        flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
-        return redirect(url_for('listuser'))
+        if validate_email:
+            flash('E-mail já cadastrado em outro usuário', 'alert-warning')
+        else:            
+            user.username = form.username.data
+            user.nome_completo = form.nome_completo.data
+            user.email = form.email.data
+            user.telefone = form.telefone.data
+            user.data_nascimento = form.data_nascimento.data
+            user.cargo = form.cargo.data
+            user.ativo = form.ativo.data
+            if form.foto_perfil.data:
+                nome_imagem = salvar_imagem(form.foto_perfil.data)
+                user.foto_perfil = nome_imagem
+            elif form.senha.data:
+                senha_cript = bcrypt.generate_password_hash(form.senha.data)
+                user.senha = senha_cript
+            database.session.commit()
+            flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
+            return redirect(url_for('listuser'))
 
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(user.foto_perfil))
     return render_template('editar_usuario.html', form=form, foto_perfil=foto_perfil, usuario=user)
@@ -302,11 +306,6 @@ def cadastrocliente():
 def cliente():
     lista_cliente = Cliente.query.filter_by(id_empresa=current_user.id_empresa)
     return render_template('clientes.html', lista_clientes=lista_cliente)
-
-def validade_cnpj(cnpj, id):
-    cliente = Cliente.query.filter_by(cnpj=cnpj).first()
-    if cliente and cliente.id != id:
-        flash('CNPJ já cadastrado', 'alert-danger')
     
 
 @app.route("/cliente/<cliente_id>", methods=['GET', 'POST'])
@@ -314,24 +313,29 @@ def validade_cnpj(cnpj, id):
 def editar_cliente(cliente_id):
     form = FormEditarCliente()
     client = Cliente.query.get(cliente_id)
+    validate_cnpj = Cliente.query.filter(Cliente.id != cliente_id, Cliente.cnpj == form.cnpj.data, Cliente.id_empresa == current_user.id).first()
+    print(validate_cnpj)
     if request.method == 'GET':
         form.nome.data = client.nome
         form.razao.data = client.razao
         form.cnpj.data = client.cnpj
         form.contato.data = client.contato
         form.ativo.data = client.ativo
-    elif form.validate_on_submit():            
-        client.nome = form.nome.data
-        client.razao = form.razao.data
-        client.contato = form.contato.data
-        client.ativo = form.ativo.data
-        if form.logomarca.data:
-            nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
-            client.logomarca = nome_imagem
-        validade_cnpj(form.cnpj.data, client.id)
-        database.session.commit()
-        flash(f'client {form.nome.data} atualizado com sucesso.', 'alert-success')
-        return redirect(url_for('cliente'))
+    elif form.validate_on_submit():
+        if validate_cnpj:
+            flash('CNPJ já cadastrado', 'alert-warning')      
+        else:  
+            client.nome = form.nome.data
+            client.razao = form.razao.data
+            client.contato = form.contato.data
+            client.ativo = form.ativo.data    
+            client.cnpj = form.cnpj.data     
+            if form.logomarca.data:
+                nome_imagem = salvar_logomarca_cliente(form.logomarca.data)
+                client.logomarca = nome_imagem              
+            database.session.commit()
+            flash(f'cliente {form.nome.data} atualizado com sucesso.', 'alert-success') 
+            return redirect(url_for('cliente'))        
     return render_template('editarcliente.html', form=form, client=client)
 
 
@@ -541,14 +545,11 @@ def iniciar_atendimento(atendimento_id):
     return redirect(url_for('visualizar_atendimento', atendimento_id=atendimento_id))
 
 
-@app.route('/<data>')
-def dashboard():
-    atendimento = Atendimento.query.filter_by(id_empresa=current_user.id_empresa, data_cadastro=datetime.utcnow)
-
-
 @app.route('/sair')
 @login_required
 def sair():
     logout_user()
     flash('Sua sessão foi encerrada.', 'alert-success')
     return redirect('login')
+
+

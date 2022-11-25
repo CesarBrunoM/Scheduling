@@ -77,7 +77,7 @@ class FormEditarPerfil(FlaskForm):
     confirma_senha = PasswordField('Confirmação senha', validators=[EqualTo('senha' ,message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
     foto_perfil = FileField('Foto perfil', validators=[FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
-    data_nascimento = DateField('Data Nascimento', default=datetime.today, format='%Y-%m-%dT%H:%M')
+    data_nascimento = DateField('Data Nascimento', default=datetime.today)
     cargo = StringField('Cargo')
     botao_submit_editarperfil = SubmitField('Confirmar')
             
@@ -96,7 +96,7 @@ class FormEditarUsuario(FlaskForm):
     username = StringField('Nome usuário', validators=[DataRequired()])
     nome_completo = StringField('Nome completo', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email(message='Endereço de email invalido!')])
-    senha = PasswordField('Senha', validators=[Length(8, 20)])
+    senha = PasswordField('Senha')
     confirma_senha = PasswordField('Confirmação senha', validators=[EqualTo('senha',
                                                                             message='Os campos de senha devem ser iguais.')])
     telefone = StringField('Nº Celular', validators=[DataRequired(), Length(11, 11)])
@@ -106,11 +106,6 @@ class FormEditarUsuario(FlaskForm):
     cargo = StringField('Cargo')
     ativo = BooleanField('Usuário ativo')
     botao_submit_editarperfil = SubmitField('Confirmar')
-
-    def validate_email(self, email):
-        usuario = Usuario.query.filter_by(email=email.data).first()
-        if usuario:
-            raise ValidationError('Já existe um usuário com este email, utilize outro email para continuar.')
         
     def validate_senha(self, senha):
         if senha.data:

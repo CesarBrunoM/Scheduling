@@ -32,29 +32,29 @@ Usuários
 {% endblock %}
 
 {% block body %}
-<div class="container p-3">
+<div class="container p-4">
   {% for usuario in lista_usuarios.items %}
-  <div class="row mt-1 p-1 bgcard d-flex">
-    <div class="col col-2 justify-content-center">
+  <div class="row mt-2 bgcard d-flex align-items-center">
+    <div class="col col-1 d-flex justify-content-center align-items-center flex-column">
       <div class="card-body text-center">
         <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"
           class="rounded-circle" style="width: 70px;">
         <b class="badge rounded-pill bg-dark">{{ usuario.username }}</b>
       </div>
     </div>
-    <div class="col col-5 mt-4">
+    <div class="col col-5">
       <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
       <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>
       <h6><strong>Cargo: </strong>{{ usuario.cargo }}</h6>
     </div>
-    <div class="col col-5 mt-4">
+    <div class="col col-4">
       <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
       <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
-      <div class="d-flex flex-row-reverse">
+    </div>
+    <div class="col col-2">
         <a href="{{ url_for('editar_usuario', usuario_id=usuario.id )}}">
           <button class="btn profile-button">Editar</button>
         </a>
-      </div>
     </div>
   </div>
   {% endfor %}
