@@ -1,9 +1,16 @@
 <aside id="header">
   <section class="profile">
     <img src="../static/logomarca_empresa/{{ current_user.empresa.logomarca }}" alt="avatar" class="profile">
-    <a class="mt-4 text-center text-dark" href="{{ url_for('empresa') }}">
-      <h4>{{ current_user.empresa.nome }}</h4>
-    </a>
+    {% if current_user.edit_empresa %}
+      <a class="mt-2 text-center text-dark" href="{{ url_for('empresa') }}">
+        <h4>{{ current_user.empresa.nome }}</h4>
+      </a>
+    {% else %}
+      <a class="mt-2 text-center text-dark" href="#">
+        <h4>{{ current_user.empresa.nome }}</h4>
+      </a>
+      
+    {% endif %}
   </section>
   <nav id="navbar" class="nav-menu">
     <ul class="nav flex-column">
@@ -11,7 +18,7 @@
         <a class="nav-link" aria-current="page" href="{{ url_for('home') }}"><i class="bi bi-house-door-fill"></i>
           Pagina Inicial</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item">        
         <a class="nav-link" href="{{ url_for('atendimento') }}"><i class="bi bi-card-list"></i> Atendimentos</a>
       </li>
       <li class="nav-item">
@@ -25,22 +32,31 @@
           <i class="bi bi-file-post"></i> Cadastros
         </a>
         <ul class="dropdown-menu" style="background-color:PeachPuff">
+          {% if current_user.cad_client %}
           <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>
-          <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Usuário</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
+          {% endif %}
+          {% if current_user.cad_user %}
+            <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Usuário</a></li>  
+          {% endif %}        
+            <li>    
+            </li>           
+          {% if current_user.cad_problem %}
+            <li><a class="dropdown-item" href="{{ url_for('problema') }}">Problemas</a></li>
+          {% endif %}
+          {% if current_user.cad_setor %}
+            <li><a class="dropdown-item" href="{{ url_for('setor') }}">Setores</a></li>
+          {% endif %}
           <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atendimentos</a></li>
-          <li><a class="dropdown-item" href="{{ url_for('problema') }}">Problemas</a></li>
-          <li><a class="dropdown-item" href="{{ url_for('setor') }}">Setores</a></li>
         </ul>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('perfil') }}"><i class="bi bi-person-lines-fill"></i> Perfil</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('empresa') }}"><i class="bi bi-building"></i> Empresa</a>
-      </li>
+      {% if current_user.edit_empresa %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('empresa') }}"><i class="bi bi-building"></i> Empresa</a>
+        </li>
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('sair') }}"><i class="bi bi-box-arrow-left"></i> Sair</a>
       </li>

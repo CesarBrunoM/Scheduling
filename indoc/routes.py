@@ -61,7 +61,7 @@ def empresacadastro():
     formempresa = FormEmpresa()
     if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
         cript_senha = bcrypt.generate_password_hash(formempresa.senha.data)
-        if formempresa.logomarca:
+        if formempresa.logomarca.data:
             logomarca = salvar_logomarca_empresa(formempresa.logomarca.data)        
             empresa = Empresa(razao=formempresa.razao.data,
                             nome=formempresa.nome.data,
@@ -85,7 +85,8 @@ def empresacadastro():
                           telefone=formempresa.telefone.data,
                           senha=cript_senha,
                           cargo='Master',
-                          id_empresa=id_empresa.id)
+                          id_empresa=id_empresa.id,
+                          master=True)
         database.session.add(useradm)
         database.session.commit()
 
@@ -106,7 +107,7 @@ def empresa():
     return render_template('perfil_empresa.html', datetime=datetime)
 
 
-@app.route("/empresa_empresa/<id_empresa>", methods=['GET', 'POST'])
+@app.route("/empresa_cadastro/<id_empresa>", methods=['GET', 'POST'])
 @login_required
 def editarempresa(id_empresa):
     formempresa = FormEditarEmpresa()
@@ -175,7 +176,9 @@ def usuario():
                            edit_user=form.edit_user.data,
                            edit_client=form.edit_client.data,
                            edit_setor=form.edit_setor.data,
-                           edit_problem=form.edit_problem.data)
+                           edit_problem=form.edit_problem.data,
+                           edit_empresa=form.edit_empresa.data,
+                           master=False)
         else:
             user = Usuario(username=form.username.data,
                            nome_completo=form.nome_completo.data,
@@ -192,7 +195,9 @@ def usuario():
                            edit_user=form.edit_user.data,
                            edit_client=form.edit_client.data,
                            edit_setor=form.edit_setor.data,
-                           edit_problem=form.edit_problem.data)
+                           edit_problem=form.edit_problem.data,
+                           edit_empresa=form.edit_empresa.data,
+                           master=False)
         database.session.add(user)
         database.session.commit()
         flash(f'Usuário {form.username.data} cadastrado com sucesso', 'alert-success')
@@ -269,6 +274,7 @@ def editar_usuario(usuario_id):
         form.edit_client.data = user.edit_client
         form.edit_setor.data = user.edit_setor
         form.edit_problem.data = user.edit_problem
+        form.edit_empresa.data = user.edit_empresa
     elif form.validate_on_submit():
         if validate_email:
             flash('E-mail já cadastrado em outro usuário', 'alert-warning')
@@ -288,6 +294,7 @@ def editar_usuario(usuario_id):
             user.edit_client=form.edit_client.data
             user.edit_setor=form.edit_setor.data
             user.edit_problem=form.edit_problem.data
+            user.edit_empresa=form.edit_empresa.data
             if form.foto_perfil.data:
                 nome_imagem = salvar_imagem(form.foto_perfil.data)
                 user.foto_perfil = nome_imagem
@@ -297,7 +304,6 @@ def editar_usuario(usuario_id):
             database.session.commit()
             flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
             return redirect(url_for('listuser'))
-
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(user.foto_perfil))
     return render_template('editar_usuario.html', form=form, foto_perfil=foto_perfil, usuario=user)
 

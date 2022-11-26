@@ -39,6 +39,9 @@
         <div class="row bgcard">
             <div class="col-md-7 border-right">
                 <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Dados usuário</h4>
+                    </div>
                     <div class="row mt-2">
                         <div class="col-md-6">{{ form.username.label(class="labels") }}
                             {% if form.errors %}
@@ -188,6 +191,12 @@
                     </div>
                     <div class="mt-2">
                         <h6>Edições</h6>
+                        <div class="form-check form-switch">
+                            {{ form.edit_empresa.label }}
+                            {{ form.edit_empresa (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
                         <div class="form-check form-switch">
                             {{ form.edit_user.label }}
                             {{ form.edit_user (class="form-check-input") }}

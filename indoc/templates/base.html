@@ -48,13 +48,21 @@
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-plus-square"></i> Novo
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu">                                
                                 <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atedimento</a>
                                 </li>
+                                {% if current_user.cad_client %}
                                 <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>
+                                {% endif %}
+                                {% if current_user.cad_user %}
                                 <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
+                                {% endif %}
+                                {% if current_user.cad_problem %}
                                 <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
+                                {% endif %}
+                                {% if current_user.cad_setor %}
                                 <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>

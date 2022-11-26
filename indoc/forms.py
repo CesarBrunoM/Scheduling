@@ -63,6 +63,7 @@ class FormCriarConta(FlaskForm):
     edit_client = BooleanField('Editar clientes')
     edit_setor = BooleanField('Editar setores')
     edit_problem = BooleanField('Editar problemas')
+    edit_empresa = BooleanField('Editar Empresa')
     botao_submit_criar = SubmitField('Confirmar')
 
     def validate_email(self, email):
@@ -122,6 +123,7 @@ class FormEditarUsuario(FlaskForm):
     edit_client = BooleanField('Editar clientes')
     edit_setor = BooleanField('Editar setores')
     edit_problem = BooleanField('Editar problemas')
+    edit_empresa = BooleanField('Editar Empresa')
     botao_submit_editarperfil = SubmitField('Confirmar')
         
     def validate_senha(self, senha):

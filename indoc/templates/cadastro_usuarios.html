@@ -9,6 +9,7 @@ Usuarios
 
 {% block body %}
 <div class="container rounded mt-5 mb-5">
+    <h1 class="text-center">Cadastro de Usuário</h1>
     <form method="POST" action="" enctype="multipart/form-data">
     {{ form.csrf_token }}
     <div class="row bgcard">
@@ -130,7 +131,7 @@ Usuarios
                         {% endif %}
                     </div>
                 </div>
-                <div class="mt-5 text-center">{{ form.botao_submit_criar(class="btn btn-primary profile-button") }}</div>
+                
             </div>
         </div>
         <div class="col-md-5 border-right p-3 py-5">
@@ -165,6 +166,12 @@ Usuarios
             <div class="mt-2">
                 <h6>Edições</h6>
                 <div class="form-check form-switch">
+                    {{ form.edit_empresa.label }}
+                    {{ form.edit_empresa (class="form-check-input", checked=true) }}
+                </div>
+            </div>
+            <div class="mt-2">                
+                <div class="form-check form-switch">
                     {{ form.edit_user.label }}
                     {{ form.edit_user (class="form-check-input", checked=true) }}
                 </div>
@@ -196,6 +203,7 @@ Usuarios
             </div>
         </div>
     </div>
+    <div class="mt-5 text-center">{{ form.botao_submit_criar(class="btn btn-primary profile-button") }}</div>
     </form>
 
 </div>

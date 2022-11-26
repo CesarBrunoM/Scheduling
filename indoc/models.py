@@ -45,6 +45,8 @@ class Usuario(database.Model, UserMixin):
     edit_client = database.Column(database.Boolean, default=True, nullable=False)
     edit_setor = database.Column(database.Boolean, default=True, nullable=False)
     edit_problem = database.Column(database.Boolean, default=True, nullable=False)
+    edit_empresa = database.Column(database.Boolean, default=True, nullable=False)
+    master = database.Column(database.Boolean, default=True, nullable=False)
     id_empresa = database.Column(database.Integer, database.ForeignKey('empresa.id'))
     atendimento = database.relationship('Atendimento', backref='usuario', lazy=True)
     atendente = database.relationship('SubAtendimento', backref='usuario', lazy=True)
