@@ -55,7 +55,7 @@
                                 <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>
                                 {% endif %}
                                 {% if current_user.cad_user %}
-                                <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastro_usuario') }}">Atendente</a></li>
                                 {% endif %}
                                 {% if current_user.cad_problem %}
                                 <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>

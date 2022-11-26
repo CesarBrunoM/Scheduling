@@ -9,7 +9,7 @@ Usuários
 {% endblock %}
 
 {% block button %}
-<a href="{{ url_for('usuario') }}">
+<a href="{{ url_for('cadastro_usuario') }}">
   <button type="button" class="btn btn-primary profile-button">Novo</button>
 </a>
 <div class="dropdown">
@@ -22,8 +22,8 @@ Usuários
     <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Inicio</a></li>
     <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Fechamento</a></li>
     <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Cancelamento</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Atendente</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('usuario') }}">Cliente</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cadastro_usuario') }}">Atendente</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('cliente') }}">Cliente</a></li>
     <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
     <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
     <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Prioridade</a></li>
@@ -38,16 +38,16 @@ Usuários
     <div class="col col-1 d-flex justify-content-center align-items-center flex-column">
       <div class="card-body text-center">
         <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"
-          class="rounded-circle" style="width: 70px;">
-        <b class="badge rounded-pill bg-dark">{{ usuario.username }}</b>
+          class="rounded-circle" style="width: 70px;">        
       </div>
     </div>
     <div class="col col-5">
       <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
-      <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>
-      <h6><strong>Cargo: </strong>{{ usuario.cargo }}</h6>
+      <h6><strong>Nome usuário: </strong>{{ usuario.username }}</h6>
+      <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>      
     </div>
     <div class="col col-4">
+      <h6><strong>Cargo: </strong>{{ usuario.cargo }}</h6>
       <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
       <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
     </div>
