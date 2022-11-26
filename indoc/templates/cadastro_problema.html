@@ -29,8 +29,10 @@
                     </div>
                 </div>
                 <div class="mt-2">
+                    <div class="form-check form-switch">
                         {{ form.ativo.label }}
                         {{ form.ativo (class="form-check-input", checked=true) }}
+                    </div>
                 </div>
                 <div class="mt-5 text-center">{{ form.btn_submit_problema(class="btn btn-primary profile-button") }}
                     <a href="{{ url_for('problema') }}">

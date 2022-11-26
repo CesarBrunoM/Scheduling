@@ -35,16 +35,10 @@
 <div class="container rounded mt-5 mb-5">
     <form method="POST" action="" enctype="multipart/form-data">
         <h1 class="text-center">Edição de Usuário</h1>
-    {{ form.csrf_token }}
-    <div class="row">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" 
-                src="{{ foto_perfil }}">
-            </div>
-        </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
+        {{ form.csrf_token }}
+        <div class="row bgcard">
+            <div class="col-md-7 border-right">
+                <div class="p-3 py-5">
                     <div class="row mt-2">
                         <div class="col-md-6">{{ form.username.label(class="labels") }}
                             {% if form.errors %}
@@ -147,10 +141,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class="mt-2">
-                        {{ form.ativo.label }}
-                        {{ form.ativo (class="form-check-input") }}
-                    </div>
+
                     <div class="row mt-3">
                         <div class="col-md-6">
                             {{ form.foto_perfil.label(class="labels") }}
@@ -163,12 +154,76 @@
                         </div>
                     </div>
 
-                    <div class="mt-5 text-center">{{ form.botao_submit_editarperfil(class="btn btn-primary
-                        profile-button") }}
+                </div>
+            </div>
+            <div class="col-md-5 border-right">
+                <div class="col-md-5 border-right p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Permissões</h4>
                     </div>
+                    <div class="mt-2">
+                        <h6>Cadastros</h6>
+                        <div class="form-check form-switch">
+                            {{ form.cad_user.label }}
+                            {{ form.cad_user (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="form-check form-switch">
+                            {{ form.cad_client.label }}
+                            {{ form.cad_client (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="form-check form-switch">
+                            {{ form.cad_setor.label }}
+                            {{ form.cad_setor (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="form-check form-switch">
+                            {{ form.cad_problem.label }}
+                            {{ form.cad_problem (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <h6>Edições</h6>
+                        <div class="form-check form-switch">
+                            {{ form.edit_user.label }}
+                            {{ form.edit_user (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="form-check form-switch">
+                            {{ form.edit_client.label }}
+                            {{ form.edit_client (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="form-check form-switch">
+                            {{ form.edit_setor.label }}
+                            {{ form.edit_setor (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="form-check form-switch">
+                            {{ form.edit_problem.label }}
+                            {{ form.edit_problem (class="form-check-input") }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <h6>Status</h6>
+                        <div class="form-check form-switch">
+                            {{ form.ativo (class="form-check-input", checked=true) }}
+                            {{ form.ativo.label }}                            
+                        </div>
+                    </div>
+                </div>
+            </div>        
+            <div class="mt-5 text-center">{{ form.botao_submit_editarperfil(class="btn btn-primary
+                profile-button") }}
             </div>
         </div>
-    </div>
     </form>
 </div>
 {% endblock %}

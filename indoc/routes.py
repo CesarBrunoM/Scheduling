@@ -57,7 +57,6 @@ def salvar_logomarca_empresa(imagem):
 
 
 @app.route("/empresa/cadastro", methods=['GET', 'POST'])
-@login_required
 def empresacadastro():
     formempresa = FormEmpresa()
     if formempresa.validate_on_submit() and 'botao_submit_concluir' in request.form:
@@ -155,34 +154,50 @@ def login():
 @app.route("/usuario/cadastro", methods=['GET', 'POST'])
 @login_required
 def usuario():
-    form_criarconta = FormCriarConta()
-    if form_criarconta.validate_on_submit() and 'botao_submit_criar' in request.form:
-        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
-        if form_criarconta.foto_perfil.data:
-            nome_imagem = salvar_imagem(form_criarconta.foto_perfil.data)
-            user = Usuario(username=form_criarconta.username.data,
-                           nome_completo=form_criarconta.nome_completo.data,
-                           email=form_criarconta.email.data,
-                           telefone=form_criarconta.telefone.data,
-                           data_nascimento=form_criarconta.data_nascimento.data,
+    form = FormCriarConta()
+    if form.validate_on_submit() and 'botao_submit_criar' in request.form:
+        senha_cript = bcrypt.generate_password_hash(form.senha.data)
+        if form.foto_perfil.data:
+            nome_imagem = salvar_imagem(form.foto_perfil.data)
+            user = Usuario(username=form.username.data,
+                           nome_completo=form.nome_completo.data,
+                           email=form.email.data,
+                           telefone=form.telefone.data,
+                           data_nascimento=form.data_nascimento.data,
                            senha=senha_cript,
-                           cargo=form_criarconta.cargo.data,
+                           cargo=form.cargo.data,
                            id_empresa=current_user.id_empresa,
-                           foto_perfil=nome_imagem)
+                           foto_perfil=nome_imagem,
+                           cad_user=form.cad_user.data,
+                           cad_client=form.cad_client.data,
+                           cad_setor=form.cad_setor.data,
+                           cad_problem=form.cad_problem.data, 
+                           edit_user=form.edit_user.data,
+                           edit_client=form.edit_client.data,
+                           edit_setor=form.edit_setor.data,
+                           edit_problem=form.edit_problem.data)
         else:
-            user = Usuario(username=form_criarconta.username.data,
-                           nome_completo=form_criarconta.nome_completo.data,
-                           email=form_criarconta.email.data,
-                           telefone=form_criarconta.telefone.data,
-                           data_nascimento=form_criarconta.data_nascimento.data,
+            user = Usuario(username=form.username.data,
+                           nome_completo=form.nome_completo.data,
+                           email=form.email.data,
+                           telefone=form.telefone.data,
+                           data_nascimento=form.data_nascimento.data,
                            senha=senha_cript,
-                           cargo=form_criarconta.cargo.data,
-                           id_empresa=current_user.id_empresa)
+                           cargo=form.cargo.data,
+                           id_empresa=current_user.id_empresa,
+                           cad_user=form.cad_user.data,
+                           cad_client=form.cad_client.data,
+                           cad_setor=form.cad_setor.data,
+                           cad_problem=form.cad_problem.data, 
+                           edit_user=form.edit_user.data,
+                           edit_client=form.edit_client.data,
+                           edit_setor=form.edit_setor.data,
+                           edit_problem=form.edit_problem.data)
         database.session.add(user)
         database.session.commit()
-        flash(f'Usuário {form_criarconta.username.data} cadastrado com sucesso', 'alert-success')
+        flash(f'Usuário {form.username.data} cadastrado com sucesso', 'alert-success')
         return redirect(url_for('listuser'))
-    return render_template('usuarios.html', form_criarconta=form_criarconta)
+    return render_template('cadastro_usuarios.html', form=form)
 
 
 @app.route("/perfil", methods=['GET'])
@@ -246,6 +261,14 @@ def editar_usuario(usuario_id):
         form.data_nascimento.data = user.data_nascimento
         form.cargo.data = user.cargo
         form.ativo.data = user.ativo
+        form.cad_user.data = user.cad_user
+        form.cad_client.data = user.cad_client
+        form.cad_setor.data = user.cad_setor
+        form.cad_problem.data = user.cad_problem
+        form.edit_user.data = user.edit_user
+        form.edit_client.data = user.edit_client
+        form.edit_setor.data = user.edit_setor
+        form.edit_problem.data = user.edit_problem
     elif form.validate_on_submit():
         if validate_email:
             flash('E-mail já cadastrado em outro usuário', 'alert-warning')
@@ -257,6 +280,14 @@ def editar_usuario(usuario_id):
             user.data_nascimento = form.data_nascimento.data
             user.cargo = form.cargo.data
             user.ativo = form.ativo.data
+            user.cad_user=form.cad_user.data
+            user.cad_client=form.cad_client.data
+            user.cad_setor=form.cad_setor.data
+            user.cad_problem=form.cad_problem.data
+            user.edit_user=form.edit_user.data
+            user.edit_client=form.edit_client.data
+            user.edit_setor=form.edit_setor.data
+            user.edit_problem=form.edit_problem.data
             if form.foto_perfil.data:
                 nome_imagem = salvar_imagem(form.foto_perfil.data)
                 user.foto_perfil = nome_imagem
@@ -412,7 +443,7 @@ def cadastrosetor():
         database.session.commit()
         flash(f'Setor {form.nome.data} cadastrado com sucesso.', 'alert-success')
         return redirect(url_for('setor'))
-    return render_template('cadastrosetor.html', form=form)
+    return render_template('cadastro_setor.html', form=form)
 
 
 @app.route("/setor/<setor_id>", methods=['GET', 'POST'])

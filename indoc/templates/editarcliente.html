@@ -86,8 +86,10 @@
                     </div>
                 </div>
                 <div class="mt-2">
-                        {{ form.ativo.label }}
-                        {{ form.ativo (class="form-check-input") }}
+                    <div class="form-check form-switch">
+                        {{ form.ativo (class="form-check-input", checked=true) }}
+                        {{ form.ativo.label }}                            
+                    </div>
                 </div>
                 <div class="mt-5 text-center">{{ form.btn_submit_cliente(class="btn btn-primary profile-button") }}
                     <a href="{{ url_for('cliente') }}">

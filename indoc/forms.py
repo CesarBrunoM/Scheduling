@@ -54,6 +54,15 @@ class FormCriarConta(FlaskForm):
         FileAllowed(['jpg', 'png', 'jpeg'], message='Arquivo invalido, selecione arquivos .jpg ou .png.')])
     data_nascimento = DateField('Data Nascimento', default=datetime.today)
     cargo = StringField('Cargo', validators=[Length(1, 25)])
+    ativo = BooleanField('Usuário ativo')
+    cad_user = BooleanField('Cadastrar usuários')
+    cad_client = BooleanField('Cadastrar clientes')
+    cad_setor = BooleanField('Cadastrar setores')
+    cad_problem = BooleanField('Cadastrar problemas')
+    edit_user = BooleanField('Editar usuários')
+    edit_client = BooleanField('Editar clientes')
+    edit_setor = BooleanField('Editar setores')
+    edit_problem = BooleanField('Editar problemas')
     botao_submit_criar = SubmitField('Confirmar')
 
     def validate_email(self, email):
@@ -105,6 +114,14 @@ class FormEditarUsuario(FlaskForm):
     data_nascimento = DateField('Data Nascimento', default=datetime.today)
     cargo = StringField('Cargo')
     ativo = BooleanField('Usuário ativo')
+    cad_user = BooleanField('Cadastrar usuários')
+    cad_client = BooleanField('Cadastrar clientes')
+    cad_setor = BooleanField('Cadastrar setores')
+    cad_problem = BooleanField('Cadastrar problemas')
+    edit_user = BooleanField('Editar usuários')
+    edit_client = BooleanField('Editar clientes')
+    edit_setor = BooleanField('Editar setores')
+    edit_problem = BooleanField('Editar problemas')
     botao_submit_editarperfil = SubmitField('Confirmar')
         
     def validate_senha(self, senha):

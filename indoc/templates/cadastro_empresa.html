@@ -11,133 +11,123 @@
 </head>
 <body>
     <div class="container my-4">
-
         <header>
             <h1 class="h4 py-4">Cadastro INDOC</h1>
         </header>
-        <div class="formulario">
-            <div class="dadospessoais">
-                <form action="" method="POST" class="py-4 px-4" enctype="multipart/form-data">
-                    {{ formempresa.csrf_token }}
-                    <div class="my-3">
-                        <div class="col-md-6">{{ formempresa.nome.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.nome(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.nome.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.nome(class="form-control") }}
-                            {% endif %}
+        <form action="" method="POST" class="py-4 px-4" enctype="multipart/form-data">
+            {{ formempresa.csrf_token }}
+            <div class="form-group row justify-content-md-center">           
+
+                    <div class="col-md-8">{{ formempresa.nome.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.nome(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.nome.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.nome(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <div class="my-3">
-                        <div class="col-md-6">{{ formempresa.razao.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.razao(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.razao.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.razao(class="form-control") }}
-                            {% endif %}
+
+
+                    <div class="col-md-8">{{ formempresa.razao.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.razao(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.razao.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.razao(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <div class="my-3">
-                        <div class="col-md-6">{{ formempresa.cnpj.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.cnpj(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.cnpj.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.cnpj(class="form-control") }}
-                            {% endif %}
+
+                    <div class="col-md-8">{{ formempresa.cnpj.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.cnpj(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.cnpj.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.cnpj(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <div class="my-3">
-                       <div class="col-md-6">{{ formempresa.email.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.email(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.email.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.email(class="form-control") }}
-                            {% endif %}
+
+                    <div class="col-md-8">{{ formempresa.email.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.email(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.email.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.email(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <div class="my-3">
-                        <div class="col-md-6">{{ formempresa.senha.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.senha(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.senha.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.senha(class="form-control") }}
-                            {% endif %}
+
+                    <div class="col-md-8">{{ formempresa.senha.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.senha(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.senha.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.senha(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <div class="my-3">
-                        <div class="col-md-6">{{ formempresa.confirma_senha.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.confirma_senha(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.confirma_senha.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.confirma_senha(class="form-control") }}
-                            {% endif %}
+
+                    <div class="col-md-8">{{ formempresa.confirma_senha.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.confirma_senha(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.confirma_senha.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.confirma_senha(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <div class="my-3">
-                        <div class="col-md-6">{{ formempresa.telefone.label(class="labels") }}
-                            {% if formempresa.errors %}
-                                {{ formempresa.telefone(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in formempresa.telefone.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ formempresa.telefone(class="form-control") }}
-                            {% endif %}
+
+                    <div class="col-md-8">{{ formempresa.telefone.label(class="labels") }}
+                        {% if formempresa.errors %}
+                            {{ formempresa.telefone(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in formempresa.telefone.errors %}
+                                {{ erro }}
+                            {% endfor %}
                         </div>
+                        {% else %}
+                            {{ formempresa.telefone(class="form-control") }}
+                        {% endif %}
                     </div>
-                    <hr>
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            {{ formempresa.logomarca.label(class="labels") }}
-                            {{ formempresa.logomarca(class="form-control-file") }}
-                            {% if formempresa.logomarca.errors %}
-                                {% for erro in formempresa.logomarca.errors %}
-                                    <span class="text-info">{{ erro }}</span><br>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
+                </div>
+                <hr>
+                <div class="row justify-content-md-center mt-3">
+                    <div class="col-md-8">
+                        {{ formempresa.logomarca.label(class="labels") }}
+                        {{ formempresa.logomarca(class="form-control-file") }}
+                        {% if formempresa.logomarca.errors %}
+                            {% for erro in formempresa.logomarca.errors %}
+                                <span class="text-info">{{ erro }}</span><br>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-            <div class="my-5 text-center">
-                {{ formempresa.botao_submit_concluir(class="btn btn-primary profile-button") }}
+                </div>
+                <div class="my-5 text-center">
+                    {{ formempresa.botao_submit_concluir(class="btn btn-primary profile-button") }}
+                </div>
             </div>
-            </form>
-
-        </div>
-
+        </form>
     </div>
-
     <script src="{{ url_for('static',filename='popper/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
     </body>
