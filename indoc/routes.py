@@ -9,20 +9,33 @@ import secrets
 import os
 from PIL import Image
 from datetime import datetime
+from sqlalchemy import between
 
 
 @app.route("/")
+@app.route("/dados")
 @login_required
 def home():
-    return render_template('home.html')
+    atendimentos=Atendimento.query.filter_by(id_empresa=current_user.id_empresa)
+    return render_template('home.html', atendimentos=atendimentos)
 
+
+@app.route('/consulta', methods=['POST'])
+@login_required
+def consulta():
+    consulta = '%'+request.form.get('consulta')+'%'
+    campo = request.form.get('campo')
+    if campo == 'prioridade':
+        atendimentos = Atendimento.query.filter(Atendimento.prioridade.like(consulta), Atendimento.id_empresa==current_user.id_empresa)
+    else:
+        atendimentos=Atendimento.query.filter_by(id_empresa=current_user.id_empresa)
+    return render_template('home.html', atendimentos=atendimentos)
 
 def salvar_imagem(imagem):
     codigo = secrets.token_hex(8)
     nome, extencao = os.path.splitext(imagem.filename)
     nome_arquivo = nome + '_' + codigo + extencao
     caminho_imagem = os.path.join(app.root_path, 'static/foto_perfil', nome_arquivo)
-
     tamanho = (200, 200)
     imagem_reduzida = Image.open(imagem)
     imagem_reduzida.thumbnail(tamanho)

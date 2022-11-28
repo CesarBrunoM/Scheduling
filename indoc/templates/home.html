@@ -15,60 +15,43 @@
 {% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="col col-6 p-2">
-        <div>
-            <canvas id="myChart" width="266" height="300"></canvas>
+<form method="POST" name="frm_consulta" action="{{url_for('consulta')}}">
+    <div class="row">
+        <div class="col col-md-5">
+            <label for="consulta" class="labels">Campo consulta</label>
+            <input type="text", class="form-control" name="consulta">
         </div>
-        <script>
-            const ctx = document.getElementById('myChart');
-
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Clientes que mais ligaram',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-                },
-                options: {
-                scales: {
-                    y: {
-                    beginAtZero: true
-                    }
-                }
-                }
-            });
-        </script>
+        <div class="col col-md-2">
+            <label class="labels" for="campo">Tipo consulta</label>
+            <select class="form-control" name="campo" id="campo">
+                <option value="prioridade">Prioridade</option>
+            </select>
+        </div>
+        <div class="col col-md-1 mt-4">
+            <button type="submit" class="btn profile-button">Consultar</button>
+        </div>
     </div>
-    <div class="col col-6 p-2">
-        <div>
-            <canvas id="Chart" width="266" height="300"></canvas>
-        </div>
-        <script>
-            const cty = document.getElementById('Chart');
+</form>
 
-            new Chart(cty, {
-                type: 'bar',
-                data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Clientes que mais ligaram',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-                },
-                options: {
-                scales: {
-                    y: {
-                    beginAtZero: true
-                    }
-                }
-                }
-            });
-        </script>
+<div class="row p-2">
+    <div class="col col-6 p-2 bgcard">
+        <table class="table">
+            <thead>
+                <th scope="col">Cliente</th>
+                <th scope="col">Prioridade</th>
+            </thead>
+            <tbody>
+                {% for atendimento in atendimentos %}
+                <tr>
+                    <td>{{ atendimento.cliente.nome }}</td>
+                    <td>{{ atendimento.prioridade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col col-6 bgcard">
+
     </div>
 </div>
 {% endblock %}
