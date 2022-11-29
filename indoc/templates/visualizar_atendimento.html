@@ -41,7 +41,7 @@
                 </div>
                 <div class="m-1">
                     <button type="button" class="btn btn-secondary profile-button" data-bs-toggle="modal" data-bs-target="#formfechar">
-                      Fechar
+                      Concluir
                     </button>
                 </div>
             {% elif atendimento.status == 'Fechado' %}
@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div class="col col-10">
-                <h4>Protocolo: #{{ atendimento.protocolo }} - {{ atendimento.cliente.nome }}</h4>
+                <h4>{{ atendimento.cliente.razao }}</h4>
                 <hr>
                 <h6><b>Problema:</b> {{ atendimento.problema.descricao }} - <b>Data Abertura:</b> {{
                     datetime.strftime(atendimento.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col col-10">
-                    <h4>Problema: {{ sub.problema.descricao }} - <a class="text-muted" href="" style="font-size: 8px">Editar</a></h4>
+                    <h4>Problema: {{ sub.problema.descricao }}</h4>
                     <hr>
                     <b>Observação</b>
                     <p>{{ sub.observacao }}</p>

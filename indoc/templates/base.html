@@ -16,6 +16,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {% block head %}
     {% endblock %}
+
+   
 </head>
 
 <body>
@@ -43,13 +45,13 @@
                     <div class="col col-5 d-flex justify-content-center">
                         {% block button %}
                         {% endblock %}
-                        <div class="dropdown">
+                        <div class="dropdown" id="btnnovo">
                             <button class="btn btn-primary profile-button dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-plus-square"></i> Novo
                             </button>
                             <ul class="dropdown-menu">                                
-                                <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atedimento</a>
+                                <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Atendimento</a>
                                 </li>
                                 {% if current_user.cad_client %}
                                 <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Cliente</a></li>

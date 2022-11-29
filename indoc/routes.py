@@ -268,7 +268,7 @@ def editarperfil():
 @login_required
 def listuser():
     page = request.args.get('page',1 , type=int) 
-    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa).paginate(page=page, per_page=5) 
+    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa).paginate(page=page, per_page=10) 
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
     return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios, datetime=datetime, foto_perfil=foto_perfil)
 
@@ -520,9 +520,34 @@ def editar_setor(setor_id):
 @app.route("/atendimento", methods=['GET', 'POST'])
 @login_required
 def atendimento():
-    page = request.args.get('page',1 , type=int)
-    atendimentos = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.id.desc()).paginate(page=page, per_page=5)
-    return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime)
+    consulta = '%'+str(request.form.get('consulta'))+'%'
+    campo = request.form.get('campo')
+    status = request.form.get('statusatend')
+    prioridade = request.form.get('prioridade')
+    page = request.args.get('page',1 , type=int) 
+    list = []
+    
+    if campo == 'clientenome':
+        client = Cliente.query.filter(Cliente.nome.like(consulta)) 
+        for cliente in client:
+            list.append(cliente.id)
+        print(list)
+        atendimentos = Atendimento.query.filter(Atendimento.id_cliente.in_(list),Atendimento.id_empresa==current_user.id_empresa, Atendimento.status == status, \
+                                                Atendimento.prioridade.like(prioridade)).order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)  
+    elif campo == 'clienterazao':
+        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Atendimento.id_cliente.in_(list), Atendimento.status == status) \
+            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)  
+    elif campo == 'cnpj':
+        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Cliente.cnpj.like(consulta), Atendimento.status == status) \
+            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10) 
+    elif campo == 'atendente':
+        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Usuario.nome.like(consulta), Atendimento.status == status) \
+            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)   
+    else:
+        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa) \
+            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)
+    
+    return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime, campo=campo)
 
 
 @app.route("/atendimento/cadastro", methods=['GET', 'POST'])

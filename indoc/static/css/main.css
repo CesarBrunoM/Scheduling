@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+@font-face{
+    font-family: Roboto;
+    src: url(../fontes/simplessemserifa/formatowoff/Roboto-Regular.woff);
+}
+
     body {
         background-image: url(../images/background5.png);
         background-repeat: no-repeat;
@@ -14,6 +19,24 @@
 
         width: 100%;
         right: 100vh;
+        font-family:Roboto;
+    }
+
+    h4{
+        font-family: Roboto;
+    }
+
+    table{
+        font-family: Roboto;
+    }
+
+    form{
+        font-family: Roboto;
+        
+    }
+
+    .colorlabel{
+        color: #ffffff;
     }
 
     ::-webkit-scrollbar {
@@ -39,12 +62,14 @@
         border-radius: 5px;
         border: none;
         margin: 0px 5px;
+        font-family: Roboto;
     }
 
     .profile-button:hover {
-        background-color: #dbb740;
+        background-color: #d49645;
         box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.411);
         transition: 1s;
+        color: #0f0f0f;
     }
 
     .profile-button:focus {
@@ -103,7 +128,7 @@
     }
 
     li a:hover {
-        background: #665e5863;
+        background: #aa7c5963;
         box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.411);
         border-radius: 5px;
 
@@ -117,10 +142,10 @@
     }
 
     .dropdown-item:hover {
-        background-color: #A99E83;
+        background-color: #d49645;
         border-radius: 0px;
         box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.493);
-        color: white;
+        color: rgb(14, 13, 13);
         transition: 0.5s;
 
     }
@@ -211,6 +236,10 @@
         margin-left: 323px;
     }
 
+    #btnnovo{
+        transition: 1s;
+    }
+    
     section#inicio {
         background-image: url(../images/background5.png);
         background-repeat: no-repeat;
@@ -260,6 +289,9 @@
     @media (max-width: 1024px) {
         #header {
             left: -300px;
+        }
+        #btnnovo{
+            visibility:hidden;
         }
         i.menu-mobile{
             display: flex;

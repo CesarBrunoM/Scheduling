@@ -8,26 +8,21 @@
   <h4>Dados</h4>
 {% endblock %}
 
-{% block button %}                                
-    <a href="{{ url_for('cadastro_usuario') }}">
-        <button type="button" class="btn btn-primary profile-button">Filtros</button>
-    </a>
-{% endblock %}
 
 {% block body %}
 <form method="POST" name="frm_consulta" action="{{url_for('consulta')}}">
     <div class="row">
-        <div class="col col-md-5">
-            <label for="consulta" class="labels">Campo consulta</label>
+        <div class="col col-md-5 p-2">
+            <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
             <input type="text", class="form-control" name="consulta">
         </div>
-        <div class="col col-md-2">
-            <label class="labels" for="campo">Tipo consulta</label>
+        <div class="col col-md-2 p-2">
+            <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
             <select class="form-control" name="campo" id="campo">
                 <option value="prioridade">Prioridade</option>
             </select>
         </div>
-        <div class="col col-md-1 mt-4">
+        <div class="col col-md-1 mt-5">
             <button type="submit" class="btn profile-button">Consultar</button>
         </div>
     </div>
