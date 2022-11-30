@@ -32,9 +32,42 @@ Usuários
 {% endblock %}
 
 {% block body %}
+
 <div class="container p-4">
+  <form method="POST" name="frm_atendimento" action="{{url_for('atendimento')}}">
+    <div class="row d-flex">
+        <div class="col col-lg-4 p-2">
+            <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
+            <input type="text", class="form-control" name="consulta" id="consulta">
+        </div>
+        <div class="col p-2">
+            <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
+            <select class="form-control" name="campo" id="campo">
+                <option value="username">Nome</option>
+                <option value="email">E-mail</option>
+                <option value="cargo">Cargo</option>
+            </select>
+        </div>
+        <div class="col p-2">
+            <label for="statusatend" class="labels colorlabel p-2">Status</label>
+            <select class="form-control" name="statusatend" id="statusatend">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+            </select>
+        </div>
+        <div class="col mt-5 d-flex flex-row-reverse ">
+            <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="col mt-5">
+            <a href="{{ url_for('listuser') }}">
+                <button type="button" class="btn btn-primary profile-button">Todos</button>
+            </a>
+        </div>
+    </div>
+  </form>
+  <hr>
   {% for usuario in lista_usuarios.items %}
-  <div class="row mt-2 bgcard d-flex align-items-center">
+  <div class="row mt-1 bgcard d-flex align-items-center">
     <div class="col col-1 d-flex justify-content-center align-items-center flex-column">
       <div class="card-body text-center">
         <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"

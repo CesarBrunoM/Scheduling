@@ -12,52 +12,61 @@ Setor
   <a href="{{ url_for('cadastrosetor') }}">
     <button type="button" class="btn btn-primary profile-button">Novo Setor</button>
   </a>
-  <div class="dropdown">
-    <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-plus-square"></i> Filtros
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Nome</a></li>
-    </ul>
-</div> 
 {% endblock %}
 
 {% block body %}
-    <div class="container py-5">
-        <h1>Lista setores</h1>
+    <div class="container">
+        <form method="POST" name="frm_consulta" action="{{url_for('consulta')}}">
+            <div class="row">
+                <div class="col col-md-5 p-2">
+                    <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
+                    <input type="text", class="form-control" name="consulta">
+                </div>
+                <div class="col col-md-2 p-2">
+                    <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
+                    <select class="form-control" name="campo" id="campo">
+                        <option value="descricao">Descrição</option>
+                        <option value="status">Status</option>
+                    </select>
+                </div>
+                <div class="col col-md-1 mt-5">
+                    <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </form>
         <hr>
-        <table class="table table-striped table-dark">
+        <table class="table">
             <thead>
             <tr>
                 <th scope="col">
-                    <h5>Setor</h5>
+                    Setor
                 </th>
                 <th scope="col">
-                    <h5>Status</h5>
+                    Status
                 </th>
                 <th scope="col">
-                    <h5>Opção</h5>
+                    Opção
                 </th>
             </tr>
             </thead>
             <tbody>
                 {% for setor in lista_setor %}
                 <tr>
-                    <th>
+                    <td>
                         {{ setor.nome }}
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         {% if setor.ativo == True %}
-                            <b>ativado</b>
+                            <i class="bi bi-check-circle-fill"></i>
                         {% else %}
-                            <b>desativado</b>
+                            <i class="bi bi-exclamation-circle-fill"></i>
                         {% endif %}
-                    </th>
-                    <th>
-                        <a class="link-light" href="{{ url_for('editar_setor', setor_id=setor.id) }}">
-                            <button type="button" class="btn btn-primary profile-button">Editar</button>
+                    </td>
+                    <td>
+                        <a class="badge bg-dark" href="{{ url_for('editar_setor', setor_id=setor.id) }}">
+                            <i class="bi bi-pencil-square"></i>
                         </a>
-                    </th>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

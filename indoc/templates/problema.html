@@ -13,9 +13,6 @@ Problemas
         <button type="button" class="btn btn-primary profile-button">Novo problema</button>
     </a>
     <div class="dropdown">
-        <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-plus-square"></i> Filtros
-        </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Nome</a></li>
         </ul>
@@ -24,38 +21,54 @@ Problemas
 
 {% block body %}
 <div class="container">
-    <h1>Lista Problemas</h1>
-    <hr>
-    <table class="table table-striped table-dark">
+    <form method="POST" name="frm_consulta" action="{{url_for('consulta')}}">
+        <div class="row">
+            <div class="col col-md-5 p-2">
+                <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
+                <input type="text", class="form-control" name="consulta">
+            </div>
+            <div class="col col-md-2 p-2">
+                <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
+                <select class="form-control" name="campo" id="campo">
+                    <option value="descricao">Descrição</option>
+                    <option value="status">Status</option>
+                </select>
+            </div>
+            <div class="col col-md-1 mt-5">
+                <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </form>
+    <table class="table">
         <thead>
             <tr>
                 <th scope="col">
-                    <h5>Descrição problemas</h5>
+                    Descrição problemas
                 </th>
                 <th scope="col">
-                    <h5>Status</h5>
+                    Status
                 </th>
                 <th scope="col">
-                    <h5>Opção</h5>
+                    
                 </th>
             </tr>
         </thead>
         <tbody>
             {% for problema in lista_problema %}
                 <tr>
-                    <th>{{ problema.descricao }}</th>
-                    <th>
+                    <td class="labels">{{ problema.descricao }}</td>
+                    <td class="labels">
                         {% if problema.ativo == True %}
-                            <b>ativado</b>
+                            <i class="bi bi-check-circle-fill"></i>
                         {% else %}
-                            <b>desativado</b>
+                            <i class="bi bi-exclamation-circle-fill"></i>
                         {% endif %}
-                    </th>
-                    <th>         
-                        <a href="{{ url_for('editar_problema', problema_id=problema.id) }}">
-                            <button type="button" class="btn btn-primary profile-button">Editar</button>
+                    </td>
+                    <td>         
+                        <a class="badge bg-dark" href="{{ url_for('editar_problema', problema_id=problema.id) }}">
+                            <i class="bi bi-pencil-square"></i>
                         </a>
-                    </th>                   
+                    </td>                   
                 </tr>
             {% endfor %}
         </tbody>

@@ -30,6 +30,8 @@
         font-family: Roboto;
     }
 
+
+
     form{
         font-family: Roboto;
         
@@ -164,6 +166,7 @@
     .bgcard {
         background: #d3c79e !important;
         border-radius: 15px;
+        font-family: roboto;
     }
 
     #header {
