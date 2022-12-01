@@ -12,77 +12,78 @@ Clientes
     <a href="{{ url_for('cadastrocliente') }}">
         <button type="button" class="btn btn-primary profile-button">Novo Cliente</button>
     </a>
-    <div class="dropdown">
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Data Cadastro</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Inicio</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Fechamento</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Cancelamento</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastro_usuario') }}">Atendente</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastro_usuario') }}">Cliente</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Prioridade</a></li>
-        </ul>
-    </div> 
 {% endblock %}
 
 {% block body %}
 <div class="container p-4">
-    <form method="POST" name="frm_atendimento" action="{{url_for('atendimento')}}">
-        <div class="row d-flex m-2">
-            <div class="col col-lg-4 p-1">
+    <form method="POST" name="frm_atendimento" action="{{url_for('cliente')}}">
+        <div class="row d-flex me-5 ms-5">
+            <div class="col col-lg-4 p-2">
                 <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
                 <input type="text", class="form-control" name="consulta" id="consulta">
             </div>
             <div class="col p-2">
                 <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
                 <select class="form-control" name="campo" id="campo">
+                    <option value="todos">Todos</option>
                     <option value="clientenome">Nome</option>
                     <option value="clienterazao">Razao</option>
                     <option value="cnpj">CNPJ</option>
                 </select>
             </div>
             <div class="col p-2">
-                <label for="statusatend" class="labels colorlabel p-2">Status</label>
-                <select class="form-control" name="statusatend" id="statusatend">
-                    <option value="ativo">Ativo</option>
-                    <option value="inativo">Inativo</option>
+                <label for="ativo" class="labels colorlabel p-2">Status</label>
+                <select class="form-control" name="ativo" id="ativo">
+                    <option value="none">Todos</option>
+                    <option value="true">Ativo</option>
+                    <option value="false">Inativo</option>
                 </select>
             </div>
             <div class="col mt-5 d-flex flex-row-reverse ">
                 <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
             </div>
-            <div class="col mt-5">
-                <a href="{{ url_for('cliente') }}">
-                    <button type="button" class="btn btn-primary profile-button">todos</button>
-                </a>
-            </div>
         </div>
     </form>
     <hr>
-    {% for cliente in lista_clientes %}
-        <div class="row m-3 bgcard d-flex align-items-center">
+    {% for cliente in lista_clientes.items %}
+        <div class="row me-5 mb-2 ms-5 bgcard d-flex align-items-center">
             <div class="col col-1 d-flex justify-content-center align-items-center flex-column">
                 <div class="card-body text-center">
                   <img src="{{ url_for('static', filename='logomarca_cliente/{}'.format(cliente.logomarca)) }}" alt="avatar"
                     class="rounded-circle" style="width: 70px;">        
                 </div>
             </div>
-            <div class="col col-5">
+            <div class="col">
                 <h6><strong>Nome: </strong>{{ cliente.nome }}</h6>
                 <h6><strong>Razão: </strong>{{ cliente.razao }}</h6>                    
             </div>
-            <div class="col col-4">
+            <div class="col">
                 <h6><strong>CNPJ: </strong>{{ cliente.cnpj }}</h6>
-                <h6><strong>Contato: </strong>{{ cliente.contato }}</h6>                    
+                <h6><strong>Contato: </strong>{{ cliente.contato }}</h6>
+                {% if cliente.ativo == True %}
+                    <h6><strong>Ativo: </strong>Sim</h6> 
+                {% else %}
+                    <h6><strong>Ativo: </strong>Não</h6>  
+                {% endif %}        
             </div>
-            <div class="col col-2">
+            <div class="col col-1">
                 <a href="{{ url_for('editar_cliente', cliente_id=cliente.id )}}">
-                    <button class="btn profile-button">Editar</button>
+                    <button class="btn profile-button"><i class="bi bi-pen-fill"></i></button>
                 </a>
             </div>
         </div>
+    {% endfor %}
+    <hr>
+    {% for page_num in lista_clientes.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}            
+            {% if lista_clientes.page == page_num %}
+                <a class="btn btn-secondary active mt-3" href="{{ url_for('cliente', page=page_num ) }}">{{ page_num }}</a>
+            {% else %}
+                <a class="btn profile-button mt-3" href="{{ url_for('cliente', page=page_num ) }}">{{ page_num }}</a>
+            {% endif %} 
+        {% else %}
+            ...
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

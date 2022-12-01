@@ -39,6 +39,7 @@ Novo atendimento
             <div class="col p-2">
                 <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
                 <select class="form-control" name="campo" id="campo">
+                    <option value="todos">Todos</option>
                     <option value="clientenome">Nome Cliente</option>
                     <option value="clienterazao">Razao Cliente</option>
                     <option value="cnpj">CNPJ Cliente</option>
@@ -48,6 +49,7 @@ Novo atendimento
             <div class="col p-2">
                 <label for="statusatend" class="labels colorlabel p-2">Status</label>
                 <select class="form-control" name="statusatend" id="statusatend">
+                    <option value="">Todos</option>
                     <option value="aberto">Aberto</option>
                     <option value="atendendo">Atendendo</option>
                     <option value="cancelado">Cancelado</option>
@@ -57,6 +59,7 @@ Novo atendimento
             <div class="col p-2">
                 <label for="prioridade" class="labels colorlabel p-2">Prioridade</label>
                 <select class="form-control" name="prioridade" id="prioridade">
+                    <option value="">Todos</option>
                     <option value="baixa">Baixa</option>
                     <option value="normal">Normal</option>
                     <option value="alta">Alta</option>
@@ -65,11 +68,6 @@ Novo atendimento
             </div>
             <div class="col mt-5 d-flex flex-row-reverse ">
                 <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
-            </div>
-            <div class="col mt-5">
-                <a href="{{ url_for('atendimento') }}">
-                    <button type="button" class="btn btn-primary profile-button">todos</button>
-                </a>
             </div>
         </div>
     </form>

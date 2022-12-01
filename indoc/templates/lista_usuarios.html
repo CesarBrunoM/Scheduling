@@ -10,32 +10,15 @@ Usuários
 
 {% block button %}
 <a href="{{ url_for('cadastro_usuario') }}">
-  <button type="button" class="btn btn-primary profile-button">Novo</button>
+  <button type="button" class="btn btn-primary profile-button">Novo usuário</button>
 </a>
-<div class="dropdown">
-  <button class="btn btn-primary profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
-    aria-expanded="false">
-    <i class="bi bi-plus-square"></i> Filtros
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="{{ url_for('cadastro_atendimento') }}">Data Cadastro</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Inicio</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Fechamento</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastrocliente') }}">Data Cancelamento</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastro_usuario') }}">Atendente</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cliente') }}">Cliente</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastroproblema') }}">Problemas</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Setores</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('cadastrosetor') }}">Prioridade</a></li>
-  </ul>
-</div>
 {% endblock %}
 
 {% block body %}
 
 <div class="container p-4">
-  <form method="POST" name="frm_atendimento" action="{{url_for('atendimento')}}">
-    <div class="row d-flex">
+  <form method="POST" name="frm_atendimento" action="{{url_for('listuser')}}">
+    <div class="row d-flex me-5 ms-5">
         <div class="col col-lg-4 p-2">
             <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
             <input type="text", class="form-control" name="consulta" id="consulta">
@@ -43,53 +26,56 @@ Usuários
         <div class="col p-2">
             <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
             <select class="form-control" name="campo" id="campo">
-                <option value="username">Nome</option>
+                <option value="todos">Todos</option>
+                <option value="username">Nome usuário</option>
+                <option value="nomecomplet">Nome completo</option>
                 <option value="email">E-mail</option>
                 <option value="cargo">Cargo</option>
             </select>
         </div>
         <div class="col p-2">
-            <label for="statusatend" class="labels colorlabel p-2">Status</label>
-            <select class="form-control" name="statusatend" id="statusatend">
-                <option value="ativo">Ativo</option>
-                <option value="inativo">Inativo</option>
+            <label for="ativo" class="labels colorlabel p-2">Status</label>
+            <select class="form-control" name="ativo" id="ativo">
+                <option value="none">Todos</option>
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
             </select>
         </div>
-        <div class="col mt-5 d-flex flex-row-reverse ">
+        <div class="col mt-5 d-flex flex-row-reverse">
             <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
-        </div>
-        <div class="col mt-5">
-            <a href="{{ url_for('listuser') }}">
-                <button type="button" class="btn btn-primary profile-button">Todos</button>
-            </a>
         </div>
     </div>
   </form>
   <hr>
   {% for usuario in lista_usuarios.items %}
-  <div class="row mt-1 bgcard d-flex align-items-center">
-    <div class="col col-1 d-flex justify-content-center align-items-center flex-column">
-      <div class="card-body text-center">
-        <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"
-          class="rounded-circle" style="width: 70px;">        
+    <div class="row me-5 mb-2 ms-5 bgcard d-flex align-items-center">
+      <div class="col col-1 d-flex justify-content-center align-items-center flex-column">
+        <div class="card-body text-center">        
+            {% if usuario.ativo == True %}
+                <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"
+                class="rounded-circle border border-success border-3" style="width: 70px;">   
+            {% else %}
+              <img src="{{ url_for('static', filename='foto_perfil/{}'.format(usuario.foto_perfil)) }}" alt="avatar"
+              class="rounded-circle border border-danger border-3" style="width: 70px;">   
+            {% endif %}       
+        </div>
+      </div>
+      <div class="col">
+        <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
+        <h6><strong>Nome usuário: </strong>{{ usuario.username }}</h6>
+        <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>      
+      </div>
+      <div class="col">
+        <h6><strong>Cargo: </strong>{{ usuario.cargo }}</h6>
+        <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
+        <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>        
+      </div>
+      <div class="col col-1">
+          <a href="{{ url_for('editar_usuario', usuario_id=usuario.id )}}">
+            <button class="btn profile-button"><i class="bi bi-pen-fill"></i></button>
+          </a>
       </div>
     </div>
-    <div class="col col-5">
-      <h6><strong>Nome Completo: </strong>{{ usuario.nome_completo }}</h6>
-      <h6><strong>Nome usuário: </strong>{{ usuario.username }}</h6>
-      <h6><strong>E-mail: </strong>{{ usuario.email }}</h6>      
-    </div>
-    <div class="col col-4">
-      <h6><strong>Cargo: </strong>{{ usuario.cargo }}</h6>
-      <h6><strong>Data Cadastro: </strong>{{ datetime.strftime(usuario.data_cadastro, '%d/%m/%Y às %H:%M') }}</h6>
-      <h6><strong>Data Nascimento: </strong>{{ datetime.strftime(usuario.data_nascimento, '%d/%m/%Y') }}</h6>
-    </div>
-    <div class="col col-2">
-        <a href="{{ url_for('editar_usuario', usuario_id=usuario.id )}}">
-          <button class="btn profile-button">Editar</button>
-        </a>
-    </div>
-  </div>
   {% endfor %}
   <hr>
   {% for page_num in lista_usuarios.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}

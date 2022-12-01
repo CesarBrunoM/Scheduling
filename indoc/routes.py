@@ -264,12 +264,49 @@ def editarperfil():
     return render_template('editarperfil.html', form_editar_perfil=form, foto_perfil=foto_perfil, datetime=datetime)
 
 
-@app.route("/usuario", methods=['GET'])
+@app.route("/usuario", methods=['GET', 'POST'])
 @login_required
 def listuser():
+    consulta = '%'+str(request.form.get('consulta'))+'%'
+    campo = request.form.get('campo')
+    ativo = request.form.get('ativo')
     page = request.args.get('page',1 , type=int) 
-    lista_usuarios = Usuario.query.filter_by(id_empresa=current_user.id_empresa).paginate(page=page, per_page=10) 
+    
     foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+    
+    if ativo == 'true':
+        status = True
+    elif ativo == 'false':
+        status = False
+    else:
+        status = None
+        
+    if campo == 'username':
+        if status == None:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.username.like(consulta)).paginate(page=page, per_page=10) 
+        else:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.username.like(consulta), Usuario.ativo==status).paginate(page=page, per_page=10)
+    elif campo == 'nomecomplet':
+        if status == None:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.nome_completo.like(consulta)).paginate(page=page, per_page=10)
+        else:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.nome_completo.like(consulta), Usuario.ativo==status).paginate(page=page, per_page=10)
+    elif campo == 'email':
+        if status == None:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.email.like(consulta)).paginate(page=page, per_page=10)
+        else:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.email.like(consulta), Usuario.ativo==status).paginate(page=page, per_page=10)   
+    elif campo == 'cargo':
+        if status == None:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.cargo.like(consulta)).paginate(page=page, per_page=10)
+        else:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.cargo.like(consulta), Usuario.ativo==status).paginate(page=page, per_page=10) 
+    else:
+        if status == None:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa).paginate(page=page, per_page=10) 
+        else:
+            lista_usuarios = Usuario.query.filter(Usuario.id_empresa==current_user.id_empresa, Usuario.ativo==status).paginate(page=page, per_page=10)    
+    
     return render_template('lista_usuarios.html', lista_usuarios=lista_usuarios, datetime=datetime, foto_perfil=foto_perfil)
 
 
@@ -367,10 +404,42 @@ def cadastrocliente():
         return render_template('home.html')
 
 
-@app.route("/cliente")
+@app.route("/cliente", methods=['GET', 'POST'])
 @login_required
 def cliente():
-    lista_cliente = Cliente.query.filter_by(id_empresa=current_user.id_empresa)
+    consulta = '%'+str(request.form.get('consulta'))+'%'
+    campo = request.form.get('campo')
+    ativo = request.form.get('ativo')
+    page = request.args.get('page', 1, type=int) 
+    
+    if ativo == 'true':
+        status = True
+    elif ativo == 'false':
+        status = False
+    else:
+        status = None
+        
+    if campo == 'clientenome':
+        if status == None:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.nome.like(consulta)).paginate(page=page, per_page=10)
+        else:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.nome.like(consulta), Cliente.ativo==status).paginate(page=page, per_page=10)
+    elif campo == 'clienterazao':
+        if status == None:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.razao.like(consulta)).paginate(page=page, per_page=10)
+        else:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.razao.like(consulta), Cliente.ativo==status).paginate(page=page, per_page=10)
+    elif campo == 'cnpj':
+        if status == None:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.cnpj.like(consulta)).paginate(page=page, per_page=10)   
+        else:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.cnpj.like(consulta), Cliente.ativo==status).paginate(page=page, per_page=10)   
+    else:
+        if status == None:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa).paginate(page=page, per_page=10) 
+        else:
+            lista_cliente = Cliente.query.filter(Cliente.id_empresa==current_user.id_empresa, Cliente.ativo==status).paginate(page=page, per_page=10) 
+    
     return render_template('clientes.html', lista_clientes=lista_cliente)
     
 
@@ -411,19 +480,30 @@ def editar_cliente(cliente_id):
 @app.route("/problema", methods=['GET', 'POST'])
 @login_required
 def problema():
-    form_problema = FormProblema()
-    lista_problema = Problema.query.filter_by(id_empresa=current_user.id_empresa)
-    if form_problema.validate_on_submit() and 'btn_submit_problema' in request.form:
-        problem = Problema(
-            descricao=form_problema.descricao.data,
-            ativo=form_problema.ativo.data,
-            id_empresa=current_user.id_empresa
-        )
-        database.session.add(problem)
-        database.session.commit()
-        flash(f'Problema cadastrado com sucesso.', 'alert-success')
-        return redirect(url_for('problema'))
-    return render_template('problema.html', lista_problema=lista_problema, form_problema=form_problema)
+    consulta = '%'+str(request.form.get('consulta'))+'%'
+    campo = request.form.get('campo')
+    ativo = request.form.get('ativo')
+    page = request.args.get('page', 1, type=int)
+    
+    if ativo == 'true':
+        status = True
+    elif ativo == 'false':
+        status = False
+    else:
+        status = None
+    
+    if campo == 'descricao':
+        if status == None:
+            lista_problema = Problema.query.filter(Problema.id_empresa==current_user.id_empresa, Problema.descricao.like(consulta)).paginate(page=page, per_page=10)  
+        else:
+            lista_problema = Problema.query.filter(Problema.id_empresa==current_user.id_empresa, Problema.descricao.like(consulta), Problema.ativo==(status)).paginate(page=page, per_page=10)  
+    else:
+        if status == None:
+            lista_problema = Problema.query.filter(Problema.id_empresa==current_user.id_empresa).paginate(page=page, per_page=10)  
+        else:
+            lista_problema = Problema.query.filter(Problema.id_empresa==current_user.id_empresa, Problema.ativo==(status)).paginate(page=page, per_page=10)
+    
+    return render_template('problema.html', lista_problema=lista_problema, datetime=datetime)
 
 
 @app.route("/problemacadastro", methods=['GET', 'POST'])
@@ -468,11 +548,34 @@ def editar_problema(problema_id):
         return render_template('home.html')
 
 
-@app.route("/setor")
+@app.route("/setor", methods=['GET', 'POST'])
 @login_required
 def setor():
-    lista_setor = Setor.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('setor.html', lista_setor=lista_setor)
+    consulta = '%'+str(request.form.get('consulta'))+'%'
+    campo = request.form.get('campo')
+    ativo = request.form.get('ativo')
+    page = request.args.get('page',1 , type=int) 
+    
+    if ativo == 'true':
+        status = True
+    elif ativo == 'false':
+        status = False
+    else:
+        status = None
+    
+    if campo == 'setor':
+        if status == None:
+            lista_setor = Setor.query.filter(Setor.id_empresa==current_user.id_empresa, Setor.nome.like(consulta)).paginate(page=page, per_page=10)  
+        else:
+            lista_setor = Setor.query.filter(Setor.id_empresa==current_user.id_empresa, Setor.nome.like(consulta), Setor.ativo==(status)).paginate(page=page, per_page=10)  
+    else:
+        if status == None:
+            lista_setor = Setor.query.filter(Setor.id_empresa==current_user.id_empresa).paginate(page=page, per_page=10)  
+        else:
+            lista_setor = Setor.query.filter(Setor.id_empresa==current_user.id_empresa, Setor.ativo==(status)).paginate(page=page, per_page=10)
+    
+      
+    return render_template('setor.html', lista_setor=lista_setor, datetime=datetime)
 
 
 @app.route("/setor/cadastro", methods=['GET', 'POST'])
@@ -522,31 +625,42 @@ def editar_setor(setor_id):
 def atendimento():
     consulta = '%'+str(request.form.get('consulta'))+'%'
     campo = request.form.get('campo')
-    status = request.form.get('statusatend')
-    prioridade = request.form.get('prioridade')
+    status = '%'+str(request.form.get('statusatend'))+'%'
+    prioridade = '%'+str(request.form.get('prioridade'))+'%'
     page = request.args.get('page',1 , type=int) 
-    list = []
-    
+    list_client = []    
+
+    busca = lambda lista: Atendimento.query.filter(Atendimento.id_cliente.in_(lista),Atendimento.id_empresa==current_user.id_empresa, Atendimento.status.like(status), \
+                                        Atendimento.prioridade.like(prioridade)).order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)       
+
     if campo == 'clientenome':
         client = Cliente.query.filter(Cliente.nome.like(consulta)) 
         for cliente in client:
-            list.append(cliente.id)
-        print(list)
-        atendimentos = Atendimento.query.filter(Atendimento.id_cliente.in_(list),Atendimento.id_empresa==current_user.id_empresa, Atendimento.status == status, \
-                                                Atendimento.prioridade.like(prioridade)).order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)  
+            list_client.append(cliente.id)
+        atendimentos = busca(list_client)
     elif campo == 'clienterazao':
-        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Atendimento.id_cliente.in_(list), Atendimento.status == status) \
-            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)  
+        client = Cliente.query.filter(Cliente.razao.like(consulta)) 
+        for cliente in client:
+            list_client.append(cliente.id)
+        atendimentos = busca(list_client)
     elif campo == 'cnpj':
-        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Cliente.cnpj.like(consulta), Atendimento.status == status) \
-            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10) 
+        client = Cliente.query.filter(Cliente.cnpj.like(consulta)) 
+        for cliente in client:
+            list_client.append(cliente.id)
+        atendimentos = busca(list_client)
     elif campo == 'atendente':
-        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Usuario.nome.like(consulta), Atendimento.status == status) \
-            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)   
+        list_user=[]
+        user = Usuario.query.filter(Usuario.username.like(consulta))
+        for usuario in user:
+            list_user.append(usuario.id)
+        atendimentos = Atendimento.query.filter(Atendimento.id_usuario.in_(list_user),Atendimento.id_empresa==current_user.id_empresa, Atendimento.status.like(status), \
+                                        Atendimento.prioridade.like(prioridade)).order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)       
+    elif campo == 'todos':
+        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, Atendimento.status.like(status), \
+                                        Atendimento.prioridade.like(prioridade)).order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)
     else:
-        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa) \
-            .order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)
-    
+        atendimentos = Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa).order_by(Atendimento.id.desc()).paginate(page=page, per_page=10)
+        
     return render_template('atendimentos.html', atendimentos=atendimentos, datetime=datetime, campo=campo)
 
 
@@ -661,5 +775,3 @@ def sair():
     logout_user()
     flash('Sua sessão foi encerrada.', 'alert-success')
     return redirect('login')
-
-

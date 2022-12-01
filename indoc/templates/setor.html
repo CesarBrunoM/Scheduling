@@ -16,26 +16,34 @@ Setor
 
 {% block body %}
     <div class="container">
-        <form method="POST" name="frm_consulta" action="{{url_for('consulta')}}">
-            <div class="row">
-                <div class="col col-md-5 p-2">
+        <form method="POST" name="frm_atendimento" action="{{url_for('setor')}}">
+            <div class="row d-flex me-5 ms-5">
+                <div class="col col-lg-4 p-2 d-flex flex-column align-items-center">
                     <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
-                    <input type="text", class="form-control" name="consulta">
+                    <input type="text", class="form-control" name="consulta" id="consulta">
                 </div>
-                <div class="col col-md-2 p-2">
+                <div class="col p-2 d-flex flex-column align-items-center">
                     <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
                     <select class="form-control" name="campo" id="campo">
-                        <option value="descricao">Descrição</option>
-                        <option value="status">Status</option>
+                        <option value="todos">Todos</option>
+                        <option value="setor">Nome setor</option>
                     </select>
                 </div>
-                <div class="col col-md-1 mt-5">
+                <div class="col p-2 d-flex flex-column align-items-center justify-content-end">
+                    <label for="ativo" class="labels colorlabel p-2">Status</label>
+                    <select class="form-control" name="ativo" id="ativo">
+                        <option value="none">Todos</option>
+                        <option value="true">Ativo</option>
+                        <option value="false">Inativo</option>
+                    </select>
+                </div>
+                <div class="col d-flex p-2 align-items-end justify-content-end">
                     <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
                 </div>
             </div>
-        </form>
+          </form>
         <hr>
-        <table class="table">
+        <table class="table bgcard">
             <thead>
             <tr>
                 <th scope="col">
@@ -45,15 +53,17 @@ Setor
                     Status
                 </th>
                 <th scope="col">
-                    Opção
+                    Data Cadastro
                 </th>
             </tr>
             </thead>
             <tbody>
-                {% for setor in lista_setor %}
+                {% for setor in lista_setor.items %}
                 <tr>
                     <td>
-                        {{ setor.nome }}
+                        <a class="badge bg-dark link-light" href="{{ url_for('editar_setor', setor_id=setor.id) }}">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>   {{ setor.nome }}
                     </td>
                     <td>
                         {% if setor.ativo == True %}
@@ -63,14 +73,28 @@ Setor
                         {% endif %}
                     </td>
                     <td>
-                        <a class="badge bg-dark" href="{{ url_for('editar_setor', setor_id=setor.id) }}">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
+                        {{ datetime.strftime(setor.data_cadastro, '%d/%m/%Y às %H:%M') }}
                     </td>
                 </tr>
                 {% endfor %}
+                
             </tbody>
         </table>
+        <hr>
+        <div class="mb-2">
+            {% for page_num in lista_setor.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+              {% if lista_setor.page == page_num %}
+                <a class="btn btn-secondary active mt-3" href="{{ url_for('setor', page=page_num ) }}">{{ page_num }}</a>
+              {% else %}
+                <a class="btn profile-button mt-3" href="{{ url_for('setor', page=page_num ) }}">{{ page_num }}</a>
+              {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+          {% endfor %}
+        </div>
+
     </div>
 
 
