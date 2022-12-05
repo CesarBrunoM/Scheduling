@@ -8,45 +8,92 @@
   <h4>Dados</h4>
 {% endblock %}
 
-
+ 
 {% block body %}
-<form method="POST" name="frm_consulta" action="{{url_for('consulta')}}">
-    <div class="row">
-        <div class="col col-md-5 p-2">
-            <label for="consulta" class="labels colorlabel p-2">Campo consulta</label>
-            <input type="text", class="form-control" name="consulta">
-        </div>
-        <div class="col col-md-2 p-2">
-            <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
-            <select class="form-control" name="campo" id="campo">
-                <option value="prioridade">Prioridade</option>
-            </select>
-        </div>
-        <div class="col col-md-1 mt-5">
-            <button type="submit" class="btn profile-button">Consultar</button>
-        </div>
-    </div>
-</form>
-
 <div class="row p-2">
-    <div class="col col-6 p-2 bgcard">
-        <table class="table">
-            <thead>
-                <th scope="col">Cliente</th>
+    <form method="POST" name="frm_home" action="{{url_for('home')}}">
+        <div class="row d-flex justify-content-center">
+            <div class="col col-md-2 p-2">
+                <label for="data_1" class="labels colorlabel p-2">Data Inicial</label>
+                <input type="date", class="form-control" name="data_1" value="{{ data_base }}">
+            </div>
+            <div class="col col-md-2 p-2">
+                <label for="data_2" class="labels colorlabel p-2" defaut="">Data Final</label>
+                <input type="date", class="form-control" name="data_2" value="{{ data_base }}">
+            </div>
+            <div class="col col-md-2 p-2">
+                <label class="labels colorlabel p-2" for="campo">Tipo consulta</label>
+                <select class="form-control" name="campo" id="campo">
+                    <option value="cadastro">Cadastro</option>
+                    <option value="inicio">Inicio</option>
+                    <option value="vencimento">Vencimento</option>
+                    <option value="conclusao">Conclusão</option>
+                </select>
+            </div>
+            <div class="col col-md-1 mt-5">          
+                <button type="submit" class="btn profile-button"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="row p-2 table-responsive d-flex justify-content-center">
+    <div class="col col-6 p-2">
+        <table class="table table-borderless text-center align-middle" id="tabpriori">
+            <thead class="align-middle">
                 <th scope="col">Prioridade</th>
+                <th scope="col">Quantidade</th>
             </thead>
             <tbody>
-                {% for atendimento in atendimentos %}
-                <tr>
-                    <td>{{ atendimento.cliente.nome }}</td>
-                    <td>{{ atendimento.prioridade }}</td>
+                <tr style="background-color: rgb(15, 132, 153);">
+                    <td>Baixa</td>
+                    <td>{{baixa}}</td>
+                </tr>   
+                <tr style="background-color: rgb(19, 163, 43);">
+                    <td>Normal</td>
+                    <td>{{normal}}</td>
                 </tr>
-                {% endfor %}
+                <tr style="background-color: rgb(206, 136, 45);">
+                    <td>Alta</td>
+                    <td>{{alta}}</td>
+                </tr>
+                <tr style="background-color: rgb(180, 33, 33);">
+                    <td>Urgente</td>
+                    <td>{{urgente}}</td>
+                </tr>
             </tbody>
         </table>
     </div>
-    <div class="col col-6 bgcard">
+    <div class="col col-6 p-2">
+        <table class="table table-borderless text-center  align-middle" id="tabstatus">
+            <thead class="align-middle">
+                <th scope="col">Status</th>
+                <th scope="col">Quantidade</th>
+            </thead>
+            <tbody>
+                <tr style="background-color: rgb(207, 196, 40);">
+                    <td>Aberto</td>
+                    <td>{{aberto}}</td>
+                </tr>   
+                <tr style="background-color: rgb(39, 77, 180);">
+                    <td>Atendendo</td>
+                    <td>{{atendendo}}</td>
+                </tr>
+                <tr style="background-color: rgb(184, 28, 28);">
+                    <td>Cancelado</td>
+                    <td>{{cancelado}}</td>
+                </tr>
+                <tr style="background-color: rgb(27, 139, 36);" class="border-0">
+                    <td>Fechado</td>
+                    <td>{{fechado}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
+    <div class="row mb-5">
+        <h4>Total de atendimentos: {{total}}    </h4>
     </div>
 </div>
 {% endblock %}

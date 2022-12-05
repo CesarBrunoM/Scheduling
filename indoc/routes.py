@@ -8,16 +8,77 @@ from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from PIL import Image
-from datetime import datetime
-from sqlalchemy import between
+from datetime import datetime, timedelta, date
 
 
-@app.route("/")
-@app.route("/dados")
+
+@app.route("/", methods=['POST', 'GET'])
 @login_required
 def home():
+    data_inicio = request.form.get('data_1')
+    data_fim = request.form.get('data_2')
+    campo = request.form.get('campo')
     atendimentos=Atendimento.query.filter_by(id_empresa=current_user.id_empresa)
-    return render_template('home.html', atendimentos=atendimentos)
+    data_base = datetime.utcnow().date()
+    
+    baixa  = 0
+    normal  = 0
+    alta  = 0
+    urgente  = 0
+    
+    aberto = 0
+    atendendo = 0
+    fechado = 0
+    cancelado = 0
+
+    total = 0 
+    
+    print(data_fim)
+    if campo == 'cadastro':
+        fim = datetime.strptime(data_fim, '%Y-%m-%d').date()
+        atendimentos=Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, \
+            (Atendimento.data_cadastro>=data_inicio) & (Atendimento.data_cadastro<=(fim+timedelta(days=1))))
+    elif campo == 'inicio':
+        fim = datetime.strptime(data_fim, '%Y-%m-%d').date()
+        atendimentos=Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, \
+            (Atendimento.data_cadastro>=data_inicio) & (Atendimento.data_cadastro<=(fim+timedelta(days=1))))
+    elif campo == 'vencimento':
+        fim = datetime.strptime(data_fim, '%Y-%m-%d').date()
+        atendimentos=Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, \
+            (Atendimento.data_cadastro>=data_inicio) & (Atendimento.data_cadastro<=(fim+timedelta(days=1))))
+    elif campo == 'conclusao':
+        fim = datetime.strptime(data_fim, '%Y-%m-%d').date()
+        atendimentos=Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, \
+            (Atendimento.data_cadastro>=data_inicio) & (Atendimento.data_cadastro<=(fim+timedelta(days=1))))
+    else:
+        atendimentos=Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, \
+            (Atendimento.data_cadastro>=datetime.utcnow().date()) & (Atendimento.data_cadastro<=datetime.utcnow().date()+timedelta(days=1)))
+        
+    for atendimento in atendimentos:
+        if atendimento.prioridade == 'Baixa':
+            baixa+=1
+        elif atendimento.prioridade == 'Normal':
+            normal+=1
+        elif atendimento.prioridade == 'Alta':
+            alta+=1
+        elif atendimento.prioridade == 'Urgente':
+            urgente+=1 
+    
+    for atendimento in atendimentos:
+        if atendimento.status == 'Aberto':
+            aberto+=1
+        elif atendimento.status == 'Atendendo':
+            atendendo+=1
+        elif atendimento.status == 'Fechado':
+            fechado+=1
+        elif atendimento.status == 'Cancelado':
+            cancelado+=1 
+            
+    for atendimento in atendimentos:
+        total+=1
+            
+    return render_template('home.html', atendimentos=atendimentos, baixa=baixa, normal=normal, alta=alta, urgente=urgente, datetime=datetime,\
+        data_base=data_base, aberto=aberto, atendendo=atendendo, fechado=fechado, cancelado=cancelado, total=total)
 
 
 @app.route('/consulta', methods=['POST'])

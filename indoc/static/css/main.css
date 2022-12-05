@@ -304,3 +304,45 @@
         }
         
     }
+
+    #tabpriori thead{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        background-color: #000000;
+        color: #fff;
+        height: 75px;
+    }
+    
+
+    #tabpriori tbody{
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        height: 50px;
+        font-size: 1rem;
+        color: white;
+    }
+
+    #tabpriori tr{
+        height: 75px;
+    }
+
+    #tabstatus thead{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        background-color: #000000;
+        color: #fff;
+        height: 75px;
+    }
+
+    #tabstatus tbody{
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        height: 50px;
+        font-size: 1rem;
+        color: white;
+
+    }
+
+    #tabstatus tr{
+        height: 75px;
+    }
