@@ -235,6 +235,24 @@
         color: #800000;
     }
 
+    .mb-0{
+        font-size: 1.6em;
+        font-weight: bold;
+        color: black;
+        
+    }
+
+    .my-3{
+        color: black;
+    }
+
+    .card{
+        background-color: #d49645;
+        font-family: roboto;
+    }
+
+
+
     #main {
         margin-left: 323px;
     }
@@ -346,3 +364,5 @@
     #tabstatus tr{
         height: 75px;
     }
+
+

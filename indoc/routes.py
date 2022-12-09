@@ -9,7 +9,7 @@ import secrets
 import os
 from PIL import Image
 from datetime import datetime, timedelta, date
-
+from sqlalchemy import func
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -731,16 +731,15 @@ def cadastro_atendimento():
     clientes = [(s.id, s.nome) for s in Cliente.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     problemas = [(s.id, s.descricao) for s in Problema.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
-    protocolo = Atendimento.query.filter_by(id_empresa=current_user.id_empresa)
+    protocolo_num = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.protocolo.desc()).first()
     form = FormAtendimento(request.form)
     form.setor.choices = setores
     form.cliente.choices = clientes
     form.problema.choices = problemas
-    print(protocolo)
-    print(request.form.get('cliente'))
+    print(protocolo_num.protocolo)
     if form.validate_on_submit() and 'btn_submit_novo' in request.form:
         new_atendimento = Atendimento(
-            protocolo=1,
+            protocolo=(protocolo_num.protocolo+1),
             data_vencimento=form.data_vencimento.data,
             observacao=form.observacao.data,
             prioridade=form.prioridade.data,
