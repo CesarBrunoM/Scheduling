@@ -33,7 +33,6 @@ def home():
 
     total = 0 
     
-    print(data_fim)
     if campo == 'cadastro':
         fim = datetime.strptime(data_fim, '%Y-%m-%d').date()
         atendimentos=Atendimento.query.filter(Atendimento.id_empresa==current_user.id_empresa, \
@@ -378,54 +377,58 @@ def editar_usuario(usuario_id):
         form = FormEditarUsuario()
         user = Usuario.query.get(usuario_id)
         validate_email = Usuario.query.filter(Usuario.id != usuario_id, Usuario.email == form.email.data).first()
-        if request.method == "GET":
-            form.username.data = user.username
-            form.nome_completo.data = user.nome_completo
-            form.email.data = user.email
-            form.telefone.data = user.telefone
-            form.data_nascimento.data = user.data_nascimento
-            form.cargo.data = user.cargo
-            form.ativo.data = user.ativo
-            form.cad_user.data = user.cad_user
-            form.cad_client.data = user.cad_client
-            form.cad_setor.data = user.cad_setor
-            form.cad_problem.data = user.cad_problem
-            form.edit_user.data = user.edit_user
-            form.edit_client.data = user.edit_client
-            form.edit_setor.data = user.edit_setor
-            form.edit_problem.data = user.edit_problem
-            form.edit_empresa.data = user.edit_empresa
-        elif form.validate_on_submit():
-            if validate_email:
-                flash('E-mail já cadastrado em outro usuário', 'alert-warning')
-            else:            
-                user.username = form.username.data
-                user.nome_completo = form.nome_completo.data
-                user.email = form.email.data
-                user.telefone = form.telefone.data
-                user.data_nascimento = form.data_nascimento.data
-                user.cargo = form.cargo.data
-                user.ativo = form.ativo.data
-                user.cad_user=form.cad_user.data
-                user.cad_client=form.cad_client.data
-                user.cad_setor=form.cad_setor.data
-                user.cad_problem=form.cad_problem.data
-                user.edit_user=form.edit_user.data
-                user.edit_client=form.edit_client.data
-                user.edit_setor=form.edit_setor.data
-                user.edit_problem=form.edit_problem.data
-                user.edit_empresa=form.edit_empresa.data
-                if form.foto_perfil.data:
-                    nome_imagem = salvar_imagem(form.foto_perfil.data)
-                    user.foto_perfil = nome_imagem
-                elif form.senha.data:
-                    senha_cript = bcrypt.generate_password_hash(form.senha.data)
-                    user.senha = senha_cript
-                database.session.commit()
-                flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
-                return redirect(url_for('listuser'))
-        foto_perfil = url_for('static', filename='foto_perfil/{}'.format(user.foto_perfil))
-        return render_template('editar_usuario.html', form=form, foto_perfil=foto_perfil, usuario=user)
+        if user.master:            
+            flash('Usuário master não pode ser editado', 'alert-danger')
+            return redirect(url_for('listuser'))
+        else:
+            if request.method == "GET":
+                form.username.data = user.username
+                form.nome_completo.data = user.nome_completo
+                form.email.data = user.email
+                form.telefone.data = user.telefone
+                form.data_nascimento.data = user.data_nascimento
+                form.cargo.data = user.cargo
+                form.ativo.data = user.ativo
+                form.cad_user.data = user.cad_user
+                form.cad_client.data = user.cad_client
+                form.cad_setor.data = user.cad_setor
+                form.cad_problem.data = user.cad_problem
+                form.edit_user.data = user.edit_user
+                form.edit_client.data = user.edit_client
+                form.edit_setor.data = user.edit_setor
+                form.edit_problem.data = user.edit_problem
+                form.edit_empresa.data = user.edit_empresa
+            elif form.validate_on_submit():
+                if validate_email:
+                    flash('E-mail já cadastrado em outro usuário', 'alert-warning')
+                else:            
+                    user.username = form.username.data
+                    user.nome_completo = form.nome_completo.data
+                    user.email = form.email.data
+                    user.telefone = form.telefone.data
+                    user.data_nascimento = form.data_nascimento.data
+                    user.cargo = form.cargo.data
+                    user.ativo = form.ativo.data
+                    user.cad_user=form.cad_user.data
+                    user.cad_client=form.cad_client.data
+                    user.cad_setor=form.cad_setor.data
+                    user.cad_problem=form.cad_problem.data
+                    user.edit_user=form.edit_user.data
+                    user.edit_client=form.edit_client.data
+                    user.edit_setor=form.edit_setor.data
+                    user.edit_problem=form.edit_problem.data
+                    user.edit_empresa=form.edit_empresa.data
+                    if form.foto_perfil.data:
+                        nome_imagem = salvar_imagem(form.foto_perfil.data)
+                        user.foto_perfil = nome_imagem
+                    elif form.senha.data:
+                        senha_cript = bcrypt.generate_password_hash(form.senha.data)
+                        user.senha = senha_cript
+                    database.session.commit()
+                    flash(f'Usuário {form.username.data} atualizado com sucesso', 'alert-success')
+                    return redirect(url_for('listuser'))
+            foto_perfil = url_for('static', filename='foto_perfil/{}'.format(user.foto_perfil))
+            return render_template('editar_usuario.html', form=form, foto_perfil=foto_perfil, usuario=user)
     else:
         flash('Usuário não tem acesso a pagina', 'alert-danger')
         return render_template('home.html')
@@ -511,7 +514,6 @@ def editar_cliente(cliente_id):
         form = FormEditarCliente()
         client = Cliente.query.get(cliente_id)
         validate_cnpj = Cliente.query.filter(Cliente.id != cliente_id, Cliente.cnpj == form.cnpj.data, Cliente.id_empresa == current_user.id).first()
-        print(validate_cnpj)
         if request.method == 'GET':
             form.nome.data = client.nome
             form.razao.data = client.razao
@@ -732,14 +734,18 @@ def cadastro_atendimento():
     problemas = [(s.id, s.descricao) for s in Problema.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     setores = [(s.id, s.nome) for s in Setor.query.filter_by(id_empresa=current_user.id_empresa, ativo=True)]
     protocolo_num = Atendimento.query.filter_by(id_empresa=current_user.id_empresa).order_by(Atendimento.protocolo.desc()).first()
+    if protocolo_num:
+        protocolo = protocolo_num.protocolo+1
+    else:
+        protocolo = 1
+    
     form = FormAtendimento(request.form)
     form.setor.choices = setores
     form.cliente.choices = clientes
     form.problema.choices = problemas
-    print(protocolo_num.protocolo)
     if form.validate_on_submit() and 'btn_submit_novo' in request.form:
         new_atendimento = Atendimento(
-            protocolo=(protocolo_num.protocolo+1),
+            protocolo=protocolo,
             data_vencimento=form.data_vencimento.data,
             observacao=form.observacao.data,
             prioridade=form.prioridade.data,
